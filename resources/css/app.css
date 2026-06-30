@@ -1,0 +1,204 @@
+@import "tailwindcss";
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+@source '../**/*.jsx';
+
+@theme {
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+
+    --color-primary-50: #eef2f7;
+    --color-primary-100: #dce4ef;
+    --color-primary-200: #bacade;
+    --color-primary-300: #97afce;
+    --color-primary-400: #7494be;
+    --color-primary-500: #5279ad;
+    --color-primary-600: #41618b;
+    --color-primary-700: #314968;
+    --color-primary-800: #213145;
+    --color-primary-900: #101823;
+    --color-primary-950: #0b1118;
+
+    --color-surface-50: #f6f7ee;
+    --color-surface-100: #eeeedd;
+    --color-surface-200: #dddeba;
+    --color-surface-300: #cbcd98;
+    --color-surface-400: #babd75;
+    --color-surface-500: #a9ac53;
+    --color-surface-600: #878a42;
+    --color-surface-700: #656732;
+    --color-surface-800: #444521;
+    --color-surface-900: #222211;
+    --color-surface-950: #18180c;
+
+    --color-neutral-50: #f2f2f3;
+    --color-neutral-100: #e4e6e7;
+    --color-neutral-200: #cacdce;
+    --color-neutral-300: #afb4b6;
+    --color-neutral-400: #959a9d;
+    --color-neutral-500: #7a8185;
+    --color-neutral-600: #62676a;
+    --color-neutral-700: #494e50;
+    --color-neutral-800: #313435;
+    --color-neutral-900: #181a1b;
+    --color-neutral-950: #111213;
+
+    --color-accent-50: #fdf3e8;
+    --color-accent-100: #fbe6d0;
+    --color-accent-200: #f7cda1;
+    --color-accent-300: #f3b572;
+    --color-accent-400: #ef9c43;
+    --color-accent-500: #eb8314;
+    --color-accent-600: #bc6910;
+    --color-accent-700: #8d4f0c;
+    --color-accent-800: #5e3408;
+    --color-accent-900: #2f1a04;
+    --color-accent-950: #211203;
+
+    --color-highlight-50: #f8ecef;
+    --color-highlight-100: #f1dadf;
+    --color-highlight-200: #e4b4bf;
+    --color-highlight-300: #d68f9f;
+    --color-highlight-400: #c9697f;
+    --color-highlight-500: #bb4460;
+    --color-highlight-600: #96364c;
+    --color-highlight-700: #702939;
+    --color-highlight-800: #4b1b26;
+    --color-highlight-900: #250e13;
+    --color-highlight-950: #1a090d;
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-surface-50 font-body text-neutral-800 antialiased;
+    }
+
+    button,
+    a {
+        @apply transition-colors duration-300;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            scroll-behavior: auto !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+}
+
+@keyframes reveal-up {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 28px, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes reveal-scale {
+    from {
+        opacity: 0;
+        transform: scale(1.04);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes float-soft {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@layer components {
+    .reveal-up {
+        opacity: 0;
+        animation: reveal-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation-delay: var(--reveal-delay, 0ms);
+        will-change: transform, opacity;
+    }
+
+    .reveal-scale {
+        opacity: 0;
+        animation: reveal-scale 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation-delay: var(--reveal-delay, 0ms);
+        will-change: transform, opacity;
+    }
+
+    .hover-lift {
+        transition:
+            transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+            border-color 0.3s ease,
+            background-color 0.3s ease;
+    }
+
+    .hover-lift:hover {
+        transform: translateY(-8px);
+        box-shadow:
+            0 24px 48px rgba(16, 24, 35, 0.08),
+            0 10px 18px rgba(16, 24, 35, 0.06);
+    }
+
+    .media-zoom {
+        transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: transform;
+    }
+
+    .group:hover .media-zoom {
+        transform: scale(1.06);
+    }
+
+    .overlay-glow {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .overlay-glow::after {
+        content: "";
+        position: absolute;
+        inset: auto -25% -40% auto;
+        width: 14rem;
+        height: 14rem;
+        border-radius: 9999px;
+        background: radial-gradient(circle, rgba(235, 131, 20, 0.18), transparent 65%);
+        filter: blur(8px);
+        opacity: 0;
+        transition: opacity 0.45s ease;
+        pointer-events: none;
+    }
+
+    .overlay-glow:hover::after {
+        opacity: 1;
+    }
+
+    .float-soft {
+        animation: float-soft 8s ease-in-out infinite;
+    }
+}
