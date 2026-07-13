@@ -3,12 +3,11 @@ import { Menu, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 const navItems = [
+  { label: 'Tentang Enggano', href: '/villages' },
   { label: 'Destinations', href: '/destinations' },
-  { label: 'Villages', href: '/villages' },
-  { label: 'UMKM', href: '/umkm' },
-  { label: 'Local Guide', href: '/local-guide' },
   { label: 'Accommodations', href: '/accommodations' },
-  { label: 'KKN Log', href: '/kkn-log' },
+  { label: 'Aktivitas', href: '/kkn-log' },
+  { label: 'UMKM', href: '/umkm' },
 ]
 
 export default function Navbar() {
@@ -77,10 +76,10 @@ export default function Navbar() {
         </div>
 
         <Link
-          href="/accommodations#transportation"
+          href="/local-guide"
           className="hidden hover-lift overlay-glow bg-accent-500 px-4 py-2 text-sm font-semibold text-white hover:bg-accent-600 md:inline-flex"
         >
-          Check Ship Schedule
+          Local Guide
         </Link>
 
         <button
@@ -114,11 +113,11 @@ export default function Navbar() {
               )
             })}
             <Link
-              href="/accommodations#transportation"
+              href="/local-guide"
               onClick={() => setOpen(false)}
               className="mt-2 inline-flex justify-center bg-accent-500 px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-accent-600"
             >
-              Check Ship Schedule
+              Local Guide
             </Link>
           </div>
         </div>

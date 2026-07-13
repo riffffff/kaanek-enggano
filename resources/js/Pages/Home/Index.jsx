@@ -1,28 +1,19 @@
 import { Head, Link } from '@inertiajs/react'
-import { ChevronRight, Home, Ship, Signal } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import BentoGrid from '../../Components/BentoGrid'
 import KknCard from '../../Components/KknCard'
 
-const quickLinks = [
-  {
-    title: 'Ship Schedule',
-    description: 'Cek estimasi rute kapal dan pesawat menuju Enggano.',
-    href: '/accommodations#transportation',
-    icon: Ship,
-  },
-  {
-    title: 'Cari Homestay',
-    description: 'Temukan penginapan warga lokal saat halaman akomodasi siap.',
-    href: '/accommodations#homestay',
-    icon: Home,
-  },
-  {
-    title: 'Peta Sinyal',
-    description: 'Lihat gambaran area konektivitas sebelum berangkat.',
-    href: '/accommodations#signal-map',
-    icon: Signal,
-  },
-]
+const sejarahData = {
+  title: 'Sejarah Pulau Enggano',
+  content: `Pulau Enggano memiliki sejarah yang unik sebagai salah satu pulau terluar Indonesia di Samudra Hindia. Terisolasi selama berabad-abad, pulau ini mengembangkan kebudayaan yang sangat berbeda dari daratan utama Sumatera.
+
+Nama "Enggano" sendiri diyakini berasal dari bahasa Melayu yang berarti "pulau terpencil". Pulau ini pertama kali dicatat oleh penjelajah Eropa pada abad ke-16, namun bukti arkeologi menunjukkan adanya aktivitas manusia ribuan tahun sebelumnya.
+
+Selama berabad-abad, masyarakat Enggano hidup berdampingan dengan alam, mengembangkan sistem sosial dan hukum adat yang khas.
+
+Pada masa kolonial, pulau ini menjadi bagian dari Hindia Belanda, namun pengaruh luar tidak banyak mengubah cara hidup masyarakat setempat. Hingga saat ini, warisan budaya nenek moyang masih terasa kuat di setiap sudut pulau.`,
+  image: 'https://images.unsplash.com/photo-1533136305213-cd4275d9e8a6?auto=format&fit=crop&w=1800&q=80',
+}
 
 export default function HomeIndex({ latestKkn = [] }) {
   return (
@@ -48,7 +39,7 @@ export default function HomeIndex({ latestKkn = [] }) {
               Enggano: Garis Terdepan Samudera Hindia.
             </h1>
             <p className="reveal-up mt-6 max-w-3xl font-body text-base leading-7 text-white/80 md:text-xl" style={{ '--reveal-delay': '120ms' }}>
-              Jelajahi pulau terluar di Samudera Hindia, sebuah simfoni laut, hutan endemik, dan warisan budaya enam suku asli.
+              Jelajahi pulau terluar di Samudra Hindia, sebuah simfoni laut, hutan endemik, dan warisan budaya enam suku asli.
             </p>
             <div className="reveal-up mt-8 flex flex-wrap gap-4" style={{ '--reveal-delay': '220ms' }}>
               <Link
@@ -66,28 +57,40 @@ export default function HomeIndex({ latestKkn = [] }) {
               </Link>
             </div>
           </div>
-        </div>
+          </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24 lg:px-16">
-        <div className="reveal-up max-w-3xl">
-          <p className="font-body text-sm uppercase tracking-[0.3em] text-primary-700">Trip Essentials</p>
-          <h2 className="mt-3 font-display text-4xl font-semibold text-neutral-800 md:text-5xl">
-            Tiga pijakan awal sebelum berangkat ke Enggano.
-          </h2>
-        </div>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {quickLinks.map(({ title, description, href, icon: Icon }) => (
-            <Link key={title} href={href} className="group hover-lift reveal-up bg-white p-6 shadow-sm" style={{ '--reveal-delay': '140ms' }}>
-              <Icon size={22} className="text-accent-500" />
-              <h3 className="mt-4 font-display text-2xl font-semibold text-neutral-800">{title}</h3>
-              <p className="mt-3 text-sm leading-6 text-neutral-500">{description}</p>
-              <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary-700">
-                Lihat detail
-                <ChevronRight size={16} className="transition-transform group-hover:translate-x-1" />
-              </span>
-            </Link>
-          ))}
+      <section className="bg-[#f8f7f4]">
+        <div className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24 lg:px-16">
+          <div className="grid gap-12 lg:grid-cols-2 items-center">
+            <div className="reveal-up">
+              <p className="font-body text-sm uppercase tracking-[0.3em] text-primary-700">Warisan Leluhur</p>
+              <h2 className="mt-3 font-display text-4xl font-semibold text-neutral-800 md:text-5xl">
+                {sejarahData.title}
+              </h2>
+              <div className="mt-6 space-y-4 text-base leading-8 text-slate-600 md:text-lg">
+                {sejarahData.content.split('\n\n').map((paragraph, index) => (
+                  <p key={index} className="reveal-up" style={{ '--reveal-delay': `${120 + index * 80}ms` }}>
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+              <Link
+                href="/villages/history"
+                className="reveal-up mt-8 inline-flex items-center gap-2 text-sm font-semibold text-primary-700 hover:text-primary-600"
+              >
+                Baca Selengkapnya
+                <ChevronRight size={16} />
+              </Link>
+            </div>
+            <div className="reveal-up" style={{ '--reveal-delay': '120ms' }}>
+              <img
+                src={sejarahData.image}
+                alt={sejarahData.title}
+                className="w-full h-[400px] object-cover"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
