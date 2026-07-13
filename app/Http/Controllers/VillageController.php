@@ -37,7 +37,7 @@ class VillageController extends Controller
     public function show(string $slug): Response
     {
         $village = Village::query()
-            ->with('umkms')
+            ->with(['umkms', 'umkms.media'])
             ->where('slug', $slug)
             ->firstOrFail();
 

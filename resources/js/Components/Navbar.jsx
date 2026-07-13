@@ -4,9 +4,11 @@ import { useEffect, useState } from 'react'
 
 const navItems = [
   { label: 'Destinations', href: '/destinations' },
+  { label: 'Villages', href: '/villages' },
+  { label: 'UMKM', href: '/umkm' },
+  { label: 'Local Guide', href: '/local-guide' },
   { label: 'Accommodations', href: '/accommodations' },
   { label: 'KKN Log', href: '/kkn-log' },
-  { label: 'Villages', href: '/villages' },
 ]
 
 export default function Navbar() {

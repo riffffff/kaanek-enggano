@@ -8,9 +8,11 @@ use App\Filament\Resources\LocalGuideResource\Pages\ListLocalGuides;
 use App\Filament\Resources\LocalGuideResource\RelationManagers\DestinationsRelationManager;
 use App\Models\LocalGuide;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Table;
 
 class LocalGuideResource extends Resource
@@ -46,6 +48,15 @@ class LocalGuideResource extends Resource
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
+                Forms\Components\Section::make('Foto')
+                    ->schema([
+                        SpatieMediaLibraryFileUpload::make('photos')
+                            ->label('Foto guide')
+                            ->collection('photos')
+                            ->image()
+                            ->imageEditor()
+                            ->columnSpanFull(),
+                    ]),
             ]);
     }
 
@@ -53,6 +64,10 @@ class LocalGuideResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\SpatieMediaLibraryImageColumn::make('photos')
+                    ->label('Foto')
+                    ->collection('photos')
+                    ->circular(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama')
                     ->searchable(),

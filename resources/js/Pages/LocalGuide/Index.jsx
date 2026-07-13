@@ -6,42 +6,48 @@ const fallbackGuides = [
     id: 'pak-sudi',
     name: 'Pak Sudi',
     village: 'Kahyapu',
-    whatsappNumber: '6280000000000',
+    expertise: 'Bahari & Pantai',
+    whatsapp_number: '6280000000000',
     image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'bu-rina',
     name: 'Bu Rina',
     village: 'Malakoni',
-    whatsappNumber: '6280000000001',
+    expertise: 'Budaya & Sejarah',
+    whatsapp_number: '6280000000001',
     image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'pak-andi',
     name: 'Pak Andi',
     village: 'Apoho',
-    whatsappNumber: '6280000000002',
+    expertise: 'Wildlife & Hutan',
+    whatsapp_number: '6280000000002',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'bu-siti',
     name: 'Bu Siti',
     village: 'Meok',
-    whatsappNumber: '6280000000003',
+    expertise: 'Nelayan & Kuliner',
+    whatsapp_number: '6280000000003',
     image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'pak-arif',
     name: 'Pak Arif',
     village: 'Enggano',
-    whatsappNumber: '6280000000004',
+    expertise: 'Tradisi Lokal',
+    whatsapp_number: '6280000000004',
     image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'bu-nina',
     name: 'Bu Nina',
     village: 'Kaana',
-    whatsappNumber: '6280000000005',
+    expertise: 'Pertanian & Kebun',
+    whatsapp_number: '6280000000005',
     image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=1200&q=80',
   },
 ]
@@ -99,8 +105,11 @@ export default function LocalGuideIndex({ guides = [] }) {
                   <h3 className="font-display text-xl font-semibold text-slate-800">
                     {guide.name}
                   </h3>
+                  {guide.expertise && (
+                    <p className="mt-1 text-sm text-slate-500">{guide.expertise}</p>
+                  )}
                   <a
-                    href={`https://wa.me/${guide.whatsappNumber}`}
+                    href={`https://wa.me/${guide.whatsapp_number}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-6 inline-flex w-full items-center justify-center gap-2 px-4 py-3 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold"

@@ -94,7 +94,10 @@ class DestinationController extends Controller
                 'travel_time' => $meta['travel_time'],
                 'access_note' => $meta['access_note'],
                 'experiences' => $meta['experiences'],
-                'gallery' => $meta['gallery'],
+                'gallery' => $destination->getMedia('photos')
+                    ->map(fn ($media) => $media->getUrl())
+                    ->values()
+                    ->pipe(fn ($photos) => $photos->isNotEmpty() ? $photos->all() : $meta['gallery']),
                 'image' => $destination->getFirstMediaUrl('photos') ?: null,
                 'local_guide' => $destination->localGuide ? [
                     'name' => $destination->localGuide->name,
