@@ -81,6 +81,15 @@ Web Enggano adalah website resmi digital Pulau Enggano, dibangun sebagai KKN Leg
 - Wrap dengan `<Suspense fallback={...}>`
 - Ini penting — Leaflet tidak support SSR dan akan error kalau di-import biasa
 
+### Reusable Components
+- **Button**: Gunakan komponen `Button` dari `Components/Button.jsx` untuk tombol/link dengan gaya konsisten
+  - Props yang tersedia: `href`, `variant`, `size`, `showArrow`, `arrowPosition`, `className`
+  - Variants: `primary` (tombol utama), `ghost` (teks putih untuk hero section), `ghostLight` (teks primary untuk light background)
+  - Contoh: `<Button href="/path" variant="ghost" showArrow arrowPosition="left">Kembali</Button>`
+- **PrevNext**: Gunakan komponen `PrevNext` dari `Components/PrevNext.jsx` untuk navigasi sebelumnya/berikutnya
+  - Props yang tersedia: `prev`, `next`, `prevLabel`, `nextLabel`, `prevEmptyText`, `nextEmptyText`, `prevCardClass`, `nextCardClass`
+  - Contoh: `<PrevNext prev={{ href: '/prev', title: 'Prev' }} next={{ href: '/next', title: 'Next' }} prevCardClass="bg-white" nextCardClass="bg-white" />`
+
 ---
 
 ## Konvensi Tailwind CSS v4

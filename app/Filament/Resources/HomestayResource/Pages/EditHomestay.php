@@ -17,3 +17,4 @@ class EditHomestay extends EditRecord
         ];
     }
 }
+

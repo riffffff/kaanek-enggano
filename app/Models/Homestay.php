@@ -16,6 +16,7 @@ class Homestay extends Model implements HasMedia
         'name',
         'owner',
         'whatsapp_number',
+        'description',
         'facilities',
         'price_per_night',
         'village_id',

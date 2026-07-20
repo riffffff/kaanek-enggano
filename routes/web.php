@@ -18,7 +18,9 @@ Route::get('/accommodations/{id}', [AccommodationController::class, 'show'])->na
 Route::get('/kkn-log', [KknLogController::class, 'index'])->name('kkn.index');
 Route::get('/kkn-log/{slug}', [KknLogController::class, 'show'])->name('kkn.show');
 Route::get('/villages', [VillageController::class, 'index'])->name('villages.index');
+Route::get('/villages/history', fn () => Inertia::render('Village/History'))->name('villages.history');
 Route::get('/villages/{slug}', [VillageController::class, 'show'])->name('villages.show');
+Route::get('/tribes/{slug}', fn ($slug) => Inertia::render('Village/Tribe', ['id' => $slug]))->name('tribes.show');
 Route::get('/umkm', [UmkmController::class, 'index'])->name('umkm.index');
 Route::get('/local-guide', [LocalGuideController::class, 'index'])->name('local-guide.index');
 Route::get('/privacy-policy', fn () => Inertia::render('PrivacyPolicy'))->name('privacy-policy');

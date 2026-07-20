@@ -1,5 +1,6 @@
-import { Head, Link } from '@inertiajs/react'
-import { ArrowRight } from 'lucide-react'
+import { Head } from '@inertiajs/react'
+import Button from '../../Components/Button'
+import PrevNext from '../../Components/PrevNext'
 
 const villageProfiles = {
   Apoho: {
@@ -219,9 +220,15 @@ export default function VillageShow({ village, prev = null, next = null }) {
         />
         <div className="absolute inset-0 bg-linear-to-b from-primary-950/30 via-primary-950/55 to-primary-950/90" />
         <div className="relative mx-auto max-w-7xl px-6 pb-24 pt-36 md:px-12 lg:px-16">
-          <Link href="/villages" className="reveal-up text-sm font-semibold text-white/80 hover:text-white">
+          <Button
+            href="/villages"
+            variant="ghost"
+            showArrow
+            arrowPosition="left"
+            className="reveal-up"
+          >
             Kembali ke Villages
-          </Link>
+          </Button>
           <div className="mt-8 max-w-4xl">
             <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/70" style={{ '--reveal-delay': '80ms' }}>VILLAGE</p>
             <h1 className="reveal-up mt-4 font-display text-5xl font-semibold md:text-7xl" style={{ '--reveal-delay': '150ms' }}>
@@ -380,28 +387,15 @@ export default function VillageShow({ village, prev = null, next = null }) {
             ))}
           </div>
 
-          <div className="mt-12 grid gap-4 border-t border-neutral-200 pt-8 md:grid-cols-2">
-            <div className="hover-lift reveal-up bg-surface-50 p-6 ring-1 ring-neutral-200/70">
-              <p className="text-xs uppercase tracking-[0.25em] text-neutral-500">Previous Village</p>
-              {prev ? (
-                <Link href={`/villages/${prev.slug}`} className="mt-3 block font-display text-2xl font-semibold text-neutral-900 hover:text-primary-700">
-                  {prev.name}
-                </Link>
-              ) : (
-                <p className="mt-3 text-sm text-neutral-500">Belum ada desa sebelumnya.</p>
-              )}
-            </div>
-
-            <div className="hover-lift reveal-up bg-surface-50 p-6 ring-1 ring-neutral-200/70" style={{ '--reveal-delay': '100ms' }}>
-              <p className="text-xs uppercase tracking-[0.25em] text-neutral-500">Next Village</p>
-              {next ? (
-                <Link href={`/villages/${next.slug}`} className="mt-3 block font-display text-2xl font-semibold text-neutral-900 hover:text-primary-700">
-                  {next.name}
-                </Link>
-              ) : (
-                <p className="mt-3 text-sm text-neutral-500">Belum ada desa berikutnya.</p>
-              )}
-            </div>
+          <div className="mt-12 border-t border-neutral-200 pt-8">
+            <PrevNext
+              prev={prev ? { href: `/villages/${prev.slug}`, title: prev.name } : null}
+              next={next ? { href: `/villages/${next.slug}`, title: next.name } : null}
+              prevLabel="Previous Village"
+              nextLabel="Next Village"
+              prevEmptyText="Belum ada desa sebelumnya."
+              nextEmptyText="Belum ada desa berikutnya."
+            />
           </div>
         </div>
       </section>

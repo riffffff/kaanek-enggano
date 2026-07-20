@@ -19,9 +19,9 @@ class HomestayResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-home-modern';
 
-    protected static ?string $navigationGroup = 'Operasional Wisata';
+    protected static ?string $navigationGroup = 'Konten Dinamis';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 5;
 
     protected static ?string $modelLabel = 'Homestay';
 
@@ -55,6 +55,10 @@ class HomestayResource extends Resource
                             ->label('Harga per malam')
                             ->numeric()
                             ->prefix('Rp'),
+                        Forms\Components\Textarea::make('description')
+                            ->label('Deskripsi')
+                            ->rows(4)
+                            ->columnSpanFull(),
                         Forms\Components\Textarea::make('facilities')
                             ->label('Fasilitas')
                             ->helperText('Pisahkan dengan koma, contoh: 2 Kamar Tidur, Kamar Mandi Dalam, Sarapan')
@@ -137,3 +141,4 @@ class HomestayResource extends Resource
         ];
     }
 }
+

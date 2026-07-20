@@ -17,3 +17,4 @@ class ListHomestays extends ListRecords
         ];
     }
 }
+

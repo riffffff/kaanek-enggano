@@ -1,6 +1,8 @@
-import { Head, Link } from '@inertiajs/react'
+import { Head } from '@inertiajs/react'
 import { Camera, MessageCircle, Mountain, Navigation, Timer, Waves } from 'lucide-react'
 import LeafletMap from '../../Components/LeafletMap'
+import Button from '../../Components/Button'
+import PrevNext from '../../Components/PrevNext'
 
 export default function DestinationShow({ destination, prev = null, next = null }) {
   const guideWhatsappUrl = destination.local_guide
@@ -77,9 +79,15 @@ export default function DestinationShow({ destination, prev = null, next = null 
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24 lg:px-16">
-        <Link href="/destinations" className="reveal-up text-sm font-semibold text-primary-700 hover:text-primary-600">
+        <Button
+          href="/destinations"
+          variant="ghostLight"
+          showArrow
+          arrowPosition="left"
+          className="reveal-up"
+        >
           Kembali ke Destinations
-        </Link>
+        </Button>
 
         <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1.6fr)_360px]">
           <article className="reveal-up max-w-3xl" style={{ '--reveal-delay': '100ms' }}>
@@ -214,28 +222,17 @@ export default function DestinationShow({ destination, prev = null, next = null 
 
       {/* Prev / Next navigation */}
       <section className="mx-auto max-w-7xl px-6 pb-16 md:px-12 md:pb-24 lg:px-16">
-        <div className="grid gap-4 border-t border-neutral-200 pt-8 md:grid-cols-2">
-          <div className="hover-lift reveal-up bg-white p-6 shadow-sm ring-1 ring-neutral-200/70">
-            <p className="text-xs uppercase tracking-[0.25em] text-neutral-500">Previous</p>
-            {prev ? (
-              <Link href={`/destinations/${prev.slug}`} className="mt-3 block font-display text-2xl font-semibold text-neutral-900 hover:text-primary-700">
-                {prev.name}
-              </Link>
-            ) : (
-              <p className="mt-3 text-sm text-neutral-500">Belum ada destinasi sebelumnya.</p>
-            )}
-          </div>
-
-          <div className="hover-lift reveal-up bg-white p-6 shadow-sm ring-1 ring-neutral-200/70" style={{ '--reveal-delay': '100ms' }}>
-            <p className="text-xs uppercase tracking-[0.25em] text-neutral-500">Next</p>
-            {next ? (
-              <Link href={`/destinations/${next.slug}`} className="mt-3 block font-display text-2xl font-semibold text-neutral-900 hover:text-primary-700">
-                {next.name}
-              </Link>
-            ) : (
-              <p className="mt-3 text-sm text-neutral-500">Belum ada destinasi berikutnya.</p>
-            )}
-          </div>
+        <div className="border-t border-neutral-200 pt-8">
+          <PrevNext
+            prev={prev ? { href: `/destinations/${prev.slug}`, title: prev.name } : null}
+            next={next ? { href: `/destinations/${next.slug}`, title: next.name } : null}
+            prevLabel="Previous"
+            nextLabel="Next"
+            prevEmptyText="Belum ada destinasi sebelumnya."
+            nextEmptyText="Belum ada destinasi berikutnya."
+            prevCardClass="bg-white"
+            nextCardClass="bg-white"
+          />
         </div>
       </section>
     </>

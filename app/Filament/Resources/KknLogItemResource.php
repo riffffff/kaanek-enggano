@@ -20,13 +20,13 @@ class KknLogItemResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationGroup = 'Konten Publik';
+    protected static ?string $navigationGroup = 'Konten Dinamis';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 2;
 
-    protected static ?string $modelLabel = 'KKN log';
+    protected static ?string $modelLabel = 'Aktivitas';
 
-    protected static ?string $pluralModelLabel = 'KKN log';
+    protected static ?string $pluralModelLabel = 'Aktivitas';
 
     public static function form(Form $form): Form
     {

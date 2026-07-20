@@ -1,5 +1,12 @@
 import { Head, Link } from '@inertiajs/react'
-import { ArrowRight } from 'lucide-react'
+import { MapPin, ArrowRight } from 'lucide-react'
+import { lazy, Suspense } from 'react'
+import { tribesData } from './Tribe'
+import { historyData } from './History'
+import Button from '../../Components/Button'
+
+// Lazy-load LeafletMap agar tidak break SSR/Inertia
+const LeafletMap = lazy(() => import('../../Components/LeafletMap'))
 
 const fallbackVillages = [
   {
@@ -52,14 +59,6 @@ const fallbackVillages = [
   },
 ]
 
-const pointPositions = {
-  Kahyapu: 'left-[18%] top-[24%]',
-  Kaana: 'left-[38%] top-[18%]',
-  Malakoni: 'left-[55%] top-[33%]',
-  Apoho: 'left-[68%] top-[24%]',
-  Meok: 'left-[47%] top-[58%]',
-  Enggano: 'left-[75%] top-[56%]',
-}
 
 export default function VillageIndex({ villages = [] }) {
   const entries = villages.length
@@ -72,6 +71,14 @@ export default function VillageIndex({ villages = [] }) {
           'Potret kehidupan lokal yang membentuk identitas Enggano.',
       }))
     : fallbackVillages
+
+  const villageMarkers = entries
+    .filter(village => village.lat != null && village.lng != null)
+    .map(village => ({
+      name: village.name,
+      lat: village.lat,
+      lng: village.lng,
+    }))
 
   return (
     <>
@@ -98,29 +105,60 @@ export default function VillageIndex({ villages = [] }) {
           <h2 className="mt-3 font-display text-4xl font-semibold text-neutral-900 md:text-5xl">
             Titik Kehidupan Enggano
           </h2>
+          <p className="mt-4 text-base leading-7 text-neutral-500">
+            Peta interaktif berbasis OpenStreetMap dengan fokus wilayah Pulau Enggano.
+          </p>
         </div>
 
-        <div className="hover-lift reveal-up mt-10 overflow-hidden bg-white p-6 shadow-sm ring-1 ring-neutral-200/70 md:p-8" style={{ '--reveal-delay': '140ms' }}>
-          <div className="relative aspect-video overflow-hidden bg-linear-to-br from-primary-100 via-surface-50 to-highlight-100">
-            <div className="absolute inset-x-[12%] inset-y-[14%] rounded-[48%] bg-primary-950/10 blur-3xl" />
-            <div className="absolute inset-x-[16%] inset-y-[18%] rounded-[46%] border border-primary-300/50" />
-
-            {entries.map(village => (
-              <div
-                key={village.slug}
-                className={`float-soft absolute ${pointPositions[village.name] ?? 'left-1/2 top-1/2'} -translate-x-1/2 -translate-y-1/2`}
-              >
-                <div className="h-3 w-3 rounded-full bg-accent-500 ring-4 ring-accent-500/20" />
-                <span className="mt-2 block whitespace-nowrap text-sm font-semibold text-primary-950">
-                  {village.name}
-                </span>
+        <div className="hover-lift reveal-up mt-10 overflow-hidden bg-white shadow-sm ring-1 ring-neutral-200/70" style={{ '--reveal-delay': '140ms' }}>
+          <Suspense
+            fallback={
+              <div className="flex h-[480px] items-center justify-center bg-neutral-50 text-sm text-neutral-400">
+                <div className="text-center">
+                  <MapPin size={32} className="mx-auto mb-3 animate-pulse text-primary-400" />
+                  <p>Memuat peta Enggano…</p>
+                </div>
               </div>
-            ))}
+            }
+          >
+            <LeafletMap mapMarkers={villageMarkers} height={480} />
+          </Suspense>
+        </div>
+      </section>
+
+      {/* Bagian Sejarah */}
+      <section className="border-b border-neutral-200">
+        <div className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24 lg:px-16">
+          <div className="reveal-up max-w-3xl">
+            <p className="text-sm uppercase tracking-[0.35em] text-primary-700">WARISAN LELUHUR</p>
+            <h2 className="mt-3 font-display text-4xl font-semibold text-neutral-900 md:text-5xl">
+              {historyData.title}
+            </h2>
+            <div className="mt-6 space-y-4 text-base leading-7 text-neutral-600">
+              <p>{historyData.content.split('\n\n')[0]}</p>
+              <p>{historyData.content.split('\n\n')[1]}</p>
+            </div>
+            <div className="mt-8">
+              <Button href="/villages/history" showArrow>
+                Baca Selengkapnya
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 pb-16 md:px-12 md:pb-24 lg:px-16">
+      {/* Bagian Desa */}
+      <section className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24 lg:px-16">
+        <div className="reveal-up max-w-3xl mb-10">
+          <p className="text-sm uppercase tracking-[0.35em] text-primary-700">DESA ENGGANO</p>
+          <h2 className="mt-3 font-display text-4xl font-semibold text-neutral-900 md:text-5xl">
+            Enam Desa Pulau Enggano
+          </h2>
+          <p className="mt-4 text-base leading-7 text-neutral-500">
+            Jelajahi enam desa yang menjadi pilar kehidupan di Pulau Enggano, masing-masing dengan keunikan budaya dan pesona alamnya.
+          </p>
+        </div>
+
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {entries.map(village => (
             <Link
@@ -150,6 +188,52 @@ export default function VillageIndex({ villages = [] }) {
               </div>
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* Bagian Suku-suku */}
+      <section className="bg-surface-50 border-t border-neutral-200">
+        <div className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24 lg:px-16">
+          <div className="reveal-up max-w-3xl mb-10">
+            <p className="text-sm uppercase tracking-[0.35em] text-primary-700">SUKU ENGGANO</p>
+            <h2 className="mt-3 font-display text-4xl font-semibold text-neutral-900 md:text-5xl">
+              Warisan Suku-Suku Enggano
+            </h2>
+            <p className="mt-4 text-base leading-7 text-neutral-500">
+              Kenali enam suku asli dan pendatang yang membangun peradaban serta mewariskan kearifan lokal di Pulau Enggano.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {tribesData.map(tribe => (
+              <Link
+                key={tribe.id}
+                href={`/tribes/${tribe.id}`}
+                className="group hover-lift overlay-glow reveal-up overflow-hidden bg-white shadow-sm ring-1 ring-neutral-200/70"
+                style={{ '--reveal-delay': '160ms' }}
+              >
+                <div className="relative">
+                  <img
+                    src={tribe.image}
+                    alt={tribe.name}
+                    className="media-zoom aspect-4/3 w-full object-cover"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/45 via-transparent to-transparent" />
+                </div>
+                <div className="p-6">
+                  <h3 className="font-display text-3xl font-semibold text-neutral-900">
+                    {tribe.name}
+                  </h3>
+                  <p className="mt-3 text-base leading-7 text-neutral-600 line-clamp-2">{tribe.summary}</p>
+                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary-700">
+                    Lihat Detail
+                    <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
     </>

@@ -1,60 +1,7 @@
 import { Head } from '@inertiajs/react'
 import { Phone } from 'lucide-react'
 
-const fallbackGuides = [
-  {
-    id: 'pak-sudi',
-    name: 'Pak Sudi',
-    village: 'Kahyapu',
-    expertise: 'Bahari & Pantai',
-    whatsapp_number: '6280000000000',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=1200&q=80',
-  },
-  {
-    id: 'bu-rina',
-    name: 'Bu Rina',
-    village: 'Malakoni',
-    expertise: 'Budaya & Sejarah',
-    whatsapp_number: '6280000000001',
-    image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1200&q=80',
-  },
-  {
-    id: 'pak-andi',
-    name: 'Pak Andi',
-    village: 'Apoho',
-    expertise: 'Wildlife & Hutan',
-    whatsapp_number: '6280000000002',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80',
-  },
-  {
-    id: 'bu-siti',
-    name: 'Bu Siti',
-    village: 'Meok',
-    expertise: 'Nelayan & Kuliner',
-    whatsapp_number: '6280000000003',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=1200&q=80',
-  },
-  {
-    id: 'pak-arif',
-    name: 'Pak Arif',
-    village: 'Enggano',
-    expertise: 'Tradisi Lokal',
-    whatsapp_number: '6280000000004',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=1200&q=80',
-  },
-  {
-    id: 'bu-nina',
-    name: 'Bu Nina',
-    village: 'Kaana',
-    expertise: 'Pertanian & Kebun',
-    whatsapp_number: '6280000000005',
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=1200&q=80',
-  },
-]
-
 export default function LocalGuideIndex({ guides = [] }) {
-  const guideEntries = guides.length ? guides : fallbackGuides
-
   return (
     <>
       <Head title="Local Guide" />
@@ -83,22 +30,34 @@ export default function LocalGuideIndex({ guides = [] }) {
 
       <div className="bg-[#f8f7f4] min-h-screen">
         <section className="mx-auto max-w-7xl px-6 py-20 md:px-12 lg:px-16">
+          {!guides.length && (
+            <div className="mb-8 bg-white px-6 py-5 text-sm text-slate-600 shadow-sm ring-1 ring-neutral-200/70">
+              Data local guide belum tersedia di admin.
+            </div>
+          )}
+
           <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-            {guideEntries.map((guide, index) => (
+            {guides.map((guide, index) => (
               <div
                 key={guide.id}
                 className="group hover-lift reveal-up bg-white shadow-sm overflow-hidden"
                 style={{ '--reveal-delay': `${140 + index * 60}` }}
               >
                 <div className="relative overflow-hidden">
-                  <img
-                    src={guide.image}
-                    alt={guide.name}
-                    className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
-                  />
+                  {guide.image ? (
+                    <img
+                      src={guide.image}
+                      alt={guide.name}
+                      className="aspect-4/3 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="flex aspect-4/3 items-center justify-center bg-slate-100 text-sm font-medium text-slate-400">
+                      Foto guide belum tersedia
+                    </div>
+                  )}
                   <div className="absolute left-4 top-4 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-700">
-                    {guide.village}
+                    {guide.expertise || 'Local Guide'}
                   </div>
                 </div>
                 <div className="p-6">

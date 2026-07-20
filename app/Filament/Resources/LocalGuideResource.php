@@ -5,14 +5,12 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\LocalGuideResource\Pages\CreateLocalGuide;
 use App\Filament\Resources\LocalGuideResource\Pages\EditLocalGuide;
 use App\Filament\Resources\LocalGuideResource\Pages\ListLocalGuides;
-use App\Filament\Resources\LocalGuideResource\RelationManagers\DestinationsRelationManager;
 use App\Models\LocalGuide;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Table;
 
 class LocalGuideResource extends Resource
@@ -21,7 +19,7 @@ class LocalGuideResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
-    protected static ?string $navigationGroup = 'Operasional Wisata';
+    protected static ?string $navigationGroup = 'Konten Dinamis';
 
     protected static ?int $navigationSort = 3;
 
@@ -102,7 +100,6 @@ class LocalGuideResource extends Resource
     public static function getRelations(): array
     {
         return [
-            DestinationsRelationManager::class,
         ];
     }
 

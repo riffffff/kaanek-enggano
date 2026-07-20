@@ -1,9 +1,9 @@
-import { Head, Link } from '@inertiajs/react'
-import { ArrowLeft } from 'lucide-react'
+import { Head } from '@inertiajs/react'
+import Button from '../../Components/Button'
 
-const fallbackHistory = {
+export const historyData = {
   title: 'Sejarah Pulau Enggano',
-  content: `Pulau Enggano memiliki sejarah yang unik sebagai salah satu pulau terluar Indonesia di Samudra Hindia. Terisolasi selama berabad-abad, pulau ini mengembangkan kebudayaan yang sangat berbeda dari daratan utama Sumatera.
+  content: `Pulau Enggano memiliki sejarah yang unik sebagai salah satu pulau terluar Indonesia di Samudera Hindia. Terisolasi selama berabad-abad, pulau ini mengembangkan kebudayaan yang sangat berbeda dari daratan utama Sumatera.
 
 Nama "Enggano" sendiri diyakini berasal dari bahasa Melayu yang berarti "pulau terpencil". Pulau ini pertama kali dicatat oleh penjelajah Eropa pada abad ke-16, namun bukti arkeologi menunjukkan adanya aktivitas manusia ribuan tahun sebelumnya. Pulau ini kemudian menjadi bagian dari Nusantara, namun tetap mempertahankan identitasnya yang unik.
 
@@ -14,30 +14,17 @@ Pada masa kolonial, pulau ini menjadi bagian dari Hindia Belanda, namun pengaruh
 }
 
 export default function VillageHistory({ history = null }) {
-  const data = history || fallbackHistory
+  const data = history || historyData
 
   return (
     <>
       <Head title={`${data.title} | Desa & Budaya`} />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden text-white">
-        <img
-          src={data.image}
-          alt={data.title}
-          className="reveal-scale absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/30 to-black/70" />
-        <div className="relative mx-auto max-w-7xl px-6 pb-32 pt-48 md:px-12 lg:px-16">
-          <Link
-            href="/villages"
-            className="reveal-up inline-flex items-center gap-2 text-white/80 hover:text-white mb-4"
-          >
-            <ArrowLeft size={18} />
-            Kembali
-          </Link>
-          <div className="max-w-4xl">
-            <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/70">
+      <section className="relative min-h-[78vh] overflow-hidden bg-primary-950 text-white">
+        <div className="relative mx-auto flex min-h-[78vh] max-w-7xl items-end px-6 pb-20 pt-32 md:px-12 lg:px-16">
+          <div>
+            <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/75">
               Warisan Leluhur
             </p>
             <h1 className="reveal-up mt-4 font-display text-5xl font-semibold md:text-7xl" style={{ '--reveal-delay': '120ms' }}>
@@ -47,17 +34,33 @@ export default function VillageHistory({ history = null }) {
         </div>
       </section>
 
-      <div className="bg-[#f8f7f4] min-h-screen">
-        <section className="mx-auto max-w-4xl px-6 py-20 md:px-12 lg:px-16">
-          <div className="reveal-up space-y-6 text-base leading-8 text-slate-600 md:text-lg">
-            {data.content.split('\n\n').map((paragraph, index) => (
-              <p key={index} className="reveal-up" style={{ '--reveal-delay': `${120 + index * 80}` }}>
-                {paragraph}
-              </p>
-            ))}
-          </div>
-        </section>
-      </div>
+      <section className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24 lg:px-16">
+        <Button
+          href="/villages"
+          variant="ghostLight"
+          showArrow
+          arrowPosition="left"
+          className="reveal-up"
+        >
+          Kembali ke Villages
+        </Button>
+
+        <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1.6fr)_360px]">
+          <article className="reveal-up max-w-3xl" style={{ '--reveal-delay': '100ms' }}>
+            <h2 className="font-display text-4xl font-semibold leading-tight text-neutral-900 md:text-5xl">
+              Jejak Sejarah Enggano
+            </h2>
+
+            <div className="mt-8 space-y-6 text-base leading-8 text-neutral-600 md:text-lg">
+              {data.content.split('\n\n').map((paragraph, index) => (
+                <p key={index} className="reveal-up" style={{ '--reveal-delay': `${120 + index * 80}ms` }}>
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </article>
+        </div>
+      </section>
     </>
   )
 }

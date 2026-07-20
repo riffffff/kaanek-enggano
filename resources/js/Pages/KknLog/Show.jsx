@@ -1,4 +1,6 @@
-import { Head, Link } from '@inertiajs/react'
+import { Head } from '@inertiajs/react'
+import Button from '../../Components/Button'
+import PrevNext from '../../Components/PrevNext'
 
 const imageByCategory = {
   lingkungan:
@@ -36,9 +38,15 @@ export default function KknLogShow({ item, prev = null, next = null }) {
         <img src={heroImage} alt={item.title} className="reveal-scale absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-linear-to-b from-primary-950/25 via-primary-950/55 to-primary-950/90" />
         <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-36 md:px-12 lg:px-16">
-          <Link href="/kkn-log" className="reveal-up text-sm font-semibold text-white/80 hover:text-white">
+          <Button
+            href="/kkn-log"
+            variant="ghost"
+            showArrow
+            arrowPosition="left"
+            className="reveal-up"
+          >
             Kembali ke KKN Log
-          </Link>
+          </Button>
           <div className="mt-8 max-w-4xl">
             <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/70" style={{ '--reveal-delay': '80ms' }}>
               {String(item.category ?? 'archive').toUpperCase()}
@@ -92,28 +100,17 @@ export default function KknLogShow({ item, prev = null, next = null }) {
           </article>
         </div>
 
-        <div className="mt-14 grid gap-4 border-t border-neutral-200 pt-8 md:grid-cols-2">
-          <div className="hover-lift reveal-up bg-white p-6 shadow-sm ring-1 ring-neutral-200/70">
-            <p className="text-xs uppercase tracking-[0.25em] text-neutral-500">Previous</p>
-            {prev ? (
-              <Link href={`/kkn-log/${prev.slug}`} className="mt-3 block font-display text-2xl font-semibold text-neutral-900 hover:text-primary-700">
-                {prev.title}
-              </Link>
-            ) : (
-              <p className="mt-3 text-sm text-neutral-500">Belum ada entri sebelumnya.</p>
-            )}
-          </div>
-
-          <div className="hover-lift reveal-up bg-white p-6 shadow-sm ring-1 ring-neutral-200/70" style={{ '--reveal-delay': '100ms' }}>
-            <p className="text-xs uppercase tracking-[0.25em] text-neutral-500">Next</p>
-            {next ? (
-              <Link href={`/kkn-log/${next.slug}`} className="mt-3 block font-display text-2xl font-semibold text-neutral-900 hover:text-primary-700">
-                {next.title}
-              </Link>
-            ) : (
-              <p className="mt-3 text-sm text-neutral-500">Belum ada entri berikutnya.</p>
-            )}
-          </div>
+        <div className="mt-14 border-t border-neutral-200 pt-8">
+          <PrevNext
+            prev={prev ? { href: `/kkn-log/${prev.slug}`, title: prev.title } : null}
+            next={next ? { href: `/kkn-log/${next.slug}`, title: next.title } : null}
+            prevLabel="Previous"
+            nextLabel="Next"
+            prevEmptyText="Belum ada entri sebelumnya."
+            nextEmptyText="Belum ada entri berikutnya."
+            prevCardClass="bg-white"
+            nextCardClass="bg-white"
+          />
         </div>
       </section>
     </>
