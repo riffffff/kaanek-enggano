@@ -89,6 +89,46 @@ Web Enggano adalah website resmi digital Pulau Enggano, dibangun sebagai KKN Leg
 - **PrevNext**: Gunakan komponen `PrevNext` dari `Components/PrevNext.jsx` untuk navigasi sebelumnya/berikutnya
   - Props yang tersedia: `prev`, `next`, `prevLabel`, `nextLabel`, `prevEmptyText`, `nextEmptyText`, `prevCardClass`, `nextCardClass`
   - Contoh: `<PrevNext prev={{ href: '/prev', title: 'Prev' }} next={{ href: '/next', title: 'Next' }} prevCardClass="bg-white" nextCardClass="bg-white" />`
+- **LanguageSwitcher**: Sudah terintegrasi di Navbar, tidak perlu menambahkannya manual di halaman lain
+---
+
+## Sistem Multibahasa (i18n)
+Kita pakai **react-i18next** untuk sistem multibahasa Indonesia ↔ Inggris, dengan struktur sebagai berikut:
+### Struktur File Translation
+```
+resources/js/locales/
+├── id/
+│   └── common.json       (teks umum: nav, button, dll)
+└── en/
+    ├── common.json       (teks umum bahasa Inggris)
+    ├── home.json         (teks halaman Home bahasa Inggris)
+    └── villages.json     (teks halaman Villages bahasa Inggris)
+```
+
+### Cara Pakai
+1. **Import custom hook**: Pakai `useTranslate` dari `../hooks/useTranslate`
+2. **Pilih namespace**: Parameter pertama `useTranslate` adalah nama file translation tanpa `.json` (misal `'home'`, `'villages'`, atau `'common'`)
+3. **Ganti teks**: Pakai fungsi `tt('TEKS_BAHASA_INDONESIA', 'key.di.file.translation')`
+
+Contoh di `Home/Index.jsx`:
+```jsx
+import { useTranslate } from '../../hooks/useTranslate'
+
+export default function HomeIndex() {
+  const { tt } = useTranslate('home') // namespace = 'home' (pakai en/home.json)
+  
+  return (
+    <h1>{tt('Enggano: Garis Terdepan Samudera Hindia', 'hero.title')}</h1>
+    <Button>{tt('Baca Selengkapnya', 'history.readMore')}</Button>
+  )
+}
+```
+
+### Aturan Penting
+- **Bahasa Indonesia**: Hardcode langsung di komponen sebagai parameter pertama `tt()`
+- **Bahasa Inggris**: Ditarik dari file translation di `resources/js/locales/en/`
+- **Teks umum (nav, button)**: Pakai namespace `'common'`
+- **Tambahkan namespace baru**: Kalau buat halaman baru, buat file translation di `en/<nama-halaman>.json` dan tambahkan ke `resources/js/i18n/index.js` di bagian `resources.en` dan `ns` array
 
 ---
 

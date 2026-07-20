@@ -1,0 +1,21 @@
+{
+  "hero": {
+    "title": "Enggano: The Frontier of the Indian Ocean",
+    "subtitle": "Explore Indonesia's outermost island in the Indian Ocean, a symphony of sea, endemic forests, and six indigenous tribes' cultural heritage.",
+    "exploreDestinations": "Explore Destinations",
+    "travelInfo": "Travel Info"
+  },
+  "history": {
+    "label": "Ancestral Heritage",
+    "readMore": "Read More"
+  },
+  "explore": {
+    "label": "Explore Enggano",
+    "title": "Marine, endemic forests, and the heritage of six tribes in one editorial landscape."
+  },
+  "kkn": {
+    "label": "Expedition Journal",
+    "title": "Field notes from the edge of the ocean.",
+    "viewAll": "View All"
+  }
+}

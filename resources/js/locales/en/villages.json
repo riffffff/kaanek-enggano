@@ -1,0 +1,41 @@
+{
+  "headTitle": "Villages",
+  "heroTitle": "Getting to Know the 6 Villages of Enggano",
+  "heroSubtitle": "Explore the cultural diversity and natural charm of the six settlements that are the heartbeat of life on the front line of the Indian Ocean.",
+  "mapLabel": "AREA MAP",
+  "mapTitle": "The Heart of Enggano",
+  "mapSubtitle": "Interactive map based on OpenStreetMap with a focus on the Enggano Island area.",
+  "mapLoading": "Loading Enggano map…",
+  "villagesLabel": "ENGGANO VILLAGES",
+  "villagesTitle": "Six Villages of Enggano Island",
+  "villagesSubtitle": "Explore six villages that are the pillars of life on Enggano Island, each with unique cultural and natural charm.",
+  "tribesLabel": "ENGGANO TRIBES",
+  "tribesTitle": "Heritage of Enggano's Tribes",
+  "tribesSubtitle": "Get to know the six indigenous and migrant tribes that built civilization and passed down local wisdom on Enggano Island.",
+  "villages": {
+    "kahyapu": {
+      "name": "Kahyapu",
+      "summary": "The sea gateway of Enggano with the main port that was the center of early economic activity."
+    },
+    "kaana": {
+      "name": "Kaana",
+      "summary": "Known for its coastal beauty and agrarian community that preserves ancestral traditions."
+    },
+    "malakoni": {
+      "name": "Malakoni",
+      "summary": "The center of government and the pulse of the community, a meeting place for various local tribes."
+    },
+    "apoho": {
+      "name": "Apoho",
+      "summary": "Hidden in the dense forest, this village holds stunning endemic flora and fauna."
+    },
+    "meok": {
+      "name": "Meok",
+      "summary": "A fishing village with the longest coastline, offering endless ocean views."
+    },
+    "enggano": {
+      "name": "Enggano",
+      "summary": "Carrying the island's name, this village preserves historical sites and oral stories of the past."
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "nav": {
+    "aboutEnggano": "About Enggano",
+    "destinations": "Destinations",
+    "accommodations": "Accommodations",
+    "activities": "Activities",
+    "umkms": "UMKMs",
+    "villages": "Villages",
+    "kknLog": "KKN Journal",
+    "localGuide": "Local Guide"
+  },
+  "buttons": {
+    "back": "Back",
+    "viewDetail": "View Details",
+    "viewAll": "View All",
+    "readMore": "Read More"
+  }
+}

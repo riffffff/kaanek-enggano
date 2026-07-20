@@ -1,19 +1,22 @@
 import { Link, usePage } from '@inertiajs/react'
 import { Menu, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
-
-const navItems = [
-  { label: 'Tentang Enggano', href: '/villages' },
-  { label: 'Destinations', href: '/destinations' },
-  { label: 'Accommodations', href: '/accommodations' },
-  { label: 'Aktivitas', href: '/kkn-log' },
-  { label: 'UMKM', href: '/umkm' },
-]
+import { useTranslate } from '../hooks/useTranslate'
+import LanguageSwitcher from './LanguageSwitcher'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const { url } = usePage()
+  const { tt } = useTranslate('common')
+
+  const navItems = [
+    { label: tt('Tentang Enggano', 'nav.aboutEnggano'), href: '/villages' },
+    { label: tt('Destinations', 'nav.destinations'), href: '/destinations' },
+    { label: tt('Accommodations', 'nav.accommodations'), href: '/accommodations' },
+    { label: tt('Aktivitas', 'nav.activities'), href: '/kkn-log' },
+    { label: tt('UMKM', 'nav.umkms'), href: '/umkm' },
+  ]
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
@@ -75,12 +78,15 @@ export default function Navbar() {
           })}
         </div>
 
-        <Link
-          href="/local-guide"
-          className="hidden hover-lift overlay-glow bg-accent-500 px-4 py-2 text-sm font-semibold text-white hover:bg-accent-600 md:inline-flex"
-        >
-          Local Guide
-        </Link>
+        <div className="hidden items-center gap-4 md:flex">
+          <LanguageSwitcher solid={solid} />
+          <Link
+            href="/local-guide"
+            className="hover-lift overlay-glow bg-accent-500 px-4 py-2 text-sm font-semibold text-white hover:bg-accent-600"
+          >
+            {tt('Local Guide', 'nav.localGuide')}
+          </Link>
+        </div>
 
         <button
           type="button"
@@ -112,12 +118,15 @@ export default function Navbar() {
                 </Link>
               )
             })}
+            <div className="mt-4 flex justify-center">
+              <LanguageSwitcher />
+            </div>
             <Link
               href="/local-guide"
               onClick={() => setOpen(false)}
-              className="mt-2 inline-flex justify-center bg-accent-500 px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-accent-600"
+              className="mt-4 inline-flex justify-center bg-accent-500 px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-accent-600"
             >
-              Local Guide
+              {tt('Local Guide', 'nav.localGuide')}
             </Link>
           </div>
         </div>

@@ -1,0 +1,18 @@
+{
+  "nav": {
+    "aboutEnggano": "Tentang Enggano",
+    "destinations": "Destinations",
+    "accommodations": "Accommodations",
+    "activities": "Aktivitas",
+    "umkms": "UMKM",
+    "villages": "Desa",
+    "kknLog": "Jurnal KKN",
+    "localGuide": "Local Guide"
+  },
+  "buttons": {
+    "back": "Kembali",
+    "viewDetail": "Lihat Detail",
+    "viewAll": "Lihat Semua",
+    "readMore": "Baca Selengkapnya"
+  }
+}

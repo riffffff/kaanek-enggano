@@ -1,11 +1,14 @@
 import { Head, Link } from '@inertiajs/react'
 import { ChevronRight } from 'lucide-react'
+import { useTranslate } from '../../hooks/useTranslate'
 import BentoGrid from '../../Components/BentoGrid'
 import KknCard from '../../Components/KknCard'
 import { historyData } from '../Village/History'
 import Button from '../../Components/Button'
 
 export default function HomeIndex({ latestKkn = [] }) {
+  const { tt } = useTranslate('home')
+
   return (
     <>
       <Head>
@@ -25,24 +28,24 @@ export default function HomeIndex({ latestKkn = [] }) {
         <div className="absolute inset-0 bg-linear-to-b from-black/30 via-black/20 to-black/60" />
         <div className="relative z-10 mx-auto flex flex-col items-center text-center px-6 pb-24 pt-32 md:px-12 lg:px-16">
           <div className="max-w-4xl">
-            <h1 className="reveal-up font-display text-3xl font-semibold leading-tight md:text-5xl uppercase tracking-wider">
-              Enggano: Garis Terdepan Samudera Hindia
+            <h1 className="reveal-up font-display text-5xl font-semibold leading-tight md:text-7xl uppercase tracking-wider">
+              {tt('Enggano: Garis Terdepan Samudera Hindia', 'hero.title')}
             </h1>
             <p className="reveal-up mt-6 max-w-3xl mx-auto font-body text-base leading-7 text-white/80 md:text-lg uppercase tracking-widest" style={{ '--reveal-delay': '120ms' }}>
-              Jelajahi pulau terluar di Samudera Hindia, sebuah simfoni laut, hutan endemik, dan warisan budaya enam suku asli
+              {tt('Jelajahi pulau terluar di Samudera Hindia, sebuah simfoni laut, hutan endemik, dan warisan budaya enam suku asli.', 'hero.subtitle')}
             </p>
             <div className="reveal-up mt-10 flex flex-wrap gap-4 justify-center" style={{ '--reveal-delay': '220ms' }}>
               <Link
                 href="/destinations"
                 className="hover-lift overlay-glow inline-flex items-center gap-2 bg-accent-500 px-8 py-4 text-sm font-semibold text-white hover:bg-accent-600 uppercase tracking-wider"
               >
-                Jelajahi Destinasi
+                {tt('Jelajahi Destinasi', 'hero.exploreDestinations')}
               </Link>
               <Link
                 href="/accommodations"
                 className="hover-lift inline-flex items-center gap-2 border-2 border-white px-8 py-4 text-sm font-semibold text-white hover:bg-white hover:text-black uppercase tracking-wider"
               >
-                Info Perjalanan
+                {tt('Info Perjalanan', 'hero.travelInfo')}
               </Link>
             </div>
           </div>
@@ -53,7 +56,7 @@ export default function HomeIndex({ latestKkn = [] }) {
         <div className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24 lg:px-16">
           <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1.6fr)_360px]">
             <article className="reveal-up max-w-3xl" style={{ '--reveal-delay': '100ms' }}>
-              <p className="font-body text-sm uppercase tracking-[0.3em] text-primary-700">Warisan Leluhur</p>
+              <p className="font-body text-sm uppercase tracking-[0.3em] text-primary-700">{tt('Warisan Leluhur', 'history.label')}</p>
               <h2 className="mt-3 font-display text-4xl font-semibold text-neutral-900 md:text-5xl">
                 {historyData.title}
               </h2>
@@ -69,7 +72,7 @@ export default function HomeIndex({ latestKkn = [] }) {
                 showArrow
                 className="reveal-up mt-10"
               >
-                Baca Selengkapnya
+                {tt('Baca Selengkapnya', 'history.readMore')}
               </Button>
             </article>
           </div>
@@ -78,9 +81,9 @@ export default function HomeIndex({ latestKkn = [] }) {
 
       <section className="mx-auto max-w-7xl px-6 pb-16 md:px-12 md:pb-24 lg:px-16">
         <div className="reveal-up mb-10">
-          <p className="font-body text-sm uppercase tracking-[0.3em] text-primary-700">Eksplorasi Enggano</p>
+          <p className="font-body text-sm uppercase tracking-[0.3em] text-primary-700">{tt('Eksplorasi Enggano', 'explore.label')}</p>
           <h2 className="mt-3 font-display text-4xl font-semibold text-neutral-800 md:text-5xl">
-            Bahari, hutan endemik, dan warisan enam suku dalam satu lanskap editorial.
+            {tt('Bahari, hutan endemik, dan warisan enam suku dalam satu lanskap editorial.', 'explore.title')}
           </h2>
         </div>
         <BentoGrid />
@@ -90,13 +93,13 @@ export default function HomeIndex({ latestKkn = [] }) {
         <div className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24 lg:px-16">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div className="reveal-up">
-              <p className="font-body text-sm uppercase tracking-[0.3em] text-primary-700">Jurnal Ekspedisi</p>
+              <p className="font-body text-sm uppercase tracking-[0.3em] text-primary-700">{tt('Jurnal Ekspedisi', 'kkn.label')}</p>
               <h2 className="mt-3 font-display text-4xl font-semibold text-neutral-800 md:text-5xl">
-                Catatan lapangan dari ujung samudera.
+                {tt('Catatan lapangan dari ujung samudera.', 'kkn.title')}
               </h2>
             </div>
             <Link href="/kkn-log" className="reveal-up text-sm font-semibold text-primary-700 hover:text-primary-600" style={{ '--reveal-delay': '120ms' }}>
-              Lihat Semua
+              {tt('Lihat Semua', 'kkn.viewAll')}
             </Link>
           </div>
 

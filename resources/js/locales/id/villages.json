@@ -1,0 +1,42 @@
+{
+  "headTitle": "Desa",
+  "heroTitle": "Mengenal 6 Desa di Enggano",
+  "heroSubtitle": "Jelajahi keragaman budaya dan pesona alam dari enam permukiman yang menjadi denyut nadi kehidupan di garis terdepan Samudera Hindia.",
+  "mapLabel": "PETA WILAYAH",
+  "mapTitle": "Titik Kehidupan Enggano",
+  "mapSubtitle": "Peta interaktif berbasis OpenStreetMap dengan fokus wilayah Pulau Enggano.",
+  "mapLoading": "Memuat peta Enggano…",
+  "villagesLabel": "DESA ENGGANO",
+  "villagesTitle": "Enam Desa Pulau Enggano",
+  "villagesSubtitle": "Jelajahi enam desa yang menjadi pilar kehidupan di Pulau Enggano, masing-masing dengan keunikan budaya dan pesona alamnya.",
+  "tribesLabel": "SUKU ENGGANO",
+  "tribesTitle": "Warisan Suku-Suku Enggano",
+  "tribesSubtitle": "Kenali enam suku asli dan pendatang yang membangun peradaban serta mewariskan kearifan lokal di Pulau Enggano.",
+  "viewDetail": "Lihat Detail",
+  "villages": {
+    "kahyapu": {
+      "name": "Kahyapu",
+      "summary": "Pintu gerbang laut Enggano dengan pelabuhan utama yang menjadi pusat aktivitas ekonomi awal."
+    },
+    "kaana": {
+      "name": "Kaana",
+      "summary": "Dikenal dengan keindahan pesisir dan masyarakat agraris yang mempertahankan tradisi leluhur."
+    },
+    "malakoni": {
+      "name": "Malakoni",
+      "summary": "Pusat pemerintahan dan denyut nadi komunitas, tempat bertemunya berbagai suku lokal."
+    },
+    "apoho": {
+      "name": "Apoho",
+      "summary": "Tersembunyi di rimbunnya hutan, desa ini menyimpan kekayaan flora dan fauna endemik yang memukau."
+    },
+    "meok": {
+      "name": "Meok",
+      "summary": "Desa nelayan dengan pesona garis pantai terpanjang, menawarkan pemandangan samudra yang tak berujung."
+    },
+    "enggano": {
+      "name": "Enggano",
+      "summary": "Membawa nama pulau, desa ini merawat situs-situs bersejarah dan cerita lisan masa lampau."
+    }
+  }
+}

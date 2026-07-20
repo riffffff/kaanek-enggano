@@ -1,0 +1,21 @@
+{
+  "hero": {
+    "title": "Enggano: Garis Terdepan Samudera Hindia",
+    "subtitle": "Jelajahi pulau terluar di Samudera Hindia, sebuah simfoni laut, hutan endemik, dan warisan budaya enam suku asli.",
+    "exploreDestinations": "Jelajahi Destinasi",
+    "travelInfo": "Info Perjalanan"
+  },
+  "history": {
+    "label": "Warisan Leluhur",
+    "readMore": "Baca Selengkapnya"
+  },
+  "explore": {
+    "label": "Eksplorasi Enggano",
+    "title": "Bahari, hutan endemik, dan warisan enam suku dalam satu lanskap editorial."
+  },
+  "kkn": {
+    "label": "Jurnal Ekspedisi",
+    "title": "Catatan lapangan dari ujung samudera.",
+    "viewAll": "Lihat Semua"
+  }
+}
