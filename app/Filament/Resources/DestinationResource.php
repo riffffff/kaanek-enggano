@@ -49,23 +49,6 @@ class DestinationResource extends Resource
                                 'history' => 'History',
                             ])
                             ->required(),
-                        Forms\Components\Select::make('difficulty_level')
-                            ->options([
-                                'mudah' => 'Mudah',
-                                'sedang' => 'Sedang',
-                                'sulit' => 'Sulit',
-                            ])
-                            ->required(),
-                        Forms\Components\Select::make('local_guide_id')
-                            ->label('Local guide')
-                            ->relationship('localGuide', 'name')
-                            ->searchable()
-                            ->preload(),
-                        Forms\Components\Textarea::make('short_description')
-                            ->label('Deskripsi singkat')
-                            ->required()
-                            ->rows(3)
-                            ->columnSpanFull(),
                     ])
                     ->columns(2),
                 Forms\Components\Section::make('Konten Editorial')
@@ -76,14 +59,41 @@ class DestinationResource extends Resource
                             ->rows(8)
                             ->columnSpanFull(),
                     ]),
-                Forms\Components\Section::make('Lokasi & Media')
+                Forms\Components\Section::make('Expedition Details')
                     ->schema([
+                        Forms\Components\Select::make('difficulty_level')
+                            ->label('Difficulty')
+                            ->options([
+                                'mudah' => 'Mudah',
+                                'sedang' => 'Sedang',
+                                'sulit' => 'Sulit',
+                            ])
+                            ->required(),
+                        Forms\Components\TextInput::make('travel_time')
+                            ->label('Travel time')
+                            ->placeholder('Contoh: 45 mins from Apoho')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('access_note')
+                            ->label('Access')
+                            ->placeholder('Contoh: Motorbike & forest trail')
+                            ->maxLength(255),
                         Forms\Components\TextInput::make('lat')
-                            ->label('Latitude')
+                            ->label('Koordinat Latitude')
+                            ->helperText('Format Leaflet: -5.389167')
                             ->numeric(),
                         Forms\Components\TextInput::make('lng')
-                            ->label('Longitude')
+                            ->label('Koordinat Longitude')
+                            ->helperText('Format Leaflet: 102.411111')
                             ->numeric(),
+                    ])
+                    ->columns(2),
+                Forms\Components\Section::make('Lokasi & Media')
+                    ->schema([
+                        SpatieMediaLibraryFileUpload::make('background_photo')
+                            ->label('Gambar background')
+                            ->collection('background')
+                            ->image()
+                            ->imageEditor(),
                         SpatieMediaLibraryFileUpload::make('photos')
                             ->label('Galeri destinasi')
                             ->collection('photos')
@@ -108,10 +118,6 @@ class DestinationResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Destinasi')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('short_description')
-                    ->label('Ringkasan')
-                    ->limit(50)
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('type')
                     ->badge()
                     ->searchable(),
@@ -119,10 +125,6 @@ class DestinationResource extends Resource
                     ->label('Kesulitan')
                     ->badge()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('localGuide.name')
-                    ->label('Guide')
-                    ->searchable()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

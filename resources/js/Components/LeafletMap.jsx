@@ -23,6 +23,7 @@ const DEFAULT_BOUNDS = [
 export default function LeafletMap({ mapMarkers = [], height = 480, useMarkerBounds = false }) {
   const containerRef = useRef(null)
   const mapRef       = useRef(null)
+  const markerLayerRef = useRef(null)
 
   function focusDefaultBounds(map) {
     map.fitBounds(DEFAULT_BOUNDS, {
@@ -51,6 +52,7 @@ export default function LeafletMap({ mapMarkers = [], height = 480, useMarkerBou
     }).addTo(map)
 
     focusDefaultBounds(map)
+    markerLayerRef.current = L.layerGroup().addTo(map)
     mapRef.current = map
 
     return () => {
@@ -62,6 +64,9 @@ export default function LeafletMap({ mapMarkers = [], height = 480, useMarkerBou
 
   useEffect(() => {
     if (!mapRef.current) return
+    if (!markerLayerRef.current) return
+
+    markerLayerRef.current.clearLayers()
 
     if (!useMarkerBounds) {
       focusDefaultBounds(mapRef.current)
@@ -71,6 +76,18 @@ export default function LeafletMap({ mapMarkers = [], height = 480, useMarkerBou
     const validMarkers = mapMarkers.filter(marker =>
       Number.isFinite(Number(marker.lat)) && Number.isFinite(Number(marker.lng))
     )
+
+    validMarkers.forEach(marker => {
+      const lat = Number(marker.lat)
+      const lng = Number(marker.lng)
+      const point = L.marker([lat, lng])
+
+      if (marker.name) {
+        point.bindPopup(String(marker.name))
+      }
+
+      point.addTo(markerLayerRef.current)
+    })
 
     if (!validMarkers.length) {
       focusDefaultBounds(mapRef.current)
@@ -92,7 +109,7 @@ export default function LeafletMap({ mapMarkers = [], height = 480, useMarkerBou
     }
 
     mapRef.current.fitBounds(bounds, { padding: [32, 32] })
-  }, [mapMarkers])
+  }, [mapMarkers, useMarkerBounds])
 
   return (
     <div

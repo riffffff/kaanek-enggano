@@ -40,7 +40,9 @@ export default function UmkmIndex({ umkms = [] }) {
   const entries = umkms.length
     ? umkms.map((item, index) => ({
       ...item,
-      image: item.image ?? fallbackUmkms[index % fallbackUmkms.length].image,
+      name: item.business_name ?? item.name,
+      description: item.notes ?? item.description,
+      image: item.product_photos ?? item.image ?? fallbackUmkms[index % fallbackUmkms.length].image,
     }))
     : fallbackUmkms
 
@@ -93,7 +95,7 @@ export default function UmkmIndex({ umkms = [] }) {
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="aspect-4/3 w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
                   />
                   <div className="absolute left-4 top-4 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-700">

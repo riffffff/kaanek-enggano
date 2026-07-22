@@ -18,11 +18,12 @@ class Destination extends Model implements HasMedia
         'name',
         'slug',
         'description',
-        'short_description',
         'type',
         'lat',
         'lng',
         'difficulty_level',
+        'travel_time',
+        'access_note',
         'local_guide_id',
     ];
 
@@ -49,6 +50,7 @@ class Destination extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
+        $this->addMediaCollection('background')->useDisk('public')->singleFile();
         $this->addMediaCollection('photos')->useDisk('public');
     }
 }

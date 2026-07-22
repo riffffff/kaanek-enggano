@@ -1,13 +1,14 @@
 import { Head } from '@inertiajs/react'
-import { Camera, MessageCircle, Mountain, Navigation, Timer, Waves } from 'lucide-react'
+import { Mountain, Navigation, Timer } from 'lucide-react'
 import LeafletMap from '../../Components/LeafletMap'
 import Button from '../../Components/Button'
 import PrevNext from '../../Components/PrevNext'
 
 export default function DestinationShow({ destination, prev = null, next = null }) {
-  const guideWhatsappUrl = destination.local_guide
-    ? `https://wa.me/${destination.local_guide.whatsapp_number}?text=${encodeURIComponent(`Halo, saya tertarik mengunjungi ${destination.name}`)}`
-    : null
+  const hasCoordinates = Number.isFinite(Number(destination.lat)) && Number.isFinite(Number(destination.lng))
+  const coordinateLabel = hasCoordinates
+    ? `${Number(destination.lat).toFixed(6)}, ${Number(destination.lng).toFixed(6)}`
+    : '-'
 
   const descriptionParagraphs = destination.description
     ? destination.description
@@ -25,26 +26,8 @@ export default function DestinationShow({ destination, prev = null, next = null 
         `Karakter tempat ini terletak pada perpaduan panorama, ritme komunitas lokal, dan sensasi ekspedisi yang membuat kunjungan terasa intim.`,
       ]
 
-  const iconByExperience = {
-    Snorkeling: Waves,
-    'Wild Camping': Mountain,
-    Photography: Camera,
-    'Forest Trekking': Navigation,
-    Birdwatching: Camera,
-    'Nature Study': Mountain,
-    'Heritage Walk': Navigation,
-    Documentation: Camera,
-    'Site Exploration': Mountain,
-  }
-
-  const experiences = (destination.experiences?.length ? destination.experiences : ['Snorkeling', 'Wild Camping', 'Photography'])
-    .map(label => ({
-      label,
-      icon: iconByExperience[label] ?? Navigation,
-    }))
-
   const galleryImages = destination.gallery?.length
-    ? [destination.image || destination.gallery[0], ...destination.gallery.filter(Boolean).slice(1)]
+    ? destination.gallery.filter(Boolean)
     : [
         destination.image ||
           'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80',
@@ -59,6 +42,7 @@ export default function DestinationShow({ destination, prev = null, next = null 
       <section className="relative min-h-[78vh] overflow-hidden bg-primary-950 text-white">
         <img
           src={
+            destination.background_image ||
             destination.image ||
             'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80'
           }
@@ -92,30 +76,13 @@ export default function DestinationShow({ destination, prev = null, next = null 
         <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1.6fr)_360px]">
           <article className="reveal-up max-w-3xl" style={{ '--reveal-delay': '100ms' }}>
             <h2 className="font-display text-4xl font-semibold leading-tight text-neutral-900 md:text-5xl">
-              {destination.headline || 'A Hidden Sanctuary on the Edge of the Indian Ocean'}
+              Tentang {destination.name}
             </h2>
 
             <div className="mt-8 space-y-6 text-base leading-8 text-neutral-600 md:text-lg">
               {editorialParagraphs.map(paragraph => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
-            </div>
-
-            <div className="mt-10">
-              <h3 className="font-display text-2xl font-semibold text-neutral-900">
-                Experiences at {destination.name}
-              </h3>
-              <div className="mt-5 flex flex-wrap gap-3">
-                {experiences.map(({ icon: Icon, label }) => (
-                  <div
-                    key={label}
-                    className="hover-lift inline-flex items-center gap-2 bg-surface-50 px-4 py-3 text-sm font-semibold text-neutral-700 ring-1 ring-neutral-200"
-                  >
-                    <Icon size={16} className="text-primary-700" />
-                    {label}
-                  </div>
-                ))}
-              </div>
             </div>
           </article>
 
@@ -130,7 +97,7 @@ export default function DestinationShow({ destination, prev = null, next = null 
                 <div>
                   <p className="text-sm text-neutral-500">Difficulty</p>
                   <p className="font-semibold text-neutral-900">
-                    {destination.difficulty_level || 'Easy to Moderate'}
+                    {destination.difficulty_level || 'Mudah'}
                   </p>
                 </div>
               </div>
@@ -139,7 +106,7 @@ export default function DestinationShow({ destination, prev = null, next = null 
                 <Timer size={18} className="mt-1 text-primary-700" />
                 <div>
                   <p className="text-sm text-neutral-500">Travel Time</p>
-                  <p className="font-semibold text-neutral-900">{destination.travel_time || '30 mins from Malakoni'}</p>
+                  <p className="font-semibold text-neutral-900">{destination.travel_time || '-'}</p>
                 </div>
               </div>
 
@@ -147,33 +114,18 @@ export default function DestinationShow({ destination, prev = null, next = null 
                 <Navigation size={18} className="mt-1 text-primary-700" />
                 <div>
                   <p className="text-sm text-neutral-500">Access</p>
-                  <p className="font-semibold text-neutral-900">{destination.access_note || 'Motorbike & short trek'}</p>
+                  <p className="font-semibold text-neutral-900">{destination.access_note || '-'}</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Navigation size={18} className="mt-1 text-primary-700" />
+                <div>
+                  <p className="text-sm text-neutral-500">Koordinat</p>
+                  <p className="font-semibold text-neutral-900">{coordinateLabel}</p>
                 </div>
               </div>
             </div>
-
-            {destination.local_guide && (
-              <div className="mt-8 border-t border-neutral-200 pt-6">
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary-700">
-                  Local Guide
-                </p>
-                <h4 className="mt-3 font-display text-2xl font-semibold text-neutral-900">
-                  {destination.local_guide.name}
-                </h4>
-                <p className="mt-3 text-sm leading-6 text-neutral-600">
-                  {destination.local_guide.expertise}
-                </p>
-                <a
-                  href={guideWhatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover-lift overlay-glow mt-5 inline-flex items-center gap-2 bg-accent-500 px-5 py-3 text-sm font-semibold text-white hover:bg-accent-600"
-                >
-                  <MessageCircle size={16} />
-                  Contact Local Guide
-                </a>
-              </div>
-            )}
           </aside>
         </div>
       </section>
@@ -205,14 +157,15 @@ export default function DestinationShow({ destination, prev = null, next = null 
         <div className="hover-lift reveal-up mt-8 overflow-hidden bg-white p-4 shadow-sm ring-1 ring-neutral-200/70 md:p-5" style={{ '--reveal-delay': '120ms' }}>
           <LeafletMap
             mapMarkers={
-              destination.lat && destination.lng
+              hasCoordinates
                 ? [{ name: destination.name, lat: destination.lat, lng: destination.lng }]
                 : []
             }
+            useMarkerBounds
           />
           <div className="mt-4 flex items-center gap-2 text-sm text-neutral-600">
             <Navigation size={16} className="text-primary-700" />
-            {destination.lat && destination.lng
+            {hasCoordinates
               ? <span>{destination.name}, Enggano</span>
               : <span className="text-neutral-400 italic">Koordinat belum tersedia untuk destinasi ini.</span>
             }

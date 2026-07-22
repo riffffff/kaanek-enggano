@@ -280,7 +280,7 @@ export default function VillageShow({ village, prev = null, next = null }) {
           <div className="space-y-14">
             <article className="reveal-up max-w-4xl" style={{ '--reveal-delay': '180ms' }}>
               <h2 className="font-display text-4xl font-semibold text-neutral-900 md:text-5xl">
-                Sejarah & Tradisi
+                Tentang Desa
               </h2>
               <div className="mt-8 space-y-6 text-base leading-8 text-neutral-700 md:text-lg">
                 {storyParagraphs.map(paragraph => (
