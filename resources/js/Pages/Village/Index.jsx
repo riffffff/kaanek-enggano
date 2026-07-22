@@ -13,7 +13,6 @@ const fallbackVillages = [
     id: 'kahyapu',
     name: 'Kahyapu',
     slug: 'kahyapu',
-    summary: 'Pintu gerbang laut Enggano dengan pelabuhan utama yang menjadi pusat aktivitas ekonomi awal.',
     image:
       'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80',
   },
@@ -21,7 +20,6 @@ const fallbackVillages = [
     id: 'kaana',
     name: 'Kaana',
     slug: 'kaana',
-    summary: 'Dikenal dengan keindahan pesisir dan masyarakat agraris yang mempertahankan tradisi leluhur.',
     image:
       'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1200&q=80',
   },
@@ -29,7 +27,6 @@ const fallbackVillages = [
     id: 'malakoni',
     name: 'Malakoni',
     slug: 'malakoni',
-    summary: 'Pusat pemerintahan dan denyut nadi komunitas, tempat bertemunya berbagai suku lokal.',
     image:
       'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80',
   },
@@ -37,7 +34,6 @@ const fallbackVillages = [
     id: 'apoho',
     name: 'Apoho',
     slug: 'apoho',
-    summary: 'Tersembunyi di rimbunnya hutan, desa ini menyimpan kekayaan flora dan fauna endemik yang memukau.',
     image:
       'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=80',
   },
@@ -45,7 +41,6 @@ const fallbackVillages = [
     id: 'meok',
     name: 'Meok',
     slug: 'meok',
-    summary: 'Desa nelayan dengan pesona garis pantai terpanjang, menawarkan pemandangan samudra yang tak berujung.',
     image:
       'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
   },
@@ -53,7 +48,6 @@ const fallbackVillages = [
     id: 'enggano',
     name: 'Enggano',
     slug: 'enggano',
-    summary: 'Membawa nama pulau, desa ini merawat situs-situs bersejarah dan cerita lisan masa lampau.',
     image:
       'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80',
   },
@@ -99,11 +93,11 @@ export default function VillageIndex({ villages = [] }) {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24 lg:px-16">
+      <section className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24 lg:px-16 pb-2">
         <div className="reveal-up max-w-3xl">
           <p className="text-sm uppercase tracking-[0.35em] text-primary-700">PETA WILAYAH</p>
           <h2 className="mt-3 font-display text-4xl font-semibold text-neutral-900 md:text-5xl">
-            Titik Kehidupan Enggano
+            Enggano
           </h2>
           <p className="mt-4 text-base leading-7 text-neutral-500">
             Peta interaktif berbasis OpenStreetMap dengan fokus wilayah Pulau Enggano.
@@ -113,7 +107,7 @@ export default function VillageIndex({ villages = [] }) {
         <div className="hover-lift reveal-up mt-10 overflow-hidden bg-white shadow-sm ring-1 ring-neutral-200/70" style={{ '--reveal-delay': '140ms' }}>
           <Suspense
             fallback={
-              <div className="flex h-[480px] items-center justify-center bg-neutral-50 text-sm text-neutral-400">
+              <div className="flex h-87.5 items-center justify-center bg-neutral-50 text-sm text-neutral-400">
                 <div className="text-center">
                   <MapPin size={32} className="mx-auto mb-3 animate-pulse text-primary-400" />
                   <p>Memuat peta Enggano…</p>
@@ -127,8 +121,8 @@ export default function VillageIndex({ villages = [] }) {
       </section>
 
       {/* Bagian Sejarah */}
-      <section className="border-b border-neutral-200">
-        <div className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24 lg:px-16">
+      <section className="border-b border-neutral-200 justify-center text-center flex flex-col">
+        <div className="mx-auto max-w-7xl px-6 pt-4 pb-16 md:px-12 lg:px-16">
           <div className="reveal-up max-w-3xl">
             <p className="text-sm uppercase tracking-[0.35em] text-primary-700">WARISAN LELUHUR</p>
             <h2 className="mt-3 font-display text-4xl font-semibold text-neutral-900 md:text-5xl">
@@ -149,90 +143,80 @@ export default function VillageIndex({ villages = [] }) {
 
       {/* Bagian Desa */}
       <section className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24 lg:px-16">
-        <div className="reveal-up max-w-3xl mb-10">
-          <p className="text-sm uppercase tracking-[0.35em] text-primary-700">DESA ENGGANO</p>
-          <h2 className="mt-3 font-display text-4xl font-semibold text-neutral-900 md:text-5xl">
-            Enam Desa Pulau Enggano
-          </h2>
-          <p className="mt-4 text-base leading-7 text-neutral-500">
-            Jelajahi enam desa yang menjadi pilar kehidupan di Pulau Enggano, masing-masing dengan keunikan budaya dan pesona alamnya.
-          </p>
-        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-[30%_70%] gap-8 items-start">
+          <div className="reveal-up">
+            <p className="text-xs md:text-sm uppercase tracking-[0.35em] text-primary-700">DESA ENGGANO</p>
+            <h2 className="mt-3 font-display text-3xl md:text-4xl font-semibold text-neutral-900 lg:text-5xl">
+              Enam Desa Pulau Enggano
+            </h2>
+            <p className="mt-4 text-sm md:text-base leading-7 text-neutral-500">
+              Jelajahi enam desa yang menjadi pilar kehidupan di Pulau Enggano, masing-masing dengan keunikan budaya dan pesona alamnya.
+            </p>
+          </div>
 
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {entries.map(village => (
-            <Link
-              key={village.slug}
-              href={`/villages/${village.slug}`}
-              className="group hover-lift overlay-glow reveal-up overflow-hidden bg-white shadow-sm ring-1 ring-neutral-200/70"
-              style={{ '--reveal-delay': '160ms' }}
-            >
-              <div className="relative">
+          <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {entries.map((village, index) => (
+              <Link
+                key={village.slug}
+                href={`/villages/${village.slug}`}
+                className="group hover-lift overlay-glow reveal-up relative overflow-hidden"
+                style={{ '--reveal-delay': `${120 + index * 40}ms` }}
+              >
                 <img
                   src={village.image}
                   alt={village.name}
-                  className="media-zoom aspect-4/3 w-full object-cover"
+                  className="media-zoom aspect-4/3 w-full h-auto object-cover"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-black/45 via-transparent to-transparent" />
-              </div>
-              <div className="p-6">
-                <h3 className="font-display text-3xl font-semibold text-neutral-900">
-                  {village.name}
-                </h3>
-                <p className="mt-3 text-base leading-7 text-neutral-600">{village.summary}</p>
-                <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary-700">
-                  Lihat Detail
-                  <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-                </span>
-              </div>
-            </Link>
-          ))}
+                <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/30 to-transparent transition-opacity duration-500 group-hover:opacity-90" />
+                <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
+                  <h3 className="font-display text-2xl sm:text-3xl font-semibold text-white">
+                    {village.name}
+                  </h3>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Bagian Suku-suku */}
       <section className="bg-surface-50 border-t border-neutral-200">
         <div className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24 lg:px-16">
-          <div className="reveal-up max-w-3xl mb-10">
-            <p className="text-sm uppercase tracking-[0.35em] text-primary-700">SUKU ENGGANO</p>
-            <h2 className="mt-3 font-display text-4xl font-semibold text-neutral-900 md:text-5xl">
-              Warisan Suku-Suku Enggano
-            </h2>
-            <p className="mt-4 text-base leading-7 text-neutral-500">
-              Kenali enam suku asli dan pendatang yang membangun peradaban serta mewariskan kearifan lokal di Pulau Enggano.
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {tribesData.map(tribe => (
-              <Link
-                key={tribe.id}
-                href={`/tribes/${tribe.id}`}
-                className="group hover-lift overlay-glow reveal-up overflow-hidden bg-white shadow-sm ring-1 ring-neutral-200/70"
-                style={{ '--reveal-delay': '160ms' }}
-              >
-                <div className="relative">
+          <div className="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-8 items-start">
+            <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {tribesData.map((tribe, index) => (
+                <Link
+                  key={tribe.id}
+                  href={`/tribes/${tribe.id}`}
+                  className="group hover-lift overlay-glow reveal-up relative overflow-hidden"
+                  style={{ '--reveal-delay': `${120 + index * 40}ms` }}
+                >
                   <img
                     src={tribe.image}
                     alt={tribe.name}
-                    className="media-zoom aspect-4/3 w-full object-cover"
+                    className="media-zoom aspect-4/3 w-full h-auto object-cover"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-black/45 via-transparent to-transparent" />
-                </div>
-                <div className="p-6">
-                  <h3 className="font-display text-3xl font-semibold text-neutral-900">
-                    {tribe.name}
-                  </h3>
-                  <p className="mt-3 text-base leading-7 text-neutral-600 line-clamp-2">{tribe.summary}</p>
-                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary-700">
-                    Lihat Detail
-                    <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-                  </span>
-                </div>
-              </Link>
-            ))}
+                  <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/30 to-transparent transition-opacity duration-500 group-hover:opacity-90" />
+                  <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
+                    <h3 className="font-display text-2xl sm:text-3xl font-semibold text-white">
+                      {tribe.name}
+                    </h3>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            <div className="reveal-up">
+              <p className="text-xs md:text-sm uppercase tracking-[0.35em] text-primary-700">SUKU ENGGANO</p>
+              <h2 className="mt-3 font-display text-3xl md:text-4xl font-semibold text-neutral-900 lg:text-5xl">
+                Warisan Suku-Suku Enggano
+              </h2>
+              <p className="mt-4 text-sm md:text-base leading-7 text-neutral-500">
+                Kenali enam suku asli dan pendatang yang membangun peradaban serta mewariskan kearifan lokal di Pulau Enggano.
+              </p>
+            </div>
           </div>
         </div>
       </section>

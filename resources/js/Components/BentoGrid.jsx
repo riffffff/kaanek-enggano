@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react'
 
-const pillars = [
+// Fallback data jika destinations kosong
+const fallbackPillars = [
   {
     eyebrow: 'EKSPLORASI',
     title: 'Destinasi Bahari',
@@ -24,22 +25,31 @@ const pillars = [
   },
 ]
 
-export default function BentoGrid() {
+export default function BentoGrid({ destinations = [] }) {
+  // Gunakan destinations jika ada, jika tidak gunakan fallback
+  const items = destinations.length > 0 ? destinations.map(dest => ({
+    eyebrow: dest.type?.toUpperCase() || 'DESTINASI',
+    title: dest.name,
+    description: dest.short_description || dest.description || '',
+    href: `/destinations/${dest.slug}`,
+    image: dest.image || 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+  })) : fallbackPillars
+
   return (
     <div className="grid gap-6 md:grid-cols-2 md:grid-rows-2">
-      {pillars.map((pillar, index) => (
+      {items.map((item, index) => (
         <Link
-          key={pillar.title}
-          href={pillar.href}
+          key={item.title + index}
+          href={item.href}
           className={`group hover-lift overlay-glow reveal-up relative min-h-72 overflow-hidden bg-primary-900 text-white ${index === 0 ? 'md:row-span-2' : ''}`}
           style={{ '--reveal-delay': `${120 + index * 100}ms` }}
         >
-          <img src={pillar.image} alt="" className="media-zoom absolute inset-0 h-full w-full object-cover" loading="lazy" />
+          <img src={item.image} alt={item.title} className="media-zoom absolute inset-0 h-full w-full object-cover" loading="lazy" />
           <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-500 group-hover:opacity-90" />
           <div className="absolute inset-x-0 bottom-0 p-6">
-            <p className="text-xs font-semibold tracking-[0.25em] text-white/80">{pillar.eyebrow}</p>
-            <h3 className="mt-2 font-display text-3xl font-semibold md:text-4xl">{pillar.title}</h3>
-            <p className="mt-3 max-w-xl text-sm leading-6 text-white/80">{pillar.description}</p>
+            <p className="text-xs font-semibold tracking-[0.25em] text-white/80">{item.eyebrow}</p>
+            <h3 className="mt-2 font-display text-3xl font-semibold md:text-4xl">{item.title}</h3>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-white/80 line-clamp-1">{item.description}</p>
           </div>
         </Link>
       ))}

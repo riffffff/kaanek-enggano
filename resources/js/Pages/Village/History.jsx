@@ -2,14 +2,10 @@ import { Head } from '@inertiajs/react'
 import Button from '../../Components/Button'
 
 export const historyData = {
-  title: 'Sejarah Pulau Enggano',
-  content: `Pulau Enggano memiliki sejarah yang unik sebagai salah satu pulau terluar Indonesia di Samudera Hindia. Terisolasi selama berabad-abad, pulau ini mengembangkan kebudayaan yang sangat berbeda dari daratan utama Sumatera.
-
-Nama "Enggano" sendiri diyakini berasal dari bahasa Melayu yang berarti "pulau terpencil". Pulau ini pertama kali dicatat oleh penjelajah Eropa pada abad ke-16, namun bukti arkeologi menunjukkan adanya aktivitas manusia ribuan tahun sebelumnya. Pulau ini kemudian menjadi bagian dari Nusantara, namun tetap mempertahankan identitasnya yang unik.
-
-Selama berabad-abad, masyarakat Enggano hidup berdampingan dengan alam, mengembangkan sistem sosial dan hukum adat yang khas. Mereka menjadi penghuni pulau yang tangguh dan mandiri, memanfaatkan sumber daya alam dengan bijaksana.
-
-Pada masa kolonial, pulau ini menjadi bagian dari Hindia Belanda, namun pengaruh luar tidak banyak mengubah cara hidup masyarakat setempat. Hingga saat ini, warisan budaya nenek moyang masih terasa kuat di setiap sudut pulau.`,
+  title: 'Jejak Sejarah Enggano',
+  content: `
+  Enggano merupakan pulau terluar di Indonesia yang memiliki akar sejarah yang kuat akan eksistensi masyarakat adatnya. Pulau Enggano terletak pada jajaran sebelah barat pantai Pulau Sumatera. Lebih lanjut, secara geografis terletak di wilayah Kabupaten Bengkulu Utara, Provinsi Bengkulu, serta terdiri dari 6 Desa, antara lain Desa Kahyapu, Desa Kaana, Desa Apoho, Desa Meok, dan Desa Bajarsari. Selain itu, terdapat beberapa pulau yang mengelilingi Pulau Enggano, antara lain Pulau Dua, Pulau Merbau, Pulau Satu, serta Pulau Bangkai.
+  `,
   image: 'https://images.unsplash.com/photo-1533136305213-cd4275d9e8a6?auto=format&fit=crop&w=1800&q=80',
 }
 
@@ -21,7 +17,7 @@ export default function VillageHistory({ history = null }) {
       <Head title={`${data.title} | Desa & Budaya`} />
 
       {/* Hero Section */}
-      <section className="relative min-h-[78vh] overflow-hidden bg-primary-950 text-white">
+      <section className="relative min-h-[78vh] overflow-hidden bg-primary-950 text-white ">
         <div className="relative mx-auto flex min-h-[78vh] max-w-7xl items-end px-6 pb-20 pt-32 md:px-12 lg:px-16">
           <div>
             <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/75">
@@ -45,8 +41,8 @@ export default function VillageHistory({ history = null }) {
           Kembali ke Villages
         </Button>
 
-        <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1.6fr)_360px]">
-          <article className="reveal-up max-w-3xl" style={{ '--reveal-delay': '100ms' }}>
+        <div className="mt-8 flex justify-center">
+          <article className="reveal-up max-w-3xl text-center" style={{ '--reveal-delay': '100ms' }}>
             <h2 className="font-display text-4xl font-semibold leading-tight text-neutral-900 md:text-5xl">
               Jejak Sejarah Enggano
             </h2>
