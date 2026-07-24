@@ -11,42 +11,32 @@ class ShipScheduleSeeder extends Seeder
     {
         $schedules = [
             [
-                'type' => 'ferry',
-                'route' => 'Bengkulu -> Enggano',
-                'days' => ['selasa', 'jumat'],
-                'departure_time' => '17:00',
-                'estimated_price' => 65000,
-                'ticket_link' => null,
+                'type' => 'kapal_perintis',
+                'route' => 'Bengkulu <-> Enggano',
+                'days' => ['senin', 'kamis'],
+                'departure_time' => '16:00',
+                'estimated_price' => 60000,
+                'ticket_link' => 'https://pelni.co.id',
                 'agent_whatsapp_number' => '6281234567810',
                 'is_active' => true,
             ],
             [
-                'type' => 'ferry',
-                'route' => 'Enggano -> Bengkulu',
-                'days' => ['rabu', 'sabtu'],
+                'type' => 'ferry_asdp',
+                'route' => 'Bengkulu <-> Enggano',
+                'days' => ['selasa', 'jumat'],
                 'departure_time' => '17:00',
-                'estimated_price' => 65000,
-                'ticket_link' => null,
+                'estimated_price' => 75000,
+                'ticket_link' => 'https://ferizy.com',
                 'agent_whatsapp_number' => '6281234567810',
                 'is_active' => true,
             ],
             [
                 'type' => 'susi_air',
-                'route' => 'Bengkulu -> Enggano',
+                'route' => 'Bengkulu <-> Enggano',
                 'days' => ['selasa', 'kamis'],
                 'departure_time' => '08:00',
                 'estimated_price' => 300000,
-                'ticket_link' => 'https://example.com/tiket-enggano',
-                'agent_whatsapp_number' => '6281234567811',
-                'is_active' => true,
-            ],
-            [
-                'type' => 'susi_air',
-                'route' => 'Enggano -> Bengkulu',
-                'days' => ['selasa', 'kamis'],
-                'departure_time' => '09:15',
-                'estimated_price' => 300000,
-                'ticket_link' => 'https://example.com/tiket-enggano',
+                'ticket_link' => 'https://susiair.com',
                 'agent_whatsapp_number' => '6281234567811',
                 'is_active' => true,
             ],
@@ -54,9 +44,10 @@ class ShipScheduleSeeder extends Seeder
 
         foreach ($schedules as $schedule) {
             ShipSchedule::query()->updateOrCreate(
-                ['type' => $schedule['type'], 'route' => $schedule['route']],
+                ['type' => $schedule['type']],
                 $schedule
             );
         }
     }
 }
+

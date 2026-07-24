@@ -26,6 +26,7 @@ class DestinationSeeder extends Seeder
                 'lat' => -5.3903,
                 'lng' => 102.2336,
                 'local_guide' => 'Guide Bahari Enggano',
+                'image_url' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80',
             ],
             [
                 'name' => 'Hutan Endemik Enggano',
@@ -39,6 +40,7 @@ class DestinationSeeder extends Seeder
                 'lat' => -5.3648,
                 'lng' => 102.2612,
                 'local_guide' => 'Guide Jelajah Hutan',
+                'image_url' => 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=80',
             ],
             [
                 'name' => 'Jejak Budaya Enggano',
@@ -52,23 +54,37 @@ class DestinationSeeder extends Seeder
                 'lat' => -5.4001,
                 'lng' => 102.2822,
                 'local_guide' => 'Guide Jelajah Hutan',
+                'image_url' => 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=1600&q=80',
             ],
         ];
 
-        foreach ($destinations as $destination) {
-            Destination::query()->updateOrCreate(
-                ['name' => $destination['name']],
+        foreach ($destinations as $destinationData) {
+            $imageUrl = $destinationData['image_url'];
+            unset($destinationData['image_url']);
+
+            $dest = Destination::query()->updateOrCreate(
+                ['name' => $destinationData['name']],
                 [
-                    'name' => $destination['name'],
-                    'description' => $destination['description'],
-                    'type' => $destination['type'],
-                    'difficulty_level' => $destination['difficulty_level'],
-                    'slug' => Str::slug($destination['name']),
-                    'lat' => $destination['lat'],
-                    'lng' => $destination['lng'],
-                    'local_guide_id' => $guides[$destination['local_guide']]?->id,
+                    'name' => $destinationData['name'],
+                    'description' => $destinationData['description'],
+                    'type' => $destinationData['type'],
+                    'difficulty_level' => $destinationData['difficulty_level'],
+                    'slug' => Str::slug($destinationData['name']),
+                    'lat' => $destinationData['lat'],
+                    'lng' => $destinationData['lng'],
+                    'local_guide_id' => $guides[$destinationData['local_guide']]?->id ?? null,
                 ]
             );
+
+            if ($dest->getMedia('photos')->isEmpty() && $dest->getMedia('background')->isEmpty()) {
+                try {
+                    $dest->addMediaFromUrl($imageUrl)
+                        ->toMediaCollection('photos');
+                } catch (\Throwable $e) {
+                    // Fallback silently if offline or blocked
+                }
+            }
         }
     }
 }
+

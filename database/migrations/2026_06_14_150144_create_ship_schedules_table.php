@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('ship_schedules', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['ferry', 'susi_air']);
+            $table->string('type');
             $table->string('route');
             $table->json('days');
             $table->time('departure_time');

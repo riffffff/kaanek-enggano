@@ -1,4 +1,5 @@
 import { Head } from '@inertiajs/react'
+import { Calendar, Clock, Newspaper, Share2, Tag } from 'lucide-react'
 import Button from '../../Components/Button'
 import PrevNext from '../../Components/PrevNext'
 
@@ -20,9 +21,9 @@ export default function KknLogShow({ item, prev = null, next = null }) {
         .map(paragraph => paragraph.trim())
         .filter(Boolean)
     : [
-        'Catatan ini merangkum proses kerja lapangan, diskusi dengan warga, dan pengamatan langsung yang membentuk program KKN di Enggano.',
-        'Setiap intervensi dilakukan dengan pendekatan kolaboratif, menempatkan kebutuhan lokal sebagai pusat dari keputusan desain kegiatan.',
-        'Hasil sementara menunjukkan bahwa penguatan pengetahuan, dokumentasi, dan jejaring lokal menjadi fondasi penting untuk keberlanjutan program setelah tim kembali.',
+        'Warta dan catatan ini merangkum seluruh proses kerja lapangan, wawancara bersama warga, serta pengamatan intensif yang mewarnai dinamika di Pulau Enggano.',
+        'Seluruh bentuk intervensi dan kegiatan dilaksanakan dengan prinsip partisipatif, menempatkan kearifan lokal serta suara warga suku sebagai pijakan utama.',
+        'Hasil pengamatan di lapangan menegaskan pentingnya kesinambungan program, dokumentasi sejarah, serta penguatan jejaring lokal untuk kemajuan bersama.',
       ]
 
   const heroImage =
@@ -32,12 +33,12 @@ export default function KknLogShow({ item, prev = null, next = null }) {
 
   return (
     <>
-      <Head title={item.title} />
+      <Head title={`${item.title} - Berita & Artikel Kaanek Enggano`} />
 
       <section className="relative overflow-hidden bg-primary-950 text-white">
-        <img src={heroImage} alt={item.title} className="reveal-scale absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-linear-to-b from-primary-950/25 via-primary-950/55 to-primary-950/90" />
-        <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-36 md:px-12 lg:px-16">
+        <img src={heroImage} alt={item.title} className="reveal-scale absolute inset-0 h-full w-full object-cover opacity-45" />
+        <div className="absolute inset-0 bg-linear-to-b from-primary-950/40 via-primary-950/70 to-primary-950" />
+        <div className="relative mx-auto max-w-5xl px-6 pb-20 pt-36 md:px-12 lg:px-16">
           <Button
             href="/kkn-log"
             variant="ghost"
@@ -45,74 +46,80 @@ export default function KknLogShow({ item, prev = null, next = null }) {
             arrowPosition="left"
             className="reveal-up"
           >
-            Kembali ke KKN Log
+            Kembali ke Berita & Artikel
           </Button>
-          <div className="mt-8 max-w-4xl">
-            <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/70" style={{ '--reveal-delay': '80ms' }}>
-              {String(item.category ?? 'archive').toUpperCase()}
-            </p>
-            <h1 className="reveal-up mt-4 font-display text-5xl font-semibold leading-tight md:text-7xl" style={{ '--reveal-delay': '150ms' }}>
+          <div className="mt-8">
+            <div className="reveal-up inline-flex items-center gap-2 rounded-full bg-accent-500/20 border border-accent-500/30 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-accent-400">
+              <Tag size={13} />
+              <span>{String(item.category ?? 'artikel').toUpperCase()}</span>
+            </div>
+            <h1 className="reveal-up mt-4 font-display text-4xl font-extrabold leading-tight tracking-tight text-white md:text-6xl" style={{ '--reveal-delay': '150ms' }}>
               {item.title}
             </h1>
-            <p className="reveal-up mt-6 text-sm text-white/70 md:text-base" style={{ '--reveal-delay': '230ms' }}>{item.date}</p>
+            
+            <div className="reveal-up mt-6 flex flex-wrap items-center gap-6 border-t border-white/10 pt-5 text-sm text-neutral-300" style={{ '--reveal-delay': '230ms' }}>
+              <span className="flex items-center gap-2"><Calendar size={16} className="text-accent-500" /> {item.date}</span>
+              {item.read_time && (
+                <span className="flex items-center gap-2"><Clock size={16} className="text-accent-500" /> {item.read_time}</span>
+              )}
+              <span className="flex items-center gap-2"><Newspaper size={16} className="text-accent-500" /> Redaksi Kaanek Enggano</span>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 py-16 md:px-12 md:py-24 lg:px-16">
+      <section className="mx-auto max-w-5xl px-6 py-14 md:px-12 md:py-20 lg:px-16">
         <div className="grid gap-12 lg:grid-cols-[220px_minmax(0,1fr)]">
-          <aside className="hover-lift reveal-up space-y-5" style={{ '--reveal-delay': '120ms' }}>
+          <aside className="hover-lift reveal-up space-y-6" style={{ '--reveal-delay': '120ms' }}>
             <div className="border-b border-neutral-200 pb-5">
-              <p className="text-xs uppercase tracking-[0.25em] text-neutral-500">Archive</p>
-              <p className="mt-3 text-sm leading-6 text-neutral-600">
-                Editorial record of work, dialogue, and field learning during KKN in Enggano.
+              <p className="text-xs uppercase tracking-[0.25em] font-bold text-neutral-400">Rubrik Warta</p>
+              <p className="mt-2 text-sm leading-relaxed text-neutral-600">
+                Arsip berita resmi dan jurnal lapangan seputar Enggano.
               </p>
             </div>
+
             <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-neutral-500">Category</p>
-              <p className="mt-3 text-sm font-semibold text-primary-700">
-                {String(item.category ?? 'archive').toUpperCase()}
-              </p>
+              <p className="text-xs uppercase tracking-[0.25em] font-bold text-neutral-400">Kategori</p>
+              <span className="mt-2 inline-block rounded-md bg-accent-50 text-accent-700 px-3 py-1 text-xs font-bold uppercase tracking-wider">
+                {String(item.category ?? 'artikel').toUpperCase()}
+              </span>
             </div>
+
             <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-neutral-500">Date</p>
-              <p className="mt-3 text-sm text-neutral-700">{item.date}</p>
+              <p className="text-xs uppercase tracking-[0.25em] font-bold text-neutral-400">Tanggal Rilis</p>
+              <p className="mt-2 text-sm font-semibold text-neutral-800">{item.date}</p>
             </div>
-            {item.read_time && (
-              <div>
-                <p className="text-xs uppercase tracking-[0.25em] text-neutral-500">Read Time</p>
-                <p className="mt-3 text-sm text-neutral-700">{item.read_time}</p>
-              </div>
-            )}
           </aside>
 
           <article className="reveal-up max-w-3xl" style={{ '--reveal-delay': '200ms' }}>
             <div className="space-y-7 text-base leading-8 text-neutral-700 md:text-lg">
               {contentParagraphs.map(paragraph => (
-                <p key={paragraph}>{paragraph}</p>
+                <p key={paragraph} className="first-letter:float-left first-letter:mr-3 first-letter:text-5xl first-letter:font-bold first-letter:text-primary-950 first-letter:font-display">
+                  {paragraph}
+                </p>
               ))}
             </div>
 
-            <blockquote className="mt-10 border-l-2 border-primary-700 pl-6 font-display text-2xl italic leading-9 text-neutral-900">
-              "Kerja lapangan di Enggano bukan hanya soal program, tetapi tentang cara
-              membaca ritme pulau dan merawat relasi yang ada di dalamnya."
+            <blockquote className="mt-12 rounded-2xl bg-surface-50 p-8 border-l-4 border-accent-500 font-display text-xl font-medium italic leading-relaxed text-neutral-900 shadow-xs">
+              "Pemberdayaan dan publikasi mengenai Enggano adalah langkah nyata menjaga warisan budaya serta keanekaragaman hayati pulau terluar Indonesia."
             </blockquote>
           </article>
         </div>
 
-        <div className="mt-14 border-t border-neutral-200 pt-8">
+        <div className="mt-16 border-t border-neutral-200/80 pt-10">
           <PrevNext
             prev={prev ? { href: `/kkn-log/${prev.slug}`, title: prev.title } : null}
             next={next ? { href: `/kkn-log/${next.slug}`, title: next.title } : null}
-            prevLabel="Previous"
-            nextLabel="Next"
-            prevEmptyText="Belum ada entri sebelumnya."
-            nextEmptyText="Belum ada entri berikutnya."
-            prevCardClass="bg-white"
-            nextCardClass="bg-white"
+            prevLabel="Artikel Sebelumnya"
+            nextLabel="Artikel Berikutnya"
+            prevEmptyText="Belum ada artikel sebelumnya."
+            nextEmptyText="Belum ada artikel berikutnya."
+            prevCardClass="bg-white rounded-xl shadow-xs border border-neutral-200/70"
+            nextCardClass="bg-white rounded-xl shadow-xs border border-neutral-200/70"
           />
         </div>
       </section>
     </>
   )
 }
+

@@ -36,7 +36,9 @@ class DestinationController extends Controller
                 'short_description' => $this->excerptFromDescription($destination->description),
                 'type' => $destination->type,
                 'difficulty_level' => $destination->difficulty_level,
-                'image' => $destination->getFirstMediaUrl('photos') ?: null,
+                'image' => $destination->getFirstMediaUrl('background')
+                    ?: $destination->getFirstMediaUrl('photos')
+                    ?: null,
             ]);
 
         return Inertia::render('Destination/Index', [
