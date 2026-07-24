@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Head, Link, router } from '@inertiajs/react'
 import { ArrowRight, Calendar, Clock, Newspaper, Sparkles } from 'lucide-react'
 
@@ -94,6 +94,9 @@ const imageByCategory = {
 
 export default function KknLogIndex({ items = [], selectedCategory = null }) {
   const [visibleCount, setVisibleCount] = useState(5)
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const intervalRef = useRef(null)
+  const carouselRef = useRef(null)
 
   const entries = items.length
     ? items.map((item, index) => ({
@@ -110,115 +113,172 @@ export default function KknLogIndex({ items = [], selectedCategory = null }) {
       }))
     : fallbackItems
 
-  const featuredArticle = entries[0]
-  const listArticles = entries.slice(1, visibleCount)
+  // Get first 4 articles for carousel (and also include them in list articles)
+  const carouselArticles = entries.slice(0, 4)
+  const listArticles = entries.slice(0, visibleCount + 4)
 
-  function handleFilter(category) {
-    setVisibleCount(5)
-    router.get('/kkn-log', category ? { category } : {}, { preserveState: true, replace: true })
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % carouselArticles.length)
   }
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + carouselArticles.length) % carouselArticles.length)
+  }
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index)
+  }
+
+  // Autoplay logic
+  useEffect(() => {
+    if (carouselArticles.length <= 1) return
+
+    const startAutoplay = () => {
+      intervalRef.current = setInterval(() => {
+        nextSlide()
+      }, 3000) // 3 detik per slide
+    }
+
+    const stopAutoplay = () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+    }
+
+    startAutoplay()
+
+    const carouselElement = carouselRef.current
+    if (carouselElement) {
+      carouselElement.addEventListener('mouseenter', stopAutoplay)
+      carouselElement.addEventListener('mouseleave', startAutoplay)
+    }
+
+    return () => {
+      stopAutoplay()
+      if (carouselElement) {
+        carouselElement.removeEventListener('mouseenter', stopAutoplay)
+        carouselElement.removeEventListener('mouseleave', startAutoplay)
+      }
+    }
+  }, [carouselArticles])
 
   return (
     <>
       <Head title="Berita & Artikel - Kaanek Enggano" />
 
-      {/* Hero Showcase Header */}
-      <section className="relative overflow-hidden bg-primary-950 text-white">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden text-white">
         <img
           src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1800&q=80"
           alt="Berita & Artikel Enggano"
-          className="reveal-scale absolute inset-0 h-full w-full object-cover opacity-40"
+          className="reveal-scale absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-linear-to-b from-primary-950/40 via-primary-950/70 to-primary-950" />
-        <div className="relative mx-auto max-w-7xl px-6 pb-20 pt-36 md:px-12 lg:px-16">
-          <div className="max-w-3xl">
-            <div className="reveal-up inline-flex items-center gap-2 rounded-full bg-accent-500/20 border border-accent-500/30 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-accent-400">
-              <Newspaper size={14} />
-              <span>Kabar & Catatan Lapangan</span>
-            </div>
-            <h1 className="reveal-up mt-4 font-display text-5xl font-extrabold tracking-tight text-white md:text-7xl" style={{ '--reveal-delay': '100ms' }}>
+        <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/30 to-black/70" />
+        <div className="relative mx-auto max-w-7xl px-6 pb-32 pt-48 md:px-12 lg:px-16">
+          <div className="max-w-4xl">
+            <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/70">
               Berita & Artikel
+            </p>
+            <h1 className="reveal-up mt-4 font-display text-5xl font-semibold md:text-7xl" style={{ '--reveal-delay': '120ms' }}>
+              Catatan Lapangan Enggano
             </h1>
-            <p className="reveal-up mt-5 text-base leading-relaxed text-neutral-300 md:text-xl" style={{ '--reveal-delay': '180ms' }}>
+            <p className="reveal-up mt-6 text-base leading-7 text-white/90 md:text-xl" style={{ '--reveal-delay': '200ms' }}>
               Kumpulan warta terkini, artikel jurnal pemberdayaan, kegiatan kemasyarakatan, serta narasi budaya dari pelosok Pulau Enggano.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Filter Bar */}
-      <section className="sticky top-0 z-20 border-b border-neutral-200/80 bg-white/90 backdrop-blur-md shadow-xs">
-        <div className="mx-auto flex max-w-7xl items-center overflow-x-auto px-6 py-4 scrollbar-hide md:px-12 lg:px-16">
-          <div className="flex gap-2 min-w-max">
-            {filters.map(filter => {
-              const active = selectedCategory === filter.value || (!selectedCategory && filter.value === null)
-
-              return (
-                <button
-                  key={filter.label}
-                  type="button"
-                  onClick={() => handleFilter(filter.value)}
-                  className={`hover-lift px-4 py-2 text-xs font-bold tracking-[0.15em] rounded-full transition-all duration-300 ${
-                    active
-                      ? 'bg-primary-950 text-white shadow-md'
-                      : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 hover:text-neutral-900'
-                  }`}
-                >
-                  {filter.label}
-                </button>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* Main Articles Portal Area */}
       <section className="mx-auto max-w-7xl px-6 py-12 md:px-12 md:py-20 lg:px-16">
-        
-        {/* Featured Top Headline Article */}
-        {featuredArticle && (
+
+        {/* Featured Top Headline Carousel */}
+        {carouselArticles.length > 0 && (
           <div className="mb-14">
-            <div className="flex items-center gap-2 mb-4">
-              <Sparkles size={16} className="text-accent-500" />
-              <span className="text-xs font-bold uppercase tracking-[0.25em] text-accent-600">Berita Utama / Highlight</span>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-2">
+                <Sparkles size={16} className="text-accent-500" />
+                <span className="text-xs font-bold uppercase tracking-[0.25em] text-accent-600">Berita Utama / Highlight</span>
+              </div>
+
+              {/* Carousel Controls */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={prevSlide}
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-white border border-neutral-200 hover:bg-neutral-50 hover:border-neutral-300 transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neutral-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <button
+                  onClick={nextSlide}
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-white border border-neutral-200 hover:bg-neutral-50 hover:border-neutral-300 transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neutral-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
             </div>
-            
-            <article className="group hover-lift overlay-glow reveal-up overflow-hidden rounded-2xl bg-white shadow-md ring-1 ring-neutral-200/80">
-              <Link href={`/kkn-log/${featuredArticle.slug}`} className="grid lg:grid-cols-12">
-                <div className="relative lg:col-span-7 min-h-[320px] lg:min-h-[440px] overflow-hidden">
-                  <img
-                    src={featuredArticle.image}
-                    alt={featuredArticle.title}
-                    className="media-zoom h-full w-full object-cover"
+
+            {/* Carousel Container */}
+            <div ref={carouselRef} className="relative overflow-hidden rounded-2xl">
+              {/* Carousel Slides */}
+              <div className="flex transition-transform duration-500 ease-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+                {carouselArticles.map((article) => (
+                  <article key={article.slug} className="min-w-full">
+                    <Link href={`/kkn-log/${article.slug}`} className="grid lg:grid-cols-12">
+                      <div className="relative lg:col-span-7 min-h-[320px] lg:min-h-[440px] overflow-hidden">
+                        <img
+                          src={article.image}
+                          alt={article.title}
+                          className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                        />
+                        <div className="absolute top-5 left-5 rounded-lg bg-primary-950/90 backdrop-blur-sm px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-white">
+                          {String(article.category ?? 'berita').toUpperCase()}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col justify-between p-8 lg:col-span-5 md:p-10 bg-white">
+                        <div>
+                          <div className="flex items-center gap-4 text-xs font-medium text-neutral-500">
+                            <span className="flex items-center gap-1.5"><Calendar size={14} className="text-primary-700" /> {article.date}</span>
+                            <span className="flex items-center gap-1.5"><Clock size={14} className="text-primary-700" /> {article.read_time}</span>
+                          </div>
+
+                          <h2 className="mt-5 font-display text-3xl font-bold leading-snug text-neutral-900 hover:text-primary-800 transition-colors md:text-4xl">
+                            {article.title}
+                          </h2>
+
+                          <p className="mt-4 text-base leading-relaxed text-neutral-600 line-clamp-3">
+                            {article.excerpt}
+                          </p>
+                        </div>
+
+                        <div className="mt-8 pt-6 border-t border-neutral-100 flex items-center gap-2 text-sm font-bold text-accent-600 hover:text-accent-700">
+                          <span>Baca Selengkapnya</span>
+                          <ArrowRight size={16} className="transition-transform duration-300 hover:translate-x-1" />
+                        </div>
+                      </div>
+                    </Link>
+                  </article>
+                ))}
+              </div>
+
+              {/* Carousel Indicators */}
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3">
+                {carouselArticles.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      currentSlide === index ? 'w-10 bg-accent-500' : 'w-2 bg-white/60 hover:bg-white/80'
+                    }`}
                   />
-                  <div className="absolute top-5 left-5 rounded-lg bg-primary-950/90 backdrop-blur-sm px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-white">
-                    {String(featuredArticle.category ?? 'berita').toUpperCase()}
-                  </div>
-                </div>
-
-                <div className="flex flex-col justify-between p-8 lg:col-span-5 md:p-10">
-                  <div>
-                    <div className="flex items-center gap-4 text-xs font-medium text-neutral-500">
-                      <span className="flex items-center gap-1.5"><Calendar size={14} className="text-primary-700" /> {featuredArticle.date}</span>
-                      <span className="flex items-center gap-1.5"><Clock size={14} className="text-primary-700" /> {featuredArticle.read_time}</span>
-                    </div>
-
-                    <h2 className="mt-5 font-display text-3xl font-bold leading-snug text-neutral-900 group-hover:text-primary-800 transition-colors md:text-4xl">
-                      {featuredArticle.title}
-                    </h2>
-
-                    <p className="mt-4 text-base leading-relaxed text-neutral-600 line-clamp-3">
-                      {featuredArticle.excerpt}
-                    </p>
-                  </div>
-
-                  <div className="mt-8 pt-6 border-t border-neutral-100 flex items-center gap-2 text-sm font-bold text-accent-600 group-hover:text-accent-700">
-                    <span>Baca Selengkapnya</span>
-                    <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-                  </div>
-                </div>
-              </Link>
-            </article>
+                ))}
+              </div>
+            </div>
           </div>
         )}
 

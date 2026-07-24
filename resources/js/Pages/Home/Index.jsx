@@ -19,22 +19,26 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
         />
       </Head>
 
-      <section className="relative min-h-screen overflow-hidden bg-primary-950 text-white flex items-center justify-center">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden text-white">
         <img
           src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80"
           alt="Pulau Enggano"
           className="reveal-scale absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-linear-to-b from-black/30 via-black/20 to-black/60" />
-        <div className="relative z-10 mx-auto flex flex-col items-center text-center px-6 pb-24 pt-32 md:px-12 lg:px-16">
+        <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/30 to-black/70" />
+        <div className="relative mx-auto max-w-7xl px-6 pb-32 pt-48 md:px-12 lg:px-16">
           <div className="max-w-4xl">
-            <h1 className="reveal-up font-display text-5xl font-semibold leading-tight md:text-7xl uppercase tracking-wider">
+            <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/70">
+              Selamat Datang
+            </p>
+            <h1 className="reveal-up mt-4 font-display text-5xl font-semibold md:text-7xl" style={{ '--reveal-delay': '120ms' }}>
               {tt('JELAJAH ENGGANO', 'hero.title')}
             </h1>
-            <p className="reveal-up mt-6 max-w-3xl mx-auto font-body text-base leading-7 text-white/80 md:text-lg uppercase tracking-widest" style={{ '--reveal-delay': '120ms' }}>
+            <p className="reveal-up mt-6 text-base leading-7 text-white/90 md:text-xl" style={{ '--reveal-delay': '200ms' }}>
               {tt('JELAJAHI KEINDAHAN ALAMNYA, SELAMI KEKAYAAN WARISAN ENAM SUKUNYA!.', 'hero.subtitle')}
             </p>
-            <div className="reveal-up mt-10 flex flex-wrap gap-4 justify-center" style={{ '--reveal-delay': '220ms' }}>
+            <div className="reveal-up mt-10 flex flex-wrap gap-4" style={{ '--reveal-delay': '220ms' }}>
               <Link
                 href="/destinations"
                 className="hover-lift overlay-glow inline-flex items-center gap-2 bg-accent-500 px-8 py-4 text-sm font-semibold text-white hover:bg-accent-600 uppercase tracking-wider"
@@ -47,18 +51,6 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
               >
                 {tt('Info Perjalanan', 'hero.travelInfo')}
               </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10">
-          <div className="float-soft">
-            <div className="flex flex-col items-center gap-2 text-white/70">
-              <span className="text-xs uppercase tracking-widest">{tt('Gulir ke Bawah', 'hero.scroll')}</span>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 5v14M19 12l-7 7-7-7" />
-              </svg>
             </div>
           </div>
         </div>

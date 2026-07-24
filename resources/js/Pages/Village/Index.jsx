@@ -79,16 +79,24 @@ export default function VillageIndex({ villages = [] }) {
     <>
       <Head title="Villages" />
 
-      <section className="relative overflow-hidden bg-primary-950 text-white">
-        <div className="absolute inset-0 bg-linear-to-br from-primary-950 via-primary-900 to-highlight-950" />
-        <div className="relative mx-auto max-w-7xl px-6 pb-24 pt-36 md:px-12 lg:px-16">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden text-white">
+        <img
+          src={entries[0]?.image || 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1800&q=80'}
+          alt="Desa Enggano"
+          className="reveal-scale absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/30 to-black/70" />
+        <div className="relative mx-auto max-w-7xl px-6 pb-32 pt-48 md:px-12 lg:px-16">
           <div className="max-w-4xl">
-            <h1 className="reveal-up font-display text-5xl font-semibold md:text-7xl">
+            <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/70">
+              Desa & Budaya
+            </p>
+            <h1 className="reveal-up mt-4 font-display text-5xl font-semibold md:text-7xl" style={{ '--reveal-delay': '120ms' }}>
               Mengenal 6 Desa di Enggano
             </h1>
-            <p className="reveal-up mt-6 text-base leading-7 text-white/80 md:text-xl" style={{ '--reveal-delay': '120ms' }}>
-              Jelajahi keragaman budaya dan pesona alam dari enam permukiman yang menjadi
-              denyut nadi kehidupan di garis terdepan Samudera Hindia.
+            <p className="reveal-up mt-6 text-base leading-7 text-white/90 md:text-xl" style={{ '--reveal-delay': '200ms' }}>
+              Jelajahi keragaman budaya dan pesona alam dari enam permukiman yang menjadi denyut nadi kehidupan di garis terdepan Samudera Hindia.
             </p>
           </div>
         </div>

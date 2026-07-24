@@ -62,21 +62,24 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
     <>
       <Head title="Accommodations" />
 
-      <section className="relative overflow-hidden bg-primary-950 text-white">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden text-white">
         <img
           src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1800&q=80"
-          alt="Perjalanan menuju Enggano"
+          alt="Info Perjalanan & Akomodasi"
           className="reveal-scale absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-linear-to-b from-primary-950/20 via-primary-950/45 to-primary-950/80" />
-        <div className="relative mx-auto max-w-7xl px-6 pb-24 pt-36 md:px-12 md:pb-28 lg:px-16">
-          <div className="max-w-3xl">
-            <h1 className="reveal-up font-display text-5xl font-semibold leading-tight md:text-7xl">
-              Info Perjalanan & Akomodasi
+        <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/30 to-black/70" />
+        <div className="relative mx-auto max-w-7xl px-6 pb-32 pt-48 md:px-12 lg:px-16">
+          <div className="max-w-4xl">
+            <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/70">
+              Info Perjalanan
+            </p>
+            <h1 className="reveal-up mt-4 font-display text-5xl font-semibold md:text-7xl" style={{ '--reveal-delay': '120ms' }}>
+              Akomodasi & Transportasi
             </h1>
-            <p className="reveal-up mt-6 text-base leading-7 text-white/80 md:text-xl" style={{ '--reveal-delay': '140ms' }}>
-              A curated guide to navigating the untamed beauty of Enggano Island.
-              From vital transport schedules to hand-picked local homestays.
+            <p className="reveal-up mt-6 text-base leading-7 text-white/90 md:text-xl" style={{ '--reveal-delay': '200ms' }}>
+              Panduan lengkap untuk mengakses Pulau Enggano dan penginapan lokal yang nyaman.
             </p>
           </div>
         </div>

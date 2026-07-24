@@ -88,21 +88,21 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
         {/* Content & Showcase Slider */}
         <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 md:px-12 lg:px-16 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            
+
             {/* Left Header & Active Item Info */}
             <div className="lg:col-span-5 space-y-6">
               <p className="reveal-up text-xs uppercase tracking-[0.3em] font-medium text-accent-400">
                 Eksplorasi Enggano
               </p>
-              
-              <h1 
+
+              <h1
                 className="reveal-up font-display text-4xl sm:text-5xl md:text-6xl font-semibold uppercase tracking-wider leading-tight text-white"
                 style={{ '--reveal-delay': '100ms' }}
               >
                 {activeDestination.name}
               </h1>
-              
-              <p 
+
+              <p
                 className="reveal-up text-base leading-relaxed text-white/80 max-w-md line-clamp-2"
                 style={{ '--reveal-delay': '200ms' }}
               >
@@ -138,12 +138,12 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
                         className="media-zoom w-full h-full object-cover rounded-xl"
                         loading="lazy"
                       />
-                      
+
                       {/* Gradient Overlay */}
                       <div className="absolute inset-0 bg-gradient-to-t from-primary-950/95 via-primary-950/30 to-transparent transition-opacity duration-500 group-hover:opacity-95" />
-                      
+
                       {/* Card Info */}
-                      <div className="absolute bottom-5 left-5 right-5 space-y-1">
+                      <div className="absolute inset-x-0 bottom-0 p-6 space-y-1">
                         <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-accent-400 block">
                           {item.tag}
                         </span>
@@ -192,7 +192,7 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
                   }}
                 />
               </div>
-              
+
               <div className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-white">
                 {String(activeIndex + 1).padStart(2, '0')}<span className="text-white/40 text-xl font-light">/{String(items.length).padStart(2, '0')}</span>
               </div>
@@ -214,5 +214,3 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
     </>
   )
 }
-
-
