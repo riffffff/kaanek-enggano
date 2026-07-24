@@ -1,8 +1,15 @@
 import { Head } from '@inertiajs/react'
-import { Mountain, Navigation, Timer } from 'lucide-react'
+import { Mountain, Navigation, Timer, Play } from 'lucide-react'
 import LeafletMap from '../../Components/LeafletMap'
 import Button from '../../Components/Button'
 import PrevNext from '../../Components/PrevNext'
+
+// Helper to check if file is video
+const isVideo = (url) => {
+  if (!url) return false
+  const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi']
+  return videoExtensions.some(ext => url.toLowerCase().includes(ext))
+}
 
 export default function DestinationShow({ destination, prev = null, next = null }) {
   const hasCoordinates = Number.isFinite(Number(destination.lat)) && Number.isFinite(Number(destination.lng))
@@ -20,13 +27,12 @@ export default function DestinationShow({ destination, prev = null, next = null 
   const editorialParagraphs = descriptionParagraphs.length
     ? descriptionParagraphs
     : [
-        destination.short_description ||
-          `${destination.name} menghadirkan lanskap terpencil dengan nuansa editorial yang kuat, jauh dari hiruk pikuk destinasi arus utama.`,
+        `${destination.name} menghadirkan lanskap terpencil dengan nuansa editorial yang kuat, jauh dari hiruk pikuk destinasi arus utama.`,
         `Perjalanan menuju ${destination.name} menjadi bagian dari pengalaman, melewati rute-rute alami Enggano yang masih terasa liar dan tenang.`,
         `Karakter tempat ini terletak pada perpaduan panorama, ritme komunitas lokal, dan sensasi ekspedisi yang membuat kunjungan terasa intim.`,
       ]
 
-  const galleryImages = destination.gallery?.length
+  const galleryItems = destination.gallery?.length
     ? destination.gallery.filter(Boolean)
     : [
         destination.image ||
@@ -52,10 +58,7 @@ export default function DestinationShow({ destination, prev = null, next = null 
         <div className="absolute inset-0 bg-linear-to-b from-primary-950/20 via-primary-950/40 to-primary-950/85" />
         <div className="relative mx-auto flex min-h-[78vh] max-w-7xl items-end px-6 pb-20 pt-32 md:px-12 lg:px-16">
           <div>
-            <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/75">
-              {String(destination.type ?? 'bahari').toUpperCase()}
-            </p>
-            <h1 className="reveal-up mt-4 font-display text-5xl font-semibold md:text-7xl" style={{ '--reveal-delay': '120ms' }}>
+            <h1 className="reveal-up mt-4 font-display text-5xl font-semibold md:text-7xl">
               {destination.name}
             </h1>
           </div>
@@ -136,14 +139,28 @@ export default function DestinationShow({ destination, prev = null, next = null 
         </h2>
 
         <div className="mt-8 grid gap-5 md:grid-cols-3">
-          {galleryImages.map((image, index) => (
-            <div key={`${image}-${index}`} className="group hover-lift reveal-up overflow-hidden bg-white shadow-sm" style={{ '--reveal-delay': `${120 + index * 90}ms` }}>
-              <img
-                src={image}
-                alt={`${destination.name} visual ${index + 1}`}
-                className="media-zoom aspect-4/5 w-full object-cover"
-                loading="lazy"
-              />
+          {galleryItems.map((item, index) => (
+            <div key={`${item}-${index}`} className="group hover-lift reveal-up overflow-hidden bg-white shadow-sm" style={{ '--reveal-delay': `${120 + index * 90}ms` }}>
+              {isVideo(item) ? (
+                <div className="relative aspect-4/5">
+                  <video
+                    src={item}
+                    className="w-full h-full object-cover media-zoom"
+                    controls
+                    playsInline
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors">
+                    <Play className="w-12 h-12 text-white" fill="currentColor" />
+                  </div>
+                </div>
+              ) : (
+                <img
+                  src={item}
+                  alt={`${destination.name} visual ${index + 1}`}
+                  className="media-zoom aspect-4/5 w-full object-cover"
+                  loading="lazy"
+                />
+              )}
             </div>
           ))}
         </div>

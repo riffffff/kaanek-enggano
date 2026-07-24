@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Sluggable\HasSlug;
@@ -18,13 +17,11 @@ class Destination extends Model implements HasMedia
         'name',
         'slug',
         'description',
-        'type',
         'lat',
         'lng',
         'difficulty_level',
         'travel_time',
         'access_note',
-        'local_guide_id',
     ];
 
     protected function casts(): array
@@ -41,11 +38,6 @@ class Destination extends Model implements HasMedia
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug')
             ->doNotGenerateSlugsOnUpdate();
-    }
-
-    public function localGuide(): BelongsTo
-    {
-        return $this->belongsTo(LocalGuide::class);
     }
 
     public function registerMediaCollections(): void

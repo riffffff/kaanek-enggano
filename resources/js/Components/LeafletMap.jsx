@@ -68,11 +68,6 @@ export default function LeafletMap({ mapMarkers = [], height = 480, useMarkerBou
 
     markerLayerRef.current.clearLayers()
 
-    if (!useMarkerBounds) {
-      focusDefaultBounds(mapRef.current)
-      return
-    }
-
     const validMarkers = mapMarkers.filter(marker =>
       Number.isFinite(Number(marker.lat)) && Number.isFinite(Number(marker.lng))
     )
@@ -86,29 +81,39 @@ export default function LeafletMap({ mapMarkers = [], height = 480, useMarkerBou
         point.bindPopup(String(marker.name))
       }
 
+      // Handle click to navigate
+      point.on('click', () => {
+        if (marker.slug) {
+          window.location.href = `/villages/${marker.slug}`
+        }
+      })
+
+      // Make cursor pointer when hovering
+      point.on('mouseover', function() {
+        this._icon.style.cursor = 'pointer'
+      })
+
       point.addTo(markerLayerRef.current)
     })
 
-    if (!validMarkers.length) {
+    if (useMarkerBounds && validMarkers.length) {
+      const bounds = []
+
+      validMarkers.forEach(marker => {
+        const lat = Number(marker.lat)
+        const lng = Number(marker.lng)
+
+        bounds.push([lat, lng])
+      })
+
+      if (bounds.length === 1) {
+        mapRef.current.setView(bounds[0], 13)
+      } else {
+        mapRef.current.fitBounds(bounds, { padding: [32, 32] })
+      }
+    } else {
       focusDefaultBounds(mapRef.current)
-      return
     }
-
-    const bounds = []
-
-    validMarkers.forEach(marker => {
-      const lat = Number(marker.lat)
-      const lng = Number(marker.lng)
-
-      bounds.push([lat, lng])
-    })
-
-    if (bounds.length === 1) {
-      mapRef.current.setView(bounds[0], 13)
-      return
-    }
-
-    mapRef.current.fitBounds(bounds, { padding: [32, 32] })
   }, [mapMarkers, useMarkerBounds])
 
   return (
