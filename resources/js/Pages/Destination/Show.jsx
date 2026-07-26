@@ -35,10 +35,22 @@ export default function DestinationShow({ destination, prev = null, next = null 
   const galleryItems = destination.gallery?.length
     ? destination.gallery.filter(Boolean)
     : [
-        destination.image ||
-          'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1473116763249-2faaef81ccda?auto=format&fit=crop&w=1200&q=80',
+        {
+          id: 'fallback-1',
+          type: 'image',
+          url: destination.image ||
+            'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80',
+        },
+        {
+          id: 'fallback-2',
+          type: 'image',
+          url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+        },
+        {
+          id: 'fallback-3',
+          type: 'image',
+          url: 'https://images.unsplash.com/photo-1473116763249-2faaef81ccda?auto=format&fit=crop&w=1200&q=80',
+        },
       ]
 
   return (
@@ -144,22 +156,24 @@ export default function DestinationShow({ destination, prev = null, next = null 
 
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           {galleryItems.map((item, index) => (
-            <div key={`${item}-${index}`} className="group hover-lift reveal-up overflow-hidden bg-white shadow-sm" style={{ '--reveal-delay': `${120 + index * 90}ms` }}>
-              {isVideo(item) ? (
+            <div key={item.id || `${item.url}-${index}`} className="group hover-lift reveal-up overflow-hidden bg-white shadow-sm" style={{ '--reveal-delay': `${120 + index * 90}ms` }}>
+              {item.type === 'video' ? (
                 <div className="relative aspect-4/5">
                   <video
-                    src={item}
+                    src={item.url}
                     className="w-full h-full object-cover media-zoom"
                     controls
                     playsInline
+                    preload="metadata"
+                    poster={item.url_thumb}
                   />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors">
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors pointer-events-none">
                     <Play className="w-12 h-12 text-white" fill="currentColor" />
                   </div>
                 </div>
               ) : (
                 <img
-                  src={item}
+                  src={item.url_medium || item.url}
                   alt={`${destination.name} visual ${index + 1}`}
                   className="media-zoom aspect-4/5 w-full object-cover"
                   loading="lazy"

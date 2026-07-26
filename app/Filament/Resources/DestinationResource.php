@@ -69,6 +69,11 @@ class DestinationResource extends Resource
                                 'sulit' => 'Sulit',
                             ])
                             ->required(),
+                        Forms\Components\Select::make('local_guide_id')
+                            ->label('Local Guide')
+                            ->relationship('localGuide', 'name')
+                            ->searchable()
+                            ->preload(),
                         Forms\Components\TextInput::make('travel_time')
                             ->label('Travel time')
                             ->placeholder('Contoh: 45 mins from Apoho')
@@ -89,21 +94,23 @@ class DestinationResource extends Resource
                     ->columns(2),
                 Forms\Components\Section::make('Lokasi & Media')
                     ->schema([
-                        SpatieMediaLibraryFileUpload::make('background_photo')
-                            ->label('Gambar background')
-                            ->collection('background')
-                            ->image()
-                            ->imageEditor(),
                         SpatieMediaLibraryFileUpload::make('photos')
-                            ->label('Galeri destinasi')
+                            ->label('Galeri destinasi (Gambar & Video)')
                             ->collection('photos')
-                            ->image()
-                            ->imageEditor()
+                            ->acceptedFileTypes([
+                                'image/jpeg',
+                                'image/png',
+                                'image/webp',
+                                'image/gif',
+                                'video/mp4',
+                                'video/webm',
+                                'video/quicktime',
+                            ])
+                            ->maxSize(250 * 1024)
                             ->multiple()
                             ->reorderable()
                             ->columnSpanFull(),
-                    ])
-                    ->columns(2),
+                    ]),
             ]);
     }
 
@@ -121,6 +128,10 @@ class DestinationResource extends Resource
                 Tables\Columns\TextColumn::make('type')
                     ->badge()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('localGuide.name')
+                    ->label('Local Guide')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('difficulty_level')
                     ->label('Kesulitan')
                     ->badge()

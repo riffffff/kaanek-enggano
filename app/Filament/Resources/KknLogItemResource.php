@@ -69,7 +69,6 @@ class KknLogItemResource extends Resource
                             ->label('Cover / galeri')
                             ->collection('photos')
                             ->image()
-                            ->imageEditor()
                             ->multiple()
                             ->reorderable()
                             ->columnSpanFull(),

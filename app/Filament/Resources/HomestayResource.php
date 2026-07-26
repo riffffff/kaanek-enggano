@@ -72,7 +72,6 @@ class HomestayResource extends Resource
                             ->label('Foto homestay')
                             ->collection('photos')
                             ->image()
-                            ->imageEditor()
                             ->multiple()
                             ->reorderable()
                             ->columnSpanFull(),

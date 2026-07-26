@@ -64,7 +64,6 @@ class UmkmResource extends Resource
                             ->label('Foto produk')
                             ->collection('product_photos')
                             ->image()
-                            ->imageEditor()
                             ->multiple()
                             ->reorderable()
                             ->columnSpanFull(),

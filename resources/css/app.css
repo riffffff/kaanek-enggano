@@ -46,17 +46,17 @@
     --color-neutral-900: #181a1b;
     --color-neutral-950: #111213;
 
-    --color-accent-50: #fdf3e8;
-    --color-accent-100: #fbe6d0;
-    --color-accent-200: #f7cda1;
-    --color-accent-300: #f3b572;
-    --color-accent-400: #ef9c43;
-    --color-accent-500: #eb8314;
-    --color-accent-600: #bc6910;
-    --color-accent-700: #8d4f0c;
-    --color-accent-800: #5e3408;
-    --color-accent-900: #2f1a04;
-    --color-accent-950: #211203;
+    --color-accent-50: #fff6eb;
+    --color-accent-100: #ffe9d1;
+    --color-accent-200: #ffcea2;
+    --color-accent-300: #ffb575;
+    --color-accent-400: #fca85e;
+    --color-accent-500: #f59c47;
+    --color-accent-600: #c97a37;
+    --color-accent-700: #9d5c28;
+    --color-accent-800: #713e19;
+    --color-accent-900: #45200a;
+    --color-accent-950: #331707;
 
     --color-highlight-50: #f8ecef;
     --color-highlight-100: #f1dadf;
@@ -187,7 +187,7 @@
         width: 14rem;
         height: 14rem;
         border-radius: 9999px;
-        background: radial-gradient(circle, rgba(235, 131, 20, 0.18), transparent 65%);
+        background: radial-gradient(circle, rgba(245, 156, 71, 0.25), transparent 65%);
         filter: blur(8px);
         opacity: 0;
         transition: opacity 0.45s ease;

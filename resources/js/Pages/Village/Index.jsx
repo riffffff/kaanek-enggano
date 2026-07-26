@@ -199,13 +199,13 @@ export default function VillageIndex({ villages = [] }) {
                   <Link
                     key={village.slug || index}
                     href={`/villages/${village.slug}`}
-                    className="group hover-lift overlay-glow reveal-up relative overflow-hidden bg-white shadow-md flex-shrink-0 w-72 sm:w-80 md:w-96 rounded-lg"
+                    className="group hover-lift overlay-glow reveal-up relative overflow-hidden bg-white shadow-md shrink-0 w-72 sm:w-80 md:w-96 rounded-lg"
                     style={{ '--reveal-delay': `${120 + index * 80}ms` }}
                   >
                     <img
                       src={village.image}
                       alt={village.name}
-                      className="media-zoom h-full w-full object-cover aspect-[4/5] rounded-lg"
+                      className="media-zoom h-full w-full object-cover aspect-4/5 rounded-lg"
                       loading="lazy"
                     />
                     <div className="absolute inset-0 bg-linear-to-t from-neutral-950/95 via-neutral-950/30 to-transparent transition-opacity duration-500 group-hover:opacity-95 rounded-lg" />
@@ -255,13 +255,13 @@ export default function VillageIndex({ villages = [] }) {
                   <Link
                     key={tribe.id || index}
                     href={`/tribes/${tribe.id}`}
-                    className="group hover-lift overlay-glow reveal-up relative overflow-hidden bg-white shadow-md flex-shrink-0 w-72 sm:w-80 md:w-96 rounded-lg"
+                    className="group hover-lift overlay-glow reveal-up relative overflow-hidden bg-white shadow-md shrink-0 w-72 sm:w-80 md:w-96 rounded-lg"
                     style={{ '--reveal-delay': `${120 + index * 80}ms` }}
                   >
                     <img
                       src={tribe.image}
                       alt={tribe.name}
-                      className="media-zoom h-full w-full object-cover aspect-[4/5] rounded-lg"
+                      className="media-zoom h-full w-full object-cover aspect-4/5 rounded-lg"
                       loading="lazy"
                     />
                     <div className="absolute inset-0 bg-linear-to-t from-neutral-950/95 via-neutral-950/30 to-transparent transition-opacity duration-500 group-hover:opacity-95 rounded-lg" />

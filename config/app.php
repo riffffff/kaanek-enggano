@@ -54,6 +54,8 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    'asset_url' => env('ASSET_URL'),
+
     'whatsapp_number' => env('APP_WA_NUMBER', '6280000000000'),
 
     /*

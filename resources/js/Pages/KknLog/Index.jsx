@@ -229,7 +229,7 @@ export default function KknLogIndex({ items = [], selectedCategory = null }) {
                 {carouselArticles.map((article) => (
                   <article key={article.slug} className="min-w-full">
                     <Link href={`/kkn-log/${article.slug}`} className="grid lg:grid-cols-12">
-                      <div className="relative lg:col-span-7 min-h-[320px] lg:min-h-[440px] overflow-hidden">
+                      <div className="relative lg:col-span-7 min-h-80 lg:min-h-110 overflow-hidden">
                         <img
                           src={article.image}
                           alt={article.title}
@@ -296,7 +296,7 @@ export default function KknLogIndex({ items = [], selectedCategory = null }) {
                 style={{ '--reveal-delay': `${120 + index * 60}ms` }}
               >
                 <div>
-                  <Link href={`/kkn-log/${item.slug}`} className="block relative overflow-hidden aspect-[16/10]">
+                  <Link href={`/kkn-log/${item.slug}`} className="block relative overflow-hidden aspect-16/10">
                     <img
                       src={item.image}
                       alt={item.title}

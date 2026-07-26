@@ -14,6 +14,17 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\HandleInertiaRequests::class,
         ]);
+
+        $middleware->trustProxies(at: '*');
+        $middleware->trustHosts(at: [
+            'localhost',
+            '127.0.0.1',
+            '*.localhost',
+            'jelajahenggano.com',
+            'www.jelajahenggano.com',
+            '*.jelajahenggano.com',
+            env('APP_DOMAIN'),
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

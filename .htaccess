@@ -1,0 +1,16 @@
+# =====================================================================
+# .htaccess ROOT (untuk folder DI LUAR public_html / folder project)
+# TARUH file ini di folder tempat kamu simpan app (bukan public_html)
+# Contoh: /home/user/web-enggano/.htaccess  (bukan di public_html)
+# Berfungsi memblokir akses HTTP langsung ke folder project
+# =====================================================================
+<RequireAll>
+    Require all denied
+</RequireAll>
+
+# Blokir semua file yang sensitif meskipun server salah konfigurasi
+<FilesMatch "^(\.env|\.env.*|\.user\.ini|php\.ini|artisan|composer\.(json|lock)|package\.json|package-lock\.json|vite\.config\.(js|ts))$">
+    Require all denied
+</FilesMatch>
+
+Options -Indexes -MultiViews

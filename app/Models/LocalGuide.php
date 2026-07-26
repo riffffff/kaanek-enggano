@@ -15,7 +15,6 @@ class LocalGuide extends Model implements HasMedia
     protected $fillable = [
         'name',
         'whatsapp_number',
-        'expertise',
     ];
 
     public function destinations(): HasMany

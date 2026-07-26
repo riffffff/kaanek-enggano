@@ -40,10 +40,6 @@ class LocalGuideResource extends Resource
                             ->label('WhatsApp')
                             ->tel()
                             ->required(),
-                        Forms\Components\Textarea::make('expertise')
-                            ->label('Keahlian')
-                            ->rows(4)
-                            ->columnSpanFull(),
                     ])
                     ->columns(2),
                 Forms\Components\Section::make('Foto')
@@ -52,7 +48,6 @@ class LocalGuideResource extends Resource
                             ->label('Foto guide')
                             ->collection('photos')
                             ->image()
-                            ->imageEditor()
                             ->columnSpanFull(),
                     ]),
             ]);
@@ -72,9 +67,6 @@ class LocalGuideResource extends Resource
                 Tables\Columns\TextColumn::make('whatsapp_number')
                     ->label('WhatsApp')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('expertise')
-                    ->label('Keahlian')
-                    ->limit(50),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

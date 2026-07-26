@@ -1,6 +1,5 @@
 import { Head, Link } from '@inertiajs/react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 
 const fallbackDestinations = [
   {
@@ -49,6 +48,7 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
   }, [destinations])
 
   const [activeIndex, setActiveIndex] = useState(0)
+  const [isHovered, setIsHovered] = useState(false)
 
   const activeDestination = items[activeIndex] || items[0]
 
@@ -59,6 +59,15 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
   const handlePrev = () => {
     setActiveIndex((prev) => (prev - 1 + items.length) % items.length)
   }
+
+  // Auto-slide effect
+  useEffect(() => {
+    if (isHovered) return // Pause if hovering
+    const interval = setInterval(() => {
+      handleNext()
+    }, 5000) // Change slide every 5 seconds
+    return () => clearInterval(interval) // Cleanup on unmount or when hovered changes
+  }, [items.length, isHovered])
 
   return (
     <>
@@ -71,7 +80,7 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
           <div
             key={item.id || index}
             className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              index === activeIndex ? 'opacity-100 z-0 scale-105 transition-transform duration-[10000ms]' : 'opacity-0 -z-10'
+              index === activeIndex ? 'opacity-100 z-0 scale-105 transition-transform duration-10000' : 'opacity-0 -z-10'
             }`}
           >
             <img
@@ -80,13 +89,13 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
               className="reveal-scale w-full h-full object-cover"
             />
             {/* Theme Overlay Gradients */}
-            <div className="absolute inset-0 bg-gradient-to-r from-primary-950/95 via-primary-950/70 to-primary-950/30" />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary-950/90 via-transparent to-primary-950/40" />
+            <div className="absolute inset-0 bg-linear-to-r from-primary-950/95 via-primary-950/70 to-primary-950/30" />
+            <div className="absolute inset-0 bg-linear-to-t from-primary-950/90 via-transparent to-primary-950/40" />
           </div>
         ))}
 
         {/* Content & Showcase Slider */}
-        <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 md:px-12 lg:px-16 w-full">
+        <div className="relative z-10 mx-auto max-w-full px-6 py-20 md:px-12 lg:px-16 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
 
             {/* Left Header & Active Item Info */}
@@ -111,7 +120,23 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
             </div>
 
             {/* Right Interactive Destination Cards Slider */}
-            <div className="lg:col-span-7 mt-8 lg:mt-0">
+            <div
+              className="lg:col-span-7 mt-8 lg:mt-0 relative"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              {/* Scroll Indicator - Left */}
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 z-30 pointer-events-none">
+                <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 text-white animate-pulse">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                </div>
+              </div>
+              {/* Scroll Indicator - Right */}
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 z-30 pointer-events-none">
+                <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 text-white animate-pulse">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </div>
+              </div>
               <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 pt-2 scrollbar-hide snap-x snap-mandatory">
                 {items.map((item, index) => {
                   const isActive = index === activeIndex
@@ -125,10 +150,10 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
                           setActiveIndex(index)
                         }
                       }}
-                      className={`group hover-lift overlay-glow reveal-up relative flex-shrink-0 cursor-pointer snap-start transition-all duration-500 ease-out rounded-xl overflow-hidden shadow-xl ${
+                      className={`group hover-lift overlay-glow reveal-up relative shrink-0 cursor-pointer snap-start transition-all duration-500 ease-out rounded-xl overflow-hidden shadow-xl ${
                         isActive
-                          ? 'w-48 sm:w-56 md:w-64 h-80 sm:h-96 ring-2 ring-accent-500 scale-105 z-20'
-                          : 'w-40 sm:w-48 h-72 sm:h-84 opacity-75 hover:opacity-100 hover:scale-102 z-10'
+                          ? 'w-56 sm:w-64 md:w-72 aspect-9/16 ring-2 ring-accent-500 scale-105 z-20'
+                          : 'w-48 sm:w-56 md:w-64 aspect-9/16 opacity-75 hover:opacity-100 hover:scale-102 z-10'
                       }`}
                       style={{ '--reveal-delay': `${140 + index * 60}ms` }}
                     >
@@ -140,17 +165,17 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
                       />
 
                       {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-primary-950/95 via-primary-950/30 to-transparent transition-opacity duration-500 group-hover:opacity-95" />
+                      <div className="absolute inset-0 bg-linear-to-t from-primary-950/95 via-primary-950/30 to-transparent transition-opacity duration-500 group-hover:opacity-95" />
 
                       {/* Card Info */}
-                      <div className="absolute inset-x-0 bottom-0 p-6 space-y-1">
-                        <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-accent-400 block">
+                      <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 space-y-2">
+                        <span className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-accent-400 block">
                           {item.tag}
                         </span>
-                        <h3 className="font-display font-semibold text-xl sm:text-2xl text-white leading-tight line-clamp-1">
+                        <h3 className="font-display font-semibold text-2xl sm:text-3xl text-white leading-tight line-clamp-1">
                           {item.name}
                         </h3>
-                        <p className="text-xs text-white/70 font-normal line-clamp-2 mt-1">
+                        <p className="text-sm sm:text-base text-white/70 font-normal line-clamp-2 mt-1">
                           {item.description}
                         </p>
                       </div>
@@ -163,24 +188,7 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
           </div>
 
           {/* Slider Controls & Progress Counter */}
-          <div className="reveal-up mt-12 sm:mt-16 flex items-center justify-between border-t border-white/15 pt-6" style={{ '--reveal-delay': '300ms' }}>
-            {/* Arrows */}
-            <div className="flex items-center gap-3">
-              <button
-                onClick={handlePrev}
-                aria-label="Previous Slide"
-                className="hover-lift w-11 h-11 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-primary-950 transition-colors"
-              >
-                <ChevronLeft size={20} />
-              </button>
-              <button
-                onClick={handleNext}
-                aria-label="Next Slide"
-                className="hover-lift w-11 h-11 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-primary-950 transition-colors"
-              >
-                <ChevronRight size={20} />
-              </button>
-            </div>
+          <div className="reveal-up mt-12 sm:mt-16 flex items-center justify-end border-t border-white/15 pt-6" style={{ '--reveal-delay': '300ms' }}>
 
             {/* Slider Bar & Active Number */}
             <div className="flex items-center gap-6">

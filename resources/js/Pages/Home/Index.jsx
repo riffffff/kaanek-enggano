@@ -20,14 +20,14 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
       </Head>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden text-white">
+      <section className="relative overflow-hidden text-white min-h-screen flex items-center">
         <img
           src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80"
           alt="Pulau Enggano"
           className="reveal-scale absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/30 to-black/70" />
-        <div className="relative mx-auto max-w-7xl px-6 pb-32 pt-48 md:px-12 lg:px-16">
+        <div className="relative mx-auto max-w-7xl px-6 py-32 md:px-12 lg:px-16 w-full">
           <div className="max-w-4xl">
             <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/70">
               Selamat Datang
