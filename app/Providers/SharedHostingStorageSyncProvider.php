@@ -1,0 +1,152 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+
+class SharedHostingStorageSyncProvider extends ServiceProvider
+{
+    protected bool $shutdownRegistered = false;
+
+    public function register(): void
+    {
+        //
+    }
+
+    public function boot(): void
+    {
+        if ($this->shutdownRegistered) {
+            return;
+        }
+
+        $this->shutdownRegistered = true;
+
+        // Shutdown function BERJALAN di KEDUA CONTEXT:
+        // - WEB (setelah response dikirim ke user, tidak bikin user nunggu)
+        // - CLI (setelah artisan command selesai)
+        register_shutdown_function(function (): void {
+            $source = storage_path('app/public');
+            $dest   = rtrim($this->app->basePath(), '/') . '/../public_html/storage';
+            $dest   = realpath($dest) ?: $dest;
+
+            $this->runIfNeeded($source, $dest);
+        });
+    }
+
+    public static function runIfNeeded(string $source, string $dest, bool $force = false): array
+    {
+        $stats = [
+            'skipped_lock'  => false,
+            'skipped_path'  => false,
+            'dest_is_symlink' => false,
+            'files_copied'  => 0,
+            'dirs_created'  => 0,
+            'bytes_copied'  => 0,
+        ];
+
+        if (!is_dir($source)) {
+            @mkdir($source, 0755, true);
+        }
+        if (!is_dir($source)) {
+            $stats['skipped_path'] = true;
+            return $stats;
+        }
+
+        if (is_link($dest)) {
+            $stats['dest_is_symlink'] = true;
+            return $stats;
+        }
+
+        if (!is_dir($dest)) {
+            @mkdir($dest, 0755, true);
+        }
+        if (!is_dir($dest) || !is_writable($dest)) {
+            $stats['skipped_path'] = true;
+            return $stats;
+        }
+
+        if (!$force) {
+            $lockFile = implode(DIRECTORY_SEPARATOR, [
+                storage_path('framework/cache'),
+                '.storage_sync.lock',
+            ]);
+            $waitSec = 10;
+
+            if (is_file($lockFile)) {
+                $lastSync = (int) @filemtime($lockFile);
+                if ((time() - $lastSync) < $waitSec) {
+                    $stats['skipped_lock'] = true;
+                    return $stats;
+                }
+            }
+            @touch($lockFile);
+        }
+
+        $result = self::mirror($source, $dest);
+        $stats['files_copied'] = $result['files_copied'];
+        $stats['dirs_created']  = $result['dirs_created'];
+        $stats['bytes_copied']  = $result['bytes_copied'];
+
+        return $stats;
+    }
+
+    protected static function mirror(string $source, string $dest): array
+    {
+        $stats = [
+            'files_copied' => 0,
+            'dirs_created' => 0,
+            'bytes_copied' => 0,
+        ];
+
+        $source = rtrim($source, '/\\');
+        $dest   = rtrim($dest, '/\\');
+
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($source, \RecursiveDirectoryIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::SELF_FIRST
+        );
+
+        foreach ($iterator as $item) {
+            /** @var \SplFileInfo $item */
+            $relPath = $iterator->getSubPathname();
+            $target  = $dest . DIRECTORY_SEPARATOR . $relPath;
+
+            if ($item->isDir()) {
+                if (!is_dir($target)) {
+                    @mkdir($target, 0755, true);
+                    $stats['dirs_created']++;
+                }
+                continue;
+            }
+
+            if ($item->isFile()) {
+                $targetDir = dirname($target);
+                if (!is_dir($targetDir)) {
+                    @mkdir($targetDir, 0755, true);
+                    $stats['dirs_created']++;
+                }
+
+                $copyNow = true;
+                if (is_file($target)) {
+                    $sourceSize = $item->getSize();
+                    $targetSize = filesize($target);
+                    $sourceMtime = $item->getMTime();
+                    $targetMtime = filemtime($target);
+                    if ($sourceSize === $targetSize && $sourceMtime <= $targetMtime) {
+                        $copyNow = false;
+                    }
+                }
+
+                if ($copyNow) {
+                    if (@copy($item->getPathname(), $target)) {
+                        @chmod($target, 0644);
+                        $stats['files_copied']++;
+                        $stats['bytes_copied'] += (int) $item->getSize();
+                    }
+                }
+            }
+        }
+
+        return $stats;
+    }
+}

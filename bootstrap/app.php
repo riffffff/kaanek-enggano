@@ -16,15 +16,22 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->trustProxies(at: '*');
-        $middleware->trustHosts(at: [
+
+        $appDomain = env('APP_DOMAIN', 'jelajahenggano.com');
+        $middleware->trustHosts(at: array_values(array_filter([
+            // Localhost & local testing
             'localhost',
             '127.0.0.1',
-            '*.localhost',
-            'jelajahenggano.com',
-            'www.jelajahenggano.com',
-            '*.jelajahenggano.com',
-            env('APP_DOMAIN'),
-        ]);
+            '/.*\.localhost$/',
+            // Temporary hosting domain (cPanel ArenHost)
+            'mten.kencang.id',
+            '/.*\.mten\.kencang\.id$/',
+            // Production domain: explicit hosts
+            (string) $appDomain,
+            'www.' . (string) $appDomain,
+            // Production domain: wildcard subdomains (REGEX)
+            '/.*\.' . preg_quote((string) $appDomain, '/') . '$/',
+        ], fn ($v) => !empty($v) && is_string($v))));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
