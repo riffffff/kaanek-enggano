@@ -127,13 +127,13 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
                   <Link
                     key={dest.slug || index}
                     href={`/destinations/${dest.slug}`}
-                    className="group hover-lift overlay-glow reveal-up relative overflow-hidden text-white flex-shrink-0 w-80 md:w-96 rounded-lg"
+                    className="group hover-lift overlay-glow reveal-up relative overflow-hidden text-white shrink-0 w-80 md:w-96 rounded-lg"
                     style={{ '--reveal-delay': `${120 + index * 80}ms` }}
                   >
                     <img
                       src={dest.image}
                       alt={dest.name}
-                      className="media-zoom h-full w-full object-cover aspect-[4/5] rounded-lg"
+                      className="media-zoom h-full w-full object-cover aspect-4/5 rounded-lg"
                       loading="lazy"
                     />
                     <div className="absolute inset-0 bg-linear-to-t from-neutral-950/95 via-neutral-950/30 to-transparent transition-opacity duration-500 group-hover:opacity-95 rounded-lg" />

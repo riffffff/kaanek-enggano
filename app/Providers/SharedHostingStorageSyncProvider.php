@@ -106,10 +106,13 @@ class SharedHostingStorageSyncProvider extends ServiceProvider
             \RecursiveIteratorIterator::SELF_FIRST
         );
 
+        $sourcePrefixLen = strlen($source) + 1;
+
         foreach ($iterator as $item) {
             /** @var \SplFileInfo $item */
-            $relPath = $iterator->getSubPathname();
-            $target  = $dest . DIRECTORY_SEPARATOR . $relPath;
+            $fullPath = (string) $item->getPathname();
+            $relPath  = substr($fullPath, $sourcePrefixLen);
+            $target   = $dest . DIRECTORY_SEPARATOR . $relPath;
 
             if ($item->isDir()) {
                 if (!is_dir($target)) {
