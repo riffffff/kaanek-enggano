@@ -23,8 +23,9 @@ class SharedHostingStorageSyncProvider extends ServiceProvider
 
         register_shutdown_function(function (): void {
             $source = storage_path('app/public');
-            // Project ada di: ~/repositories/kaanek-enggano
-            // Ke ~/public_html butuh naik 2 level: repositories/ -> ~/ -> masuk public_html
+
+            // ⭐ FIX: karena project di repositories/, naik 2 level ke atas:
+            // ~/repositories/kaanek-enggano -> ~/repositories -> ~/ -> lalu masuk public_html
             $dest = rtrim($this->app->basePath(), '/') . '/../../public_html/storage';
             $dest = realpath($dest) ?: $dest;
 
@@ -100,10 +101,6 @@ class SharedHostingStorageSyncProvider extends ServiceProvider
         $source = rtrim($source, '/\\');
         $dest   = rtrim($dest, '/\\');
 
-        if (!is_dir($source)) {
-            return $stats;
-        }
-
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($source, \RecursiveDirectoryIterator::SKIP_DOTS),
             \RecursiveIteratorIterator::SELF_FIRST
@@ -134,9 +131,9 @@ class SharedHostingStorageSyncProvider extends ServiceProvider
                 $copyNow = true;
                 if (is_file($target)) {
                     $sourceSize = $item->getSize();
-                    $targetSize = @filesize($target);
+                    $targetSize = filesize($target);
                     $sourceMtime = $item->getMTime();
-                    $targetMtime = @filemtime($target);
+                    $targetMtime = filemtime($target);
                     if ($sourceSize === $targetSize && $sourceMtime <= $targetMtime) {
                         $copyNow = false;
                     }
