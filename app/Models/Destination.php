@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Image\Enums\CropPosition;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Sluggable\HasSlug;
@@ -70,7 +71,7 @@ class Destination extends Model implements HasMedia
         $this->addMediaConversion('thumbnail')
             ->width(400)
             ->height(400)
-            ->crop('crop-center', 400, 400)
+            ->crop(400, 400, CropPosition::Center)
             ->optimize()
             ->performOnCollections('photos', 'background')
             ->nonQueued();
