@@ -26,13 +26,37 @@ class DestinationController extends Controller
         $allowedTypes = ['bahari', 'history', 'wildlife'];
 
         $destinations = Destination::query()
+            ->with('media')
             ->when(in_array($type, $allowedTypes, true), fn ($query) => $query->where('type', $type))
             ->orderBy('name')
             ->get()
             ->map(function (Destination $destination) {
                 $backgroundImage = $destination->getFirstMedia('background');
                 $firstPhoto = $destination->getFirstMedia('photos');
-                $previewMedia = $backgroundImage ?: $firstPhoto;
+
+                $coverMedia = $backgroundImage ?: $firstPhoto;
+
+                $coverUrl = null;
+                $coverThumbUrl = null;
+                if ($coverMedia) {
+                    $coverUrl = $coverMedia->hasGeneratedConversion('medium')
+                        ? $coverMedia->getUrl('medium')
+                        : $coverMedia->getUrl();
+                    $coverThumbUrl = $coverMedia->hasGeneratedConversion('thumbnail')
+                        ? $coverMedia->getUrl('thumbnail')
+                        : null;
+                }
+
+                $heroUrl = null;
+                if ($backgroundImage) {
+                    $heroUrl = $backgroundImage->hasGeneratedConversion('medium')
+                        ? $backgroundImage->getUrl('medium')
+                        : $backgroundImage->getUrl();
+                } elseif ($firstPhoto) {
+                    $heroUrl = $firstPhoto->hasGeneratedConversion('medium')
+                        ? $firstPhoto->getUrl('medium')
+                        : $firstPhoto->getUrl();
+                }
 
                 return [
                     'id' => $destination->id,
@@ -41,12 +65,11 @@ class DestinationController extends Controller
                     'short_description' => $this->excerptFromDescription($destination->description),
                     'type' => $destination->type,
                     'difficulty_level' => $destination->difficulty_level,
-                    'image' => $previewMedia?->hasGeneratedConversion('medium')
-                        ? $previewMedia->getUrl('medium')
-                        : $previewMedia?->getUrl(),
-                    'image_thumb' => $previewMedia?->hasGeneratedConversion('thumbnail')
-                        ? $previewMedia->getUrl('thumbnail')
-                        : null,
+                    'image' => $heroUrl,
+                    'image_thumb' => $coverThumbUrl,
+                    'cover' => $coverUrl,
+                    'cover_thumb' => $coverThumbUrl,
+                    'hero' => $heroUrl,
                 ];
             });
 
@@ -59,12 +82,17 @@ class DestinationController extends Controller
     public function show(string $slug): Response
     {
         $destination = Destination::query()
+            ->with('media')
             ->where('slug', $slug)
             ->firstOrFail();
 
         $backgroundMedia = $destination->getFirstMedia('background');
+        $firstPhoto = $destination->getFirstMedia('photos');
+
         $backgroundImage = null;
         $backgroundImageThumb = null;
+        $heroImage = null;
+
         if ($backgroundMedia) {
             $backgroundImage = $backgroundMedia->hasGeneratedConversion('medium')
                 ? $backgroundMedia->getUrl('medium')
@@ -72,6 +100,15 @@ class DestinationController extends Controller
             $backgroundImageThumb = $backgroundMedia->hasGeneratedConversion('thumbnail')
                 ? $backgroundMedia->getUrl('thumbnail')
                 : null;
+            $heroImage = $backgroundMedia->getUrl();
+        } elseif ($firstPhoto) {
+            $backgroundImage = $firstPhoto->hasGeneratedConversion('medium')
+                ? $firstPhoto->getUrl('medium')
+                : $firstPhoto->getUrl();
+            $backgroundImageThumb = $firstPhoto->hasGeneratedConversion('thumbnail')
+                ? $firstPhoto->getUrl('thumbnail')
+                : null;
+            $heroImage = $firstPhoto->getUrl();
         }
 
         $gallery = $destination->getMedia('photos')
@@ -105,7 +142,7 @@ class DestinationController extends Controller
         $firstGalleryItem = $gallery->first();
         $frontImage = $firstGalleryItem
             ? ($firstGalleryItem['url_medium'] ?: $firstGalleryItem['url'])
-            : null;
+            : $heroImage;
 
         return Inertia::render('Destination/Show', [
             'destination' => [
@@ -122,6 +159,7 @@ class DestinationController extends Controller
                 'lng' => $destination->lng,
                 'background_image' => $backgroundImage,
                 'background_image_thumb' => $backgroundImageThumb,
+                'hero_image' => $heroImage,
                 'gallery' => $gallery->all(),
                 'image' => $frontImage,
             ],

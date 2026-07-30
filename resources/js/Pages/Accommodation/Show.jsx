@@ -11,11 +11,20 @@ export default function HomestayShow({ homestay, prev = null, next = null }) {
       <Head title={data.name} />
 
       <section className="relative min-h-[78vh] overflow-hidden bg-primary-950 text-white">
-        {data.image ? (
+        {(data.hero || data.cover || data.cover_image || data.image) ? (
           <img
-            src={data.image}
+            src={data.hero || data.cover || data.cover_image || data.image}
             alt={data.name}
             className="reveal-scale absolute inset-0 h-full w-full object-cover"
+            onError={(e) => {
+              if (!e.currentTarget.dataset.fb) {
+                e.currentTarget.dataset.fb = '1'
+                e.currentTarget.src =
+                  data.cover_image ||
+                  data.image ||
+                  'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1800&q=80'
+              }
+            }}
           />
         ) : (
           <div className="absolute inset-0 bg-linear-to-br from-primary-950 via-primary-900 to-primary-800" />
@@ -117,16 +126,30 @@ export default function HomestayShow({ homestay, prev = null, next = null }) {
         </h2>
 
         <div className="mt-8 grid gap-5 md:grid-cols-3">
-          {(data.gallery || []).map((image, index) => (
-            <div key={index} className="group hover-lift reveal-up overflow-hidden bg-white shadow-sm" style={{ '--reveal-delay': `${120 + index * 90}ms` }}>
-              <img
-                src={image}
-                alt={`Galeri ${data.name} - ${index + 1}`}
-                className="media-zoom aspect-4/3 w-full object-cover"
-                loading="lazy"
-              />
-            </div>
-          ))}
+          {(data.gallery || []).map((image, index) => {
+            const imgUrl = typeof image === 'string' ? image : (image.url_medium || image.url)
+            return (
+              <div key={image.id || index} className="group hover-lift reveal-up overflow-hidden bg-white shadow-sm ring-1 ring-neutral-200/70 rounded-xl" style={{ '--reveal-delay': `${120 + index * 90}ms` }}>
+                <img
+                  src={imgUrl}
+                  alt={`Galeri ${data.name} - ${index + 1}`}
+                  className="media-zoom aspect-4/3 w-full object-cover"
+                  loading="lazy"
+                  onError={(e) => {
+                    if (!e.currentTarget.dataset.fb && typeof image !== 'string') {
+                      e.currentTarget.dataset.fb = '1'
+                      e.currentTarget.src = image.url
+                    }
+                  }}
+                />
+                {typeof image !== 'string' && image.name && (
+                  <div className="bg-surface-50 px-5 py-3 text-xs font-medium text-neutral-500 border-t border-neutral-100">
+                    {image.name}
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
 
         {!data.gallery?.length && (

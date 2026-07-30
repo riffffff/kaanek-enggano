@@ -16,6 +16,7 @@ use Spatie\Sluggable\SlugOptions;
  * @property string $category
  * @property \Illuminate\Support\Carbon|null $date
  * @property string $content
+ * @property bool $is_highlighted
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  */
@@ -29,12 +30,14 @@ class KknLogItem extends Model implements HasMedia
         'category',
         'date',
         'content',
+        'is_highlighted',
     ];
 
     protected function casts(): array
     {
         return [
             'date' => 'date',
+            'is_highlighted' => 'boolean',
         ];
     }
 
@@ -48,6 +51,11 @@ class KknLogItem extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
+        $this->addMediaCollection('cover')
+            ->singleFile()
+            ->useDisk('public')
+            ->withResponsiveImages();
+
         $this->addMediaCollection('photos')->useDisk('public');
     }
 }

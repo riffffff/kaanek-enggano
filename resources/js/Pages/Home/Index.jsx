@@ -1,26 +1,84 @@
-import { useState, useEffect } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Head, Link } from '@inertiajs/react'
-import { ChevronRight, Landmark, ArrowRight } from 'lucide-react'
+import { ChevronRight, ChevronLeft, Landmark, ArrowRight } from 'lucide-react'
 import { useTranslate } from '../../hooks/useTranslate'
 import KknCard from '../../Components/KknCard'
 import { historyData } from '../../data/history.js'
 import Button from '../../Components/Button'
+
+const fallbackDestinations = [
+  {
+    id: 1,
+    slug: 'destinasi-bahari',
+    name: 'Destinasi Bahari',
+    tag: 'BAHARI',
+    description: 'Garis pantai tak tersentuh, laguna tersembunyi, dan kekayaan terumbu karang.',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80',
+    hero: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80',
+    cover: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80',
+  },
+  {
+    id: 2,
+    slug: 'hutan-endemik',
+    name: 'Hutan Endemik',
+    tag: 'WILDLIFE',
+    description: 'Paru-paru pulau yang menyimpan flora dan fauna langka.',
+    image: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=80',
+    hero: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=80',
+    cover: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=80',
+  },
+  {
+    id: 3,
+    slug: 'warisan-enam-suku',
+    name: 'Warisan Enam Suku',
+    tag: 'HISTORY',
+    description: 'Lapisan sejarah, adat tradisi, dan artefak kebudayaan asli.',
+    image: 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=1600&q=80',
+    hero: 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=1600&q=80',
+    cover: 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=1600&q=80',
+  },
+]
 
 export default function HomeIndex({ latestKkn = [], destinations = [] }) {
   const { tt } = useTranslate('home')
   const [activeDestIndex, setActiveDestIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
 
-  const destItems = destinations.length > 0 ? destinations : []
-  const activeDest = destItems[activeDestIndex] || destItems[0]
+  const items = useMemo(() => {
+    const src = destinations && destinations.length ? destinations : fallbackDestinations
+    return src.map((item, idx) => {
+      const fallback = fallbackDestinations[idx % fallbackDestinations.length]
+      const imageSrc = item.hero || item.image || item.cover || fallback.image
+      return {
+        id: item.id || fallback.id,
+        slug: item.slug || fallback.slug,
+        name: item.name || fallback.name,
+        tag: item.tag || fallback.tag,
+        description: item.short_description || item.description || fallback.description,
+        image: imageSrc,
+        cover: item.cover || imageSrc,
+        hero: imageSrc,
+      }
+    })
+  }, [destinations])
+
+  const activeDest = items[activeDestIndex] || items[0]
+
+  const handleNext = () => {
+    setActiveDestIndex((prev) => (prev + 1) % items.length)
+  }
+
+  const handlePrev = () => {
+    setActiveDestIndex((prev) => (prev - 1 + items.length) % items.length)
+  }
 
   useEffect(() => {
-    if (isHovered || destItems.length === 0) return
+    if (isHovered || items.length === 0) return
     const interval = setInterval(() => {
-      setActiveDestIndex((prev) => (prev + 1) % destItems.length)
+      setActiveDestIndex((prev) => (prev + 1) % items.length)
     }, 5000)
     return () => clearInterval(interval)
-  }, [destItems.length, isHovered])
+  }, [items.length, isHovered])
 
   return (
     <>
@@ -102,129 +160,173 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
         </div>
       </section>
 
-      {/* Destinations Showcase — Editorial Split */}
-      {destItems.length > 0 && (
+      {/* Destinations Showcase — SAMA DENGAN HALAMAN /destinations */}
+      {items.length > 0 && (
         <section
-          className="relative w-full bg-[#0d0d0c] overflow-hidden"
+          className="relative min-h-[90vh] lg:min-h-screen w-full bg-primary-950 text-white overflow-hidden flex items-center"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[88vh]">
+          {/* Dynamic Background Images — Full background slider */}
+          {items.map((item, index) => (
+            <div
+              key={item.id || index}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                index === activeDestIndex ? 'opacity-100 z-0 scale-105 transition-transform duration-10000' : 'opacity-0 -z-10'
+              }`}
+            >
+              <img
+                src={item.hero || item.image}
+                alt={item.name}
+                className="reveal-scale w-full h-full object-cover"
+                onError={(e) => {
+                  if (!e.currentTarget.dataset.fb) {
+                    e.currentTarget.dataset.fb = '1'
+                    e.currentTarget.src = item.cover || fallbackDestinations[index % fallbackDestinations.length].hero
+                  }
+                }}
+              />
+              {/* Gradient Overlay — SAMA PERSIS dengan /destinations */}
+              <div className="absolute inset-0 bg-linear-to-r from-primary-950/95 via-primary-950/70 to-primary-950/30" />
+              <div className="absolute inset-0 bg-linear-to-t from-primary-950/90 via-transparent to-primary-950/40" />
+            </div>
+          ))}
 
-            {/* LEFT — Content Panel */}
-            <div className="relative z-10 flex flex-col justify-between px-8 py-16 md:px-14 md:py-20 lg:px-16 lg:py-24">
-              {/* Top label */}
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.4em] text-white/50 font-medium mb-10">
+          {/* Content & Showcase Slider — 12-Column Grid SAMA PERSIS */}
+          <div className="relative z-10 mx-auto max-w-full px-6 py-20 md:px-12 lg:px-16 w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+
+              {/* Left — Header & Active Item Info */}
+              <div className="lg:col-span-5 space-y-8">
+                <p className="reveal-up text-xs uppercase tracking-[0.3em] font-medium text-accent-400">
                   {tt('Eksplorasi Enggano', 'explore.label')}
                 </p>
 
-                {/* Active destination info */}
-                {activeDest && (
-                  <div key={activeDestIndex} className="reveal-up space-y-6">
-                    <div className="flex items-center gap-3">
-                      <div className="h-px w-8 bg-accent-400" />
-                      <span className="text-xs uppercase tracking-[0.3em] text-accent-400 font-semibold">
-                        {activeDest.tag || 'Destinasi'}
-                      </span>
-                    </div>
-                    <h2 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-semibold text-white leading-[1.05] tracking-tight">
-                      {activeDest.name}
-                    </h2>
-                    <p className="text-sm md:text-base leading-7 text-white/75 max-w-sm">
-                      {activeDest.description}
-                    </p>
-                  </div>
-                )}
-              </div>
+                <h1
+                  className="reveal-up font-display text-4xl sm:text-5xl md:text-6xl font-semibold uppercase tracking-wider leading-tight text-white"
+                  style={{ '--reveal-delay': '100ms' }}
+                >
+                  {activeDest.name}
+                </h1>
 
-              {/* Bottom — CTA + Nav */}
-              <div className="mt-16 space-y-8">
-                {/* CTA Buttons */}
-                <div className="flex flex-wrap items-center gap-4">
+                <p
+                  className="reveal-up text-base leading-relaxed text-white/80 max-w-md line-clamp-2"
+                  style={{ '--reveal-delay': '200ms' }}
+                >
+                  {activeDest.description}
+                </p>
+
+                <div className="reveal-up flex flex-wrap gap-4" style={{ '--reveal-delay': '250ms' }}>
                   <Link
-                    href={activeDest ? `/destinations/${activeDest.slug}` : '/destinations'}
-                    className="group inline-flex items-center gap-2.5 border border-white/80 hover:border-white hover:bg-white hover:text-neutral-900 text-white text-sm font-semibold px-5 py-2.5 transition-all duration-200"
+                    href={`/destinations/${activeDest.slug}`}
+                    className="group inline-flex items-center gap-2.5 bg-accent-500 hover:bg-accent-600 px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-white shadow-lg shadow-accent-500/15 hover:shadow-accent-500/30 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
                   >
-                    Jelajahi Destinasi
-                    <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+                    Jelajahi
+                    <ChevronRight size={17} className="transition-transform group-hover:translate-x-1" />
                   </Link>
                   <Link
                     href="/destinations"
-                    className="text-sm font-medium text-white/50 hover:text-white/90 transition-colors underline underline-offset-4 decoration-white/20 hover:decoration-white/60"
+                    className="group inline-flex items-center gap-2.5 border-2 border-white/80 hover:border-white hover:bg-white hover:text-neutral-900 text-white px-7 py-3.5 text-sm font-semibold uppercase tracking-wider transition-all duration-300"
                   >
-                    Lihat Semua
+                    Lihat Selengkapnya
+                    <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" />
                   </Link>
                 </div>
+              </div>
 
-                {/* Dot Nav + Counter */}
-                <div className="flex items-center justify-between pt-4 border-t border-white/10">
-                  <div className="flex items-center gap-2.5">
-                    {destItems.map((_, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setActiveDestIndex(idx)}
-                        className={`transition-all duration-300 rounded-full ${
-                          idx === activeDestIndex
-                            ? 'w-7 h-2 bg-white'
-                            : 'w-2 h-2 bg-white/30 hover:bg-white/60'
+              {/* Right — Card Slider */}
+              <div className="lg:col-span-7 mt-8 lg:mt-0 relative">
+                {/* Arrow Kiri */}
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 z-30">
+                  <button
+                    onClick={handlePrev}
+                    className="bg-white/20 backdrop-blur-sm rounded-full p-2 text-white hover:bg-white/30 hover:scale-110 transition-all"
+                    aria-label="Prev"
+                  >
+                    <ChevronLeft size={24} strokeWidth={2.25} />
+                  </button>
+                </div>
+                {/* Arrow Kanan */}
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 z-30">
+                  <button
+                    onClick={handleNext}
+                    className="bg-white/20 backdrop-blur-sm rounded-full p-2 text-white hover:bg-white/30 hover:scale-110 transition-all"
+                    aria-label="Next"
+                  >
+                    <ChevronRight size={24} strokeWidth={2.25} />
+                  </button>
+                </div>
+
+                <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 pt-2 scrollbar-hide snap-x snap-mandatory px-8 sm:px-10">
+                  {items.map((item, index) => {
+                    const isActive = index === activeDestIndex
+                    return (
+                      <Link
+                        key={item.id || index}
+                        href={`/destinations/${item.slug}`}
+                        onClick={(e) => {
+                          if (!isActive) {
+                            e.preventDefault()
+                            setActiveDestIndex(index)
+                          }
+                        }}
+                        className={`group hover-lift overlay-glow reveal-up relative shrink-0 cursor-pointer snap-start transition-all duration-500 ease-out rounded-xl overflow-hidden shadow-xl ${
+                          isActive
+                            ? 'w-56 sm:w-64 md:w-72 aspect-9/16 ring-2 ring-accent-500 scale-105 z-20'
+                            : 'w-48 sm:w-56 md:w-64 aspect-9/16 opacity-75 hover:opacity-100 hover:scale-102 z-10'
                         }`}
-                        aria-label={`Destinasi ${idx + 1}`}
-                      />
-                    ))}
-                  </div>
-                  <span className="text-xs text-white/40 font-mono tabular-nums">
-                    {String(activeDestIndex + 1).padStart(2, '0')} / {String(destItems.length).padStart(2, '0')}
-                  </span>
+                        style={{ '--reveal-delay': `${140 + index * 60}ms` }}
+                      >
+                        <img
+                          src={item.cover || item.image}
+                          alt={item.name}
+                          className="media-zoom w-full h-full object-cover rounded-xl"
+                          loading="lazy"
+                          onError={(e) => {
+                            if (!e.currentTarget.dataset.fb) {
+                              e.currentTarget.dataset.fb = '1'
+                              e.currentTarget.src = fallbackDestinations[index % fallbackDestinations.length].cover
+                            }
+                          }}
+                        />
+
+                        {/* Gradient Overlay SAMA dengan /destinations */}
+                        <div className="absolute inset-0 bg-linear-to-t from-primary-950/95 via-primary-950/30 to-transparent transition-opacity duration-500 group-hover:opacity-95" />
+
+                        {/* Card Info */}
+                        <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 space-y-2">
+                          <span className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-accent-400 block">
+                            {item.tag}
+                          </span>
+                          <h3 className="font-display font-semibold text-2xl sm:text-3xl text-white leading-tight line-clamp-1">
+                            {item.name}
+                          </h3>
+                          <p className="text-sm sm:text-base text-white/70 font-normal line-clamp-2 mt-1">
+                            {item.description}
+                          </p>
+                        </div>
+                      </Link>
+                    )
+                  })}
+                </div>
+              </div>
+
+            </div>
+
+            {/* Bottom Controls — Counter & Progress Bar SAMA dengan /destinations */}
+            <div className="reveal-up mt-12 sm:mt-16 flex items-center justify-end border-t border-white/15 pt-6" style={{ '--reveal-delay': '300ms' }}>
+              <div className="flex items-center gap-6">
+                <div className="hidden sm:block w-32 md:w-48 h-0.5 bg-white/20 relative overflow-hidden rounded-full">
+                  <div
+                    className="absolute top-0 bottom-0 left-0 bg-accent-500 transition-all duration-500 rounded-full"
+                    style={{ width: `${((activeDestIndex + 1) / items.length) * 100}%` }}
+                  />
+                </div>
+                <div className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-white">
+                  {String(activeDestIndex + 1).padStart(2, '0')}<span className="text-white/40 text-xl font-light">/{String(items.length).padStart(2, '0')}</span>
                 </div>
               </div>
             </div>
-
-            {/* RIGHT — Full Photo Panel */}
-            <div className="relative overflow-hidden min-h-[60vh] lg:min-h-full">
-              {destItems.map((dest, index) => (
-                <Link
-                  key={dest.slug || index}
-                  href={`/destinations/${dest.slug}`}
-                  className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                    index === activeDestIndex ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-                  }`}
-                  tabIndex={index === activeDestIndex ? 0 : -1}
-                >
-                  <img
-                    src={dest.image}
-                    alt={dest.name}
-                    className="w-full h-full object-cover transition-transform duration-[8000ms] ease-linear scale-100 hover:scale-105"
-                  />
-                  {/* Subtle left vignette to blend with content */}
-                  <div className="absolute inset-0 bg-linear-to-r from-[#0d0d0c]/60 via-transparent to-transparent" />
-                  <div className="absolute inset-0 bg-linear-to-t from-[#0d0d0c]/40 via-transparent to-transparent" />
-                </Link>
-              ))}
-
-              {/* Thumbnail strip — bottom of photo */}
-              <div className="absolute bottom-6 right-6 z-10 flex gap-2">
-                {destItems.map((dest, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setActiveDestIndex(idx)}
-                    className={`overflow-hidden rounded transition-all duration-300 ${
-                      idx === activeDestIndex
-                        ? 'w-16 h-10 ring-1 ring-white/50 opacity-100'
-                        : 'w-10 h-10 opacity-40 hover:opacity-70'
-                    }`}
-                    aria-label={dest.name}
-                  >
-                    <img
-                      src={dest.image}
-                      alt={dest.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
-            </div>
-
           </div>
 
           <style>{`

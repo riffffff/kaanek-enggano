@@ -1,15 +1,33 @@
 import { Head, Link } from '@inertiajs/react'
-import { MapPin, ArrowRight, ChevronDown, ChevronUp, ChevronRight, Landmark } from 'lucide-react'
-import { lazy, Suspense, useState } from 'react'
+import { MapPin, ChevronLeft, ChevronRight } from 'lucide-react'
+import { lazy, Suspense, useRef } from 'react'
 import { tribesData } from '../../data/tribes.js'
-import { historyData, historyImageFallback } from '../../data/history.js'
-import { villagesList, villageMapMarkers, villageImageFallback } from '../../data/villages.js'
+import { historyData } from '../../data/history.js'
+import { villagesList, villageImageFallback } from '../../data/villages.js'
 import Button from '../../Components/Button'
 
 const LeafletMap = lazy(() => import('../../Components/LeafletMap'))
 
 export default function VillageIndex() {
-  const [showFullHistory, setShowFullHistory] = useState(false)
+  const villageSliderRef = useRef(null)
+  const tribeSliderRef = useRef(null)
+
+  const scrollVillagePrev = () => {
+    if (!villageSliderRef.current) return
+    villageSliderRef.current.scrollBy({ left: -Math.max(360, villageSliderRef.current.clientWidth * 0.8), behavior: 'smooth' })
+  }
+  const scrollVillageNext = () => {
+    if (!villageSliderRef.current) return
+    villageSliderRef.current.scrollBy({ left: Math.max(360, villageSliderRef.current.clientWidth * 0.8), behavior: 'smooth' })
+  }
+  const scrollTribePrev = () => {
+    if (!tribeSliderRef.current) return
+    tribeSliderRef.current.scrollBy({ left: -Math.max(360, tribeSliderRef.current.clientWidth * 0.8), behavior: 'smooth' })
+  }
+  const scrollTribeNext = () => {
+    if (!tribeSliderRef.current) return
+    tribeSliderRef.current.scrollBy({ left: Math.max(360, tribeSliderRef.current.clientWidth * 0.8), behavior: 'smooth' })
+  }
 
   const entries = villagesList.map((v) => ({
     id: v.id,
@@ -21,15 +39,6 @@ export default function VillageIndex() {
     lng: v.lng,
     potential: v.potential || [],
   }))
-
-  const allHistoryParagraphs = historyData.content.split('\n\n').filter(p => p.trim())
-  const initialHistoryCount = Math.min(2, allHistoryParagraphs.length)
-  const visibleHistoryParagraphs = showFullHistory
-    ? allHistoryParagraphs
-    : allHistoryParagraphs.slice(0, initialHistoryCount)
-  const hasMoreHistory = allHistoryParagraphs.length > initialHistoryCount
-
-  const villageMarkers = villageMapMarkers
 
   return (
     <>
@@ -79,7 +88,7 @@ export default function VillageIndex() {
               </div>
             }
           >
-            <LeafletMap mapMarkers={villageMarkers} height={480} useMarkerBounds={true} />
+            <LeafletMap mapMarkers={[]} height={480} useMarkerBounds={false} />
           </Suspense>
         </div>
       </section>
@@ -137,16 +146,6 @@ export default function VillageIndex() {
               <p className="mt-4 text-base leading-7 text-neutral-600">
                 Jelajahi {entries.length} desa yang menjadi pilar kehidupan di Pulau Enggano, masing-masing dengan keunikan budaya dan pesona alamnya.
               </p>
-              <div className="mt-8">
-                <a
-                  href="#bagian-desa"
-                  className="inline-flex items-center gap-2 border border-neutral-900 px-6 py-3 text-sm font-semibold text-neutral-900 hover:bg-neutral-900 hover:text-white transition-all"
-                >
-                  Jelajahi Desa
-                  <ArrowRight size={18} />
-                </a>
-              </div>
-
               <div className="mt-12 flex items-center gap-4">
                 <span className="font-display text-2xl font-semibold text-neutral-900">01</span>
                 <div className="h-px w-16 bg-neutral-300" />
@@ -154,31 +153,52 @@ export default function VillageIndex() {
               </div>
             </div>
 
-            <div className="w-full overflow-x-auto scrollbar-hide">
-              <div className="flex gap-6 min-w-max pb-4">
-                {entries.map((village, index) => (
-                  <Link
-                    key={village.slug || index}
-                    href={`/villages/${village.slug}`}
-                    className="group hover-lift overlay-glow reveal-up relative overflow-hidden bg-white shadow-md shrink-0 w-72 sm:w-80 md:w-96 rounded-lg"
-                    style={{ '--reveal-delay': `${120 + index * 80}ms` }}
-                  >
-                    <img
-                      src={village.image}
-                      alt={village.name}
-                      className="media-zoom h-full w-full object-cover aspect-4/5 rounded-lg"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-linear-to-t from-neutral-950/95 via-neutral-950/30 to-transparent transition-opacity duration-500 group-hover:opacity-95 rounded-lg" />
-                    <div className="absolute inset-x-0 bottom-0 p-6">
-                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
-                        DESA
-                      </p>
-                      <h3 className="mt-3 font-display text-2xl md:text-3xl font-semibold text-white leading-tight">{village.name}</h3>
-                      {village.summary && <p className="mt-3 text-sm text-white/80 line-clamp-3">{village.summary}</p>}
-                    </div>
-                  </Link>
-                ))}
+            <div className="relative w-full">
+              <div className="absolute left-0 sm:-left-4 top-1/2 -translate-y-1/2 z-30">
+                <button
+                  onClick={scrollVillagePrev}
+                  className="bg-white/95 backdrop-blur-sm ring-1 ring-neutral-200 shadow-lg rounded-full p-3 text-neutral-800 hover:bg-white hover:scale-110 transition-all"
+                  aria-label="Prev Desa"
+                >
+                  <ChevronLeft size={26} strokeWidth={2.5} />
+                </button>
+              </div>
+              <div className="absolute right-0 sm:-right-4 top-1/2 -translate-y-1/2 z-30">
+                <button
+                  onClick={scrollVillageNext}
+                  className="bg-white/95 backdrop-blur-sm ring-1 ring-neutral-200 shadow-lg rounded-full p-3 text-neutral-800 hover:bg-white hover:scale-110 transition-all"
+                  aria-label="Next Desa"
+                >
+                  <ChevronRight size={26} strokeWidth={2.5} />
+                </button>
+              </div>
+
+              <div ref={villageSliderRef} className="w-full overflow-x-auto scrollbar-hide px-4 sm:px-8 md:px-10 py-3">
+                <div className="flex gap-6 min-w-max pb-1">
+                  {entries.map((village, index) => (
+                    <Link
+                      key={village.slug || index}
+                      href={`/villages/${village.slug}`}
+                      className="group hover-lift overlay-glow reveal-up relative overflow-hidden bg-white shadow-md shrink-0 w-72 sm:w-80 md:w-96 rounded-lg"
+                      style={{ '--reveal-delay': `${120 + index * 80}ms` }}
+                    >
+                      <img
+                        src={village.image}
+                        alt={village.name}
+                        className="media-zoom h-full w-full object-cover aspect-4/5 rounded-lg"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-linear-to-t from-neutral-950/95 via-neutral-950/30 to-transparent transition-opacity duration-500 group-hover:opacity-95 rounded-lg" />
+                      <div className="absolute inset-x-0 bottom-0 p-6">
+                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+                          DESA
+                        </p>
+                        <h3 className="mt-3 font-display text-2xl md:text-3xl font-semibold text-white leading-tight">{village.name}</h3>
+                        {village.summary && <p className="mt-3 text-sm text-white/80 line-clamp-3">{village.summary}</p>}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -207,31 +227,52 @@ export default function VillageIndex() {
 
         <div className="relative mx-auto w-full px-6 md:px-12 lg:px-16">
           <div className="grid grid-cols-1 lg:grid-cols-[65%_35%] gap-8 items-center">
-            <div className="w-full overflow-x-auto scrollbar-hide">
-              <div className="flex gap-6 min-w-max pb-4">
-                {tribesData.map((tribe, index) => (
-                  <Link
-                    key={tribe.id || index}
-                    href={`/tribes/${tribe.id}`}
-                    className="group hover-lift overlay-glow reveal-up relative overflow-hidden bg-white shadow-md shrink-0 w-72 sm:w-80 md:w-96 rounded-lg"
-                    style={{ '--reveal-delay': `${120 + index * 80}ms` }}
-                  >
-                    <img
-                      src={tribe.image}
-                      alt={tribe.name}
-                      className="media-zoom h-full w-full object-cover aspect-4/5 rounded-lg"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-linear-to-t from-neutral-950/95 via-neutral-950/30 to-transparent transition-opacity duration-500 group-hover:opacity-95 rounded-lg" />
-                    <div className="absolute inset-x-0 bottom-0 p-6">
-                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
-                        SUKU
-                      </p>
-                      <h3 className="mt-3 font-display text-2xl md:text-3xl font-semibold text-white leading-tight">{tribe.name}</h3>
-                      <p className="mt-3 text-sm text-white/80 line-clamp-3">{tribe.summary}</p>
-                    </div>
-                  </Link>
-                ))}
+            <div className="relative w-full">
+              <div className="absolute left-0 sm:-left-4 top-1/2 -translate-y-1/2 z-30">
+                <button
+                  onClick={scrollTribePrev}
+                  className="bg-white/95 backdrop-blur-sm ring-1 ring-neutral-200 shadow-lg rounded-full p-3 text-neutral-800 hover:bg-white hover:scale-110 transition-all"
+                  aria-label="Prev Suku"
+                >
+                  <ChevronLeft size={26} strokeWidth={2.5} />
+                </button>
+              </div>
+              <div className="absolute right-0 sm:-right-4 top-1/2 -translate-y-1/2 z-30">
+                <button
+                  onClick={scrollTribeNext}
+                  className="bg-white/95 backdrop-blur-sm ring-1 ring-neutral-200 shadow-lg rounded-full p-3 text-neutral-800 hover:bg-white hover:scale-110 transition-all"
+                  aria-label="Next Suku"
+                >
+                  <ChevronRight size={26} strokeWidth={2.5} />
+                </button>
+              </div>
+
+              <div ref={tribeSliderRef} className="w-full overflow-x-auto scrollbar-hide px-4 sm:px-8 md:px-10 py-3">
+                <div className="flex gap-6 min-w-max pb-1">
+                  {tribesData.map((tribe, index) => (
+                    <Link
+                      key={tribe.id || index}
+                      href={`/tribes/${tribe.id}`}
+                      className="group hover-lift overlay-glow reveal-up relative overflow-hidden bg-white shadow-md shrink-0 w-72 sm:w-80 md:w-96 rounded-lg"
+                      style={{ '--reveal-delay': `${120 + index * 80}ms` }}
+                    >
+                      <img
+                        src={tribe.image}
+                        alt={tribe.name}
+                        className="media-zoom h-full w-full object-cover aspect-4/5 rounded-lg"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-linear-to-t from-neutral-950/95 via-neutral-950/30 to-transparent transition-opacity duration-500 group-hover:opacity-95 rounded-lg" />
+                      <div className="absolute inset-x-0 bottom-0 p-6">
+                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+                          SUKU
+                        </p>
+                        <h3 className="mt-3 font-display text-2xl md:text-3xl font-semibold text-white leading-tight">{tribe.name}</h3>
+                        <p className="mt-3 text-sm text-white/80 line-clamp-3">{tribe.summary}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -243,16 +284,6 @@ export default function VillageIndex() {
               <p className="mt-4 text-base leading-7 text-neutral-600">
                 Kenali {tribesData.length} suku asli dan pendatang yang membangun peradaban serta mewariskan kearifan lokal di Pulau Enggano.
               </p>
-              <div className="mt-8">
-                <Link
-                  href="/tribes"
-                  className="inline-flex items-center gap-2 border border-neutral-900 px-6 py-3 text-sm font-semibold text-neutral-900 hover:bg-neutral-900 hover:text-white transition-all"
-                >
-                  Lihat Semua Suku
-                  <ArrowRight size={18} />
-                </Link>
-              </div>
-
               <div className="mt-12 flex items-center gap-4">
                 <span className="font-display text-2xl font-semibold text-neutral-900">01</span>
                 <div className="h-px w-16 bg-neutral-300" />

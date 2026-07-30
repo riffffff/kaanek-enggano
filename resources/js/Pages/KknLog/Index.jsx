@@ -92,29 +92,35 @@ const imageByCategory = {
     'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80',
 }
 
-export default function KknLogIndex({ items = [], selectedCategory = null }) {
+export default function KknLogIndex({ items = [], carouselItems = [], selectedCategory = null, highlightedCount = 0 }) {
   const [visibleCount, setVisibleCount] = useState(5)
   const [currentSlide, setCurrentSlide] = useState(0)
   const intervalRef = useRef(null)
   const carouselRef = useRef(null)
 
+  const normalizeEntry = (item, index) => ({
+    ...item,
+    excerpt:
+      item.excerpt ??
+      excerptByTitle[item.title] ??
+      'Warta dan catatan kegiatan pembangunan masyarakat, pemberdayaan ekonomi lokal, serta kebudayaan Pulau Enggano.',
+    read_time: item.read_time ?? `${3 + (index % 4)} min baca`,
+    image:
+      item.image ??
+      item.cover ??
+      imageByCategory[item.category] ??
+      fallbackItems[index % fallbackItems.length].image,
+  })
+
   const entries = items.length
-    ? items.map((item, index) => ({
-        ...item,
-        excerpt:
-          item.excerpt ??
-          excerptByTitle[item.title] ??
-          'Warta dan catatan kegiatan pembangunan masyarakat, pemberdayaan ekonomi lokal, serta kebudayaan Pulau Enggano.',
-        read_time: item.read_time ?? `${3 + (index % 4)} min baca`,
-        image:
-          item.image ??
-          imageByCategory[item.category] ??
-          fallbackItems[index % fallbackItems.length].image,
-      }))
+    ? items.map((item, index) => normalizeEntry(item, index))
     : fallbackItems
 
-  // Get first 4 articles for carousel (and also include them in list articles)
-  const carouselArticles = entries.slice(0, 4)
+  // ✨ CAROUSEL: Pakai EXPLICIT data from backend (highlighted pilihan admin + fallback non-highlighted)
+  const carouselArticles = carouselItems && carouselItems.length
+    ? carouselItems.map((item, index) => normalizeEntry(item, index))
+    : entries.slice(0, 4)
+
   const listArticles = entries.slice(0, visibleCount + 4)
 
   const nextSlide = () => {
@@ -235,16 +241,28 @@ export default function KknLogIndex({ items = [], selectedCategory = null }) {
                           alt={article.title}
                           className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
                         />
-                        <div className="absolute top-5 left-5 rounded-lg bg-primary-950/90 backdrop-blur-sm px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-white">
-                          {String(article.category ?? 'berita').toUpperCase()}
+                        <div className="absolute top-5 left-5 flex flex-wrap items-center gap-2">
+                          <span className="rounded-lg bg-primary-950/90 backdrop-blur-sm px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-white">
+                            {String(article.category ?? 'berita').toUpperCase()}
+                          </span>
+                          {article.is_highlighted && (
+                            <span className="rounded-lg bg-accent-500/95 backdrop-blur-sm px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-accent-500/30 inline-flex items-center gap-1">
+                              <Sparkles size={13} /> Berita Utama
+                            </span>
+                          )}
                         </div>
                       </div>
 
                       <div className="flex flex-col justify-between p-8 lg:col-span-5 md:p-10 bg-white">
                         <div>
-                          <div className="flex items-center gap-4 text-xs font-medium text-neutral-500">
+                          <div className="flex items-center gap-4 text-xs font-medium text-neutral-500 flex-wrap">
                             <span className="flex items-center gap-1.5"><Calendar size={14} className="text-primary-700" /> {article.date}</span>
                             <span className="flex items-center gap-1.5"><Clock size={14} className="text-primary-700" /> {article.read_time}</span>
+                            {article.is_highlighted && (
+                              <span className="ml-auto inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-accent-100 text-accent-700 font-bold">
+                                <Sparkles size={12} /> Highlight
+                              </span>
+                            )}
                           </div>
 
                           <h2 className="mt-5 font-display text-3xl font-bold leading-snug text-neutral-900 hover:text-primary-800 transition-colors md:text-4xl">
@@ -303,8 +321,15 @@ export default function KknLogIndex({ items = [], selectedCategory = null }) {
                       className="media-zoom h-full w-full object-cover"
                       loading="lazy"
                     />
-                    <div className="absolute top-4 left-4 rounded-md bg-primary-950/90 backdrop-blur-sm px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white">
-                      {String(item.category ?? 'artikel').toUpperCase()}
+                    <div className="absolute top-4 left-4 flex flex-wrap items-center gap-1.5">
+                      <span className="rounded-md bg-primary-950/90 backdrop-blur-sm px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white">
+                        {String(item.category ?? 'artikel').toUpperCase()}
+                      </span>
+                      {item.is_highlighted && (
+                        <span className="rounded-md bg-accent-500/95 backdrop-blur-sm px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm inline-flex items-center gap-0.5">
+                          <Sparkles size={11} /> Utama
+                        </span>
+                      )}
                     </div>
                   </Link>
 

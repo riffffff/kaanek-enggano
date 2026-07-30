@@ -56,20 +56,37 @@ class KknLogItemResource extends Resource
                         Forms\Components\DatePicker::make('date')
                             ->label('Tanggal')
                             ->required(),
+                        Forms\Components\Toggle::make('is_highlighted')
+                            ->label('✨ Jadikan Highlight / Berita Utama')
+                            ->helperText('Artikel yang diceklist akan muncul di CAROUSEL UTAMA (highlight) halaman daftar Aktivitas. Maksimal 4 yang ditampilkan sekaligus.')
+                            ->default(false)
+                            ->onColor('success')
+                            ->offColor('gray'),
                     ])
                     ->columns(2),
-                Forms\Components\Section::make('Konten')
+                Forms\Components\Section::make('Cover, Galeri & Konten')
                     ->schema([
+                        SpatieMediaLibraryFileUpload::make('cover')
+                            ->label('Cover Artikel (Gambar di atas artikel)')
+                            ->helperText('Gambar UTAMA yang muncul di atas judul artikel, sebagai hero halaman detail & thumbnail daftar. Hanya 1 gambar.')
+                            ->collection('cover')
+                            ->image()
+                            ->imageEditor()
+                            ->imageCropAspectRatio('16:9')
+                            ->maxSize(256 * 1024)
+                            ->required()
+                            ->columnSpanFull(),
                         Forms\Components\Textarea::make('content')
                             ->label('Isi artikel')
                             ->required()
                             ->rows(12)
                             ->columnSpanFull(),
                         SpatieMediaLibraryFileUpload::make('photos')
-                            ->label('Cover / galeri')
+                            ->label('Galeri artikel (Foto pendukung)')
+                            ->helperText('Foto tambahan untuk galeri di bawah artikel (bisa banyak, opsional).')
                             ->collection('photos')
                             ->image()
-                            ->maxSize(256 * 1024) // 256MB in KB
+                            ->maxSize(256 * 1024)
                             ->multiple()
                             ->reorderable()
                             ->columnSpanFull(),
@@ -80,14 +97,26 @@ class KknLogItemResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('is_highlighted', 'desc')
             ->columns([
-                Tables\Columns\SpatieMediaLibraryImageColumn::make('photos')
+                Tables\Columns\IconColumn::make('is_highlighted')
+                    ->label('Highlight')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-star')
+                    ->falseIcon('heroicon-o-star')
+                    ->trueColor('warning')
+                    ->falseColor('gray')
+                    ->size('md'),
+                Tables\Columns\SpatieMediaLibraryImageColumn::make('cover')
                     ->label('Cover')
-                    ->collection('photos')
+                    ->collection('cover')
                     ->square(),
                 Tables\Columns\TextColumn::make('title')
                     ->label('Judul')
-                    ->searchable(),
+                    ->searchable()
+                    ->description(function (KknLogItem $record): string {
+                        return $record->is_highlighted ? '⭐ BERITA HIGHLIGHT' : '';
+                    }),
                 Tables\Columns\TextColumn::make('category')
                     ->badge()
                     ->searchable(),
@@ -105,7 +134,19 @@ class KknLogItemResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\TernaryFilter::make('is_highlighted')
+                    ->label('Berita Highlight')
+                    ->placeholder('Semua Artikel')
+                    ->trueLabel('⭐ Hanya Highlight')
+                    ->falseLabel('Non Highlight'),
+                Tables\Filters\SelectFilter::make('category')
+                    ->label('Kategori')
+                    ->options([
+                        'ekonomi' => 'Ekonomi',
+                        'kesehatan' => 'Kesehatan',
+                        'digitalisasi' => 'Digitalisasi',
+                        'lingkungan' => 'Lingkungan',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

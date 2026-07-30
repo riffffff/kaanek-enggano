@@ -23,10 +23,22 @@ class SharedHostingStorageSyncProvider extends ServiceProvider
 
         register_shutdown_function(function (): void {
             $source = storage_path('app/public');
-            // Project ada di: ~/repositories/kaanek-enggano
-            // Ke ~/public_html butuh naik 2 level: repositories/ -> ~/ -> masuk public_html
-            $dest = rtrim($this->app->basePath(), '/') . '/../../public_html/storage';
-            $dest = realpath($dest) ?: $dest;
+            $environments = ['local', 'development', 'testing', 'staging', 'production'];
+            $env = $this->app->environment();
+
+            if (! in_array($env, $environments, true)) {
+                $env = 'production';
+            }
+
+            if (in_array($env, ['local', 'development', 'testing'], true)) {
+                $dest = $this->app->basePath('public/storage');
+            } else {
+                $projectBase = rtrim($this->app->basePath(), '/');
+                $sharedHostingDest = $projectBase . '/../../public_html/storage';
+                $dest = is_dir(realpath($projectBase . '/../../public_html'))
+                    ? (realpath($sharedHostingDest) ?: $sharedHostingDest)
+                    : $this->app->basePath('public/storage');
+            }
 
             $this->runIfNeeded($source, $dest);
         });

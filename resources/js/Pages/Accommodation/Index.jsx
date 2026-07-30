@@ -5,6 +5,8 @@ import { useMemo, useState } from 'react'
 export default function AccommodationIndex({ schedules = [], homestays = [] }) {
   const [selectedVillage, setSelectedVillage] = useState('All Villages')
 
+  const heroImageSrc = 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1800&q=80'
+
   const transportCards = useMemo(() => {
     return schedules.map(schedule => {
       const isFlight = schedule.type === 'susi_air'
@@ -62,10 +64,10 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
     <>
       <Head title="Accommodations" />
 
-      {/* Hero Section */}
+      {/* Hero Section — STATIS (Unsplash fixed) */}
       <section className="relative overflow-hidden text-white">
         <img
-          src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1800&q=80"
+          src={heroImageSrc}
           alt="Info Perjalanan & Akomodasi"
           className="reveal-scale absolute inset-0 h-full w-full object-cover"
         />

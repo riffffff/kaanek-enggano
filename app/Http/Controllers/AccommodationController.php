@@ -9,6 +9,25 @@ use Inertia\Response;
 
 class AccommodationController extends Controller
 {
+    private function resolveHomestayCover(Homestay $homestay): array
+    {
+        $coverMedia = $homestay->getFirstMedia('cover');
+        $firstPhoto = $homestay->getFirstMedia('photos');
+
+        $cover = $coverMedia ?: $firstPhoto;
+
+        $coverUrl = null;
+        $heroUrl = null;
+        if ($cover) {
+            $coverUrl = $cover->hasGeneratedConversion('medium')
+                ? $cover->getUrl('medium')
+                : $cover->getUrl();
+            $heroUrl = $cover->getUrl();
+        }
+
+        return [$coverUrl, $heroUrl];
+    }
+
     public function index(): Response
     {
         $schedules = ShipSchedule::query()
@@ -28,39 +47,62 @@ class AccommodationController extends Controller
             ]);
 
         $homestays = Homestay::query()
-            ->with('village')
+            ->with(['village', 'media'])
             ->orderBy('name')
             ->get()
-            ->map(fn (Homestay $homestay) => [
-                'id' => $homestay->id,
-                'name' => $homestay->name,
-                'owner' => $homestay->owner,
-                'whatsapp_number' => $homestay->whatsapp_number,
-                'facilities' => $homestay->facilities,
-                'description' => $homestay->description,
-                'features' => collect(explode(',', (string) $homestay->facilities))
-                    ->map(fn (string $feature) => trim($feature))
-                    ->filter()
-                    ->take(3)
-                    ->values(),
-                'price_per_night' => $homestay->price_per_night,
-                'village' => $homestay->village?->name,
-                'village_slug' => $homestay->village?->slug,
-                'image' => $homestay->getFirstMediaUrl('photos') ?: null,
-            ]);
+            ->map(function (Homestay $homestay) {
+                [$coverUrl, $heroUrl] = $this->resolveHomestayCover($homestay);
+
+                return [
+                    'id' => $homestay->id,
+                    'name' => $homestay->name,
+                    'owner' => $homestay->owner,
+                    'whatsapp_number' => $homestay->whatsapp_number,
+                    'facilities' => $homestay->facilities,
+                    'description' => $homestay->description,
+                    'features' => collect(explode(',', (string) $homestay->facilities))
+                        ->map(fn (string $feature) => trim($feature))
+                        ->filter()
+                        ->take(3)
+                        ->values(),
+                    'price_per_night' => $homestay->price_per_night,
+                    'village' => $homestay->village?->name,
+                    'village_slug' => $homestay->village?->slug,
+                    'cover' => $coverUrl,
+                    'hero' => $heroUrl,
+                    'image' => $heroUrl ?: $coverUrl,
+                ];
+            });
+
+        $firstWithCover = $homestays->firstWhere(fn ($h) => filled($h['hero'] ?? null))
+            ?? $homestays->firstWhere(fn ($h) => filled($h['cover'] ?? null));
 
         return Inertia::render('Accommodation/Index', [
             'schedules' => $schedules,
             'homestays' => $homestays,
             'signalPoints' => [],
+            'headerHero' => $firstWithCover ? ($firstWithCover['hero'] ?? $firstWithCover['cover']) : null,
         ]);
     }
 
     public function show(string $id): Response
     {
         $homestay = Homestay::query()
-            ->with('village')
+            ->with(['village', 'media'])
             ->findOrFail($id);
+
+        [$coverUrl, $heroUrl] = $this->resolveHomestayCover($homestay);
+
+        $gallery = $homestay->getMedia('photos')
+            ->map(fn ($media) => [
+                'id' => $media->id,
+                'url' => $media->getUrl(),
+                'url_medium' => $media->hasGeneratedConversion('medium') ? $media->getUrl('medium') : null,
+                'url_thumb' => $media->hasGeneratedConversion('thumbnail') ? $media->getUrl('thumbnail') : null,
+                'name' => $media->getAttributeValue('name'),
+            ])
+            ->values()
+            ->all();
 
         $homestayData = [
             'id' => $homestay->id,
@@ -75,8 +117,11 @@ class AccommodationController extends Controller
             'price_per_night' => $homestay->price_per_night,
             'price' => $homestay->price_per_night ? 'Rp '.number_format($homestay->price_per_night, 0, ',', '.').' /malam' : 'Hubungi host',
             'village' => $homestay->village?->name,
-            'image' => $homestay->getFirstMediaUrl('photos') ?: null,
-            'gallery' => $homestay->getMedia('photos')->map(fn ($media) => $media->getUrl()),
+            'cover' => $heroUrl,
+            'hero' => $heroUrl,
+            'cover_image' => $coverUrl,
+            'image' => $heroUrl ?: $coverUrl,
+            'gallery' => $gallery,
         ];
 
         $prevHomestay = Homestay::query()

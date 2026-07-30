@@ -136,6 +136,17 @@
     }
 }
 
+@keyframes nav-pulse-scale {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.12);
+    }
+}
+
 @layer components {
     .reveal-up {
         opacity: 0;
@@ -200,5 +211,12 @@
 
     .float-soft {
         animation: float-soft 8s ease-in-out infinite;
+    }
+
+    .nav-pulse {
+        display: inline-block;
+        animation: nav-pulse-scale 1.4s ease-in-out infinite;
+        transform-origin: center;
+        will-change: transform;
     }
 }

@@ -21,7 +21,7 @@ return [
             'jpg', 'jpeg', 'mpga', 'webp', 'wma',
             'pdf', 'zip', 'rar', 'doc', 'docx', 'xls', 'xlsx',
         ],
-        'max_upload_time' => 10,
+        'max_upload_time' => 30,
         'cleanup' => true,
     ],
 

@@ -29,6 +29,11 @@ class Homestay extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
+        $this->addMediaCollection('cover')
+            ->singleFile()
+            ->useDisk('public')
+            ->withResponsiveImages();
+
         $this->addMediaCollection('photos')->useDisk('public');
     }
 }

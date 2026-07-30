@@ -61,12 +61,22 @@ export default function DestinationShow({ destination, prev = null, next = null 
       <section className="relative overflow-hidden text-white">
         <img
           src={
+            destination.hero_image ||
             destination.background_image ||
             destination.image ||
             'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80'
           }
           alt={destination.name}
           className="reveal-scale absolute inset-0 h-full w-full object-cover"
+          onError={(e) => {
+            if (!e.currentTarget.dataset.fallbackSet) {
+              e.currentTarget.dataset.fallbackSet = 'true'
+              e.currentTarget.src =
+                destination.background_image ||
+                destination.image ||
+                'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80'
+            }
+          }}
         />
         <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/30 to-black/70" />
         <div className="relative mx-auto max-w-7xl px-6 pb-32 pt-48 md:px-12 lg:px-16">

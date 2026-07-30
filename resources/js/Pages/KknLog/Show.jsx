@@ -56,7 +56,7 @@ export default function KknLogShow({ item, prev = null, next = null }) {
             <h1 className="reveal-up mt-4 font-display text-4xl font-extrabold leading-tight tracking-tight text-white md:text-6xl" style={{ '--reveal-delay': '150ms' }}>
               {item.title}
             </h1>
-            
+
             <div className="reveal-up mt-6 flex flex-wrap items-center gap-6 border-t border-white/10 pt-5 text-sm text-neutral-300" style={{ '--reveal-delay': '230ms' }}>
               <span className="flex items-center gap-2"><Calendar size={16} className="text-accent-500" /> {item.date}</span>
               {item.read_time && (
@@ -92,6 +92,25 @@ export default function KknLogShow({ item, prev = null, next = null }) {
           </aside>
 
           <article className="reveal-up max-w-3xl" style={{ '--reveal-delay': '200ms' }}>
+            {(item.cover || item.cover_image || heroImage) && (
+              <figure className="mb-12 overflow-hidden rounded-3xl shadow-lg shadow-primary-900/10 ring-1 ring-neutral-200/70">
+                <img
+                  src={item.cover || item.cover_image || heroImage}
+                  alt={`Cover: ${item.title}`}
+                  className="w-full h-auto object-cover aspect-[16/9] media-zoom"
+                  onError={(e) => {
+                    if (!e.currentTarget.dataset.fb) {
+                      e.currentTarget.dataset.fb = '1'
+                      e.currentTarget.src = heroImage
+                    }
+                  }}
+                />
+                <figcaption className="bg-surface-50 px-6 py-3 text-sm italic text-neutral-500 border-t border-neutral-100">
+                  Cover ilustrasi — {item.title}
+                </figcaption>
+              </figure>
+            )}
+
             <div className="space-y-7 text-base leading-8 text-neutral-700 md:text-lg">
               {contentParagraphs.map(paragraph => (
                 <p key={paragraph} className="first-letter:float-left first-letter:mr-3 first-letter:text-5xl first-letter:font-bold first-letter:text-primary-950 first-letter:font-display">
@@ -105,6 +124,48 @@ export default function KknLogShow({ item, prev = null, next = null }) {
             </blockquote>
           </article>
         </div>
+
+        {(item.gallery?.length > 0) && (
+          <div className="mt-20 border-t border-neutral-200/80 pt-14">
+            <div className="reveal-up max-w-3xl">
+              <p className="text-xs uppercase tracking-[0.3em] font-bold text-accent-600">Dokumentasi Lapangan</p>
+              <h2 className="mt-3 font-display text-3xl font-semibold text-neutral-900 md:text-4xl">
+                Galeri {item.title}
+              </h2>
+              <p className="mt-3 text-base leading-7 text-neutral-500">
+                Foto-foto dokumentasi selama pelaksanaan aktivitas & kegiatan di lapangan.
+              </p>
+            </div>
+
+            <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {item.gallery.map((image, index) => (
+                <div
+                  key={image.id || index}
+                  className="group hover-lift reveal-up overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-neutral-200/70"
+                  style={{ '--reveal-delay': `${120 + index * 80}ms` }}
+                >
+                  <img
+                    src={image.url_medium || image.url}
+                    alt={`Galeri ${item.title} - ${index + 1}`}
+                    loading="lazy"
+                    className="media-zoom aspect-4/3 w-full object-cover"
+                    onError={(e) => {
+                      if (!e.currentTarget.dataset.fb) {
+                        e.currentTarget.dataset.fb = '1'
+                        e.currentTarget.src = image.url
+                      }
+                    }}
+                  />
+                  {image.name && (
+                    <div className="bg-surface-50 px-5 py-3 text-xs font-medium text-neutral-500 border-t border-neutral-100">
+                      {image.name}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="mt-16 border-t border-neutral-200/80 pt-10">
           <PrevNext

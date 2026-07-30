@@ -22,20 +22,33 @@ class HomeController extends Controller
 
     public function index(): Response
     {
-        // Ambil destinations untuk homepage
         $destinations = Destination::query()
-            ->take(4)
+            ->with('media')
+            ->orderBy('name')
+            ->take(5)
             ->get()
             ->map(function (Destination $dest) {
                 $backgroundImage = $dest->getFirstMedia('background');
                 $firstPhoto = $dest->getFirstMedia('photos');
-                $previewMedia = $backgroundImage ?: $firstPhoto;
 
-                $imageUrl = 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80';
-                if ($previewMedia) {
-                    $imageUrl = $previewMedia->hasGeneratedConversion('medium')
-                        ? $previewMedia->getUrl('medium')
-                        : $previewMedia->getUrl();
+                $coverMedia = $backgroundImage ?: $firstPhoto;
+
+                $coverUrl = null;
+                $heroUrl = null;
+                if ($coverMedia) {
+                    $coverUrl = $coverMedia->hasGeneratedConversion('medium')
+                        ? $coverMedia->getUrl('medium')
+                        : $coverMedia->getUrl();
+                    $heroUrl = $coverMedia->getUrl();
+                }
+
+                $fallbackHero = 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80';
+                $fallbackCard = 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80';
+
+                $tagLabel = $dest->type ? strtoupper((string) $dest->type) : 'DESTINASI';
+                $shortDesc = $this->excerptFromDescription($dest->description, 110);
+                if ($shortDesc === '') {
+                    $shortDesc = 'Jelajahi keindahan alam dan kebudayaan Pulau Enggano yang masih perawan.';
                 }
 
                 return [
@@ -43,9 +56,13 @@ class HomeController extends Controller
                     'name' => $dest->name,
                     'slug' => $dest->slug,
                     'type' => $dest->type,
-                    'short_description' => $this->excerptFromDescription($dest->description),
-                    'description' => $dest->description,
-                    'image' => $imageUrl,
+                    'tag' => $tagLabel,
+                    'short_description' => $shortDesc,
+                    'description' => $shortDesc,
+                    'hero' => $heroUrl ?: $fallbackHero,
+                    'cover' => $coverUrl ?: $fallbackCard,
+                    'cover_thumb' => $coverUrl ?: $fallbackCard,
+                    'image' => $heroUrl ?: $fallbackCard,
                 ];
             });
 

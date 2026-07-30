@@ -66,13 +66,23 @@ class HomestayResource extends Resource
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
-                Forms\Components\Section::make('Media')
+                Forms\Components\Section::make('Cover & Galeri')
                     ->schema([
+                        SpatieMediaLibraryFileUpload::make('cover')
+                            ->label('Cover / Background Header Homestay')
+                            ->helperText('Gambar UTAMA (1 gambar) yang tampil sebagai background hero header halaman detail homestay & cover card di daftar Accommodations.')
+                            ->collection('cover')
+                            ->image()
+                            ->imageEditor()
+                            ->maxSize(256 * 1024)
+                            ->required()
+                            ->columnSpanFull(),
                         SpatieMediaLibraryFileUpload::make('photos')
-                            ->label('Foto homestay')
+                            ->label('Galeri foto homestay')
+                            ->helperText('Foto kamar, fasilitas, area sekitar homestay (bisa banyak). Tampil di section "Galeri Homestay" halaman detail.')
                             ->collection('photos')
                             ->image()
-                            ->maxSize(256 * 1024) // 256MB in KB
+                            ->maxSize(256 * 1024)
                             ->multiple()
                             ->reorderable()
                             ->columnSpanFull(),
@@ -84,9 +94,9 @@ class HomestayResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\SpatieMediaLibraryImageColumn::make('photos')
-                    ->label('Foto')
-                    ->collection('photos')
+                Tables\Columns\SpatieMediaLibraryImageColumn::make('cover')
+                    ->label('Cover')
+                    ->collection('cover')
                     ->square(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Homestay')

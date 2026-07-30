@@ -92,10 +92,20 @@ class DestinationResource extends Resource
                             ->numeric(),
                     ])
                     ->columns(2),
-                Forms\Components\Section::make('Lokasi & Media')
+                Forms\Components\Section::make('Cover & Media')
                     ->schema([
+                        SpatieMediaLibraryFileUpload::make('background')
+                            ->label('Cover / Background Hero (Gambar UTAMA)')
+                            ->helperText('Ini adalah gambar besar yang tampil di header halaman detail destinasi & sebagai cover card di daftar destinasi. Hanya 1 gambar, wajib diisi.')
+                            ->collection('background')
+                            ->image()
+                            ->imageEditor()
+                            ->maxSize(256 * 1024)
+                            ->required()
+                            ->columnSpanFull(),
                         SpatieMediaLibraryFileUpload::make('photos')
-                            ->label('Galeri destinasi (Gambar & Video)')
+                            ->label('Galeri destinasi (Gambar & Video tambahan)')
+                            ->helperText('Foto atau video pendukung destinasi (bisa banyak). Akan tampil di section "Visual Journey" halaman detail.')
                             ->collection('photos')
                             ->acceptedFileTypes([
                                 'image/jpeg',
@@ -106,7 +116,7 @@ class DestinationResource extends Resource
                                 'video/webm',
                                 'video/quicktime',
                             ])
-                            ->maxSize(256 * 1024) // 256MB in KB
+                            ->maxSize(256 * 1024)
                             ->multiple()
                             ->reorderable()
                             ->columnSpanFull(),

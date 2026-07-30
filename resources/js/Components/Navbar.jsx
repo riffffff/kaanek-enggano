@@ -9,6 +9,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
   const { url } = usePage()
   const { tt } = useTranslate('common')
+  const belajarBahasaUrl = '#'
 
   const navItems = [
     { label: tt('Tentang Enggano', 'nav.aboutEnggano'), href: '/villages' },
@@ -47,7 +48,7 @@ export default function Navbar() {
           Enggano
         </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-6 md:flex">
           {navItems.map(item => {
             const active = isActive(item.href)
             return (
@@ -76,13 +77,23 @@ export default function Navbar() {
               </Link>
             )
           })}
+          <a
+            href={belajarBahasaUrl}
+            target="_blank"
+            rel="noreferrer"
+            className={`px-2 py-2 font-body text-sm font-semibold transition-colors duration-300 ${
+              solid ? 'text-primary-700 hover:text-primary-800' : 'text-white hover:text-white'
+            }`}
+          >
+            <span className="nav-pulse">Belajar Bahasa Enggano</span>
+          </a>
         </div>
 
         <div className="hidden items-center gap-4 md:flex">
           <LanguageSwitcher solid={solid} />
           <Link
             href="/local-guide"
-            className="hover-lift overlay-glow bg-accent-500 px-4 py-2 text-sm font-semibold text-white hover:bg-accent-600"
+            className="hover-lift overlay-glow bg-primary-700 px-4 py-2 text-sm font-semibold text-white hover:bg-primary-800"
           >
             {tt('Local Guide', 'nav.localGuide')}
           </Link>
@@ -121,10 +132,19 @@ export default function Navbar() {
             <div className="mt-4 flex justify-center">
               <LanguageSwitcher />
             </div>
+            <a
+              href={belajarBahasaUrl}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => setOpen(false)}
+              className="mt-4 inline-flex justify-center px-4 py-3 font-body text-sm font-semibold text-primary-700 transition-colors duration-300 hover:text-primary-800"
+            >
+              <span className="nav-pulse">Belajar Bahasa Enggano</span>
+            </a>
             <Link
               href="/local-guide"
               onClick={() => setOpen(false)}
-              className="mt-4 inline-flex justify-center bg-accent-500 px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-accent-600"
+              className="mt-3 inline-flex justify-center bg-primary-700 px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-primary-800"
             >
               {tt('Local Guide', 'nav.localGuide')}
             </Link>
