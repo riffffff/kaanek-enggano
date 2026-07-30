@@ -106,7 +106,7 @@ class DestinationResource extends Resource
                                 'video/webm',
                                 'video/quicktime',
                             ])
-                            ->maxSize(250 * 1024)
+                            ->maxSize(256 * 1024) // 256MB in KB
                             ->multiple()
                             ->reorderable()
                             ->columnSpanFull(),

@@ -25,7 +25,6 @@ use Spatie\MediaLibrary\Support\FileNamer\DefaultFileNamer;
 use Spatie\MediaLibrary\Support\FileRemover\DefaultFileRemover;
 use Spatie\MediaLibrary\Support\PathGenerator\DefaultPathGenerator;
 use Spatie\MediaLibrary\Support\UrlGenerator\DefaultUrlGenerator;
-use Spatie\MediaLibraryPro\Models\TemporaryUpload;
 
 return [
 
@@ -50,7 +49,7 @@ return [
      * The maximum file size of an item in bytes.
      * Adding a larger file will result in an exception.
      */
-    'max_file_size' => 1024 * 1024 * 100, // 100MB
+    'max_file_size' => 1024 * 1024 * 256, // 256MB
 
     /*
      * Uploads whose file name contains any of these extensions will be rejected.
@@ -119,7 +118,7 @@ return [
      *
      * This model is only used in Media Library Pro (https://medialibrary.pro)
      */
-    'temporary_upload_model' => TemporaryUpload::class,
+    'temporary_upload_model' => null,
 
     /*
      * When enabled, Media Library Pro will only process temporary uploads that were uploaded
@@ -141,7 +140,7 @@ return [
     /*
      * The class that contains the strategy for determining a media file's path.
      */
-    'path_generator' => DefaultPathGenerator::class,
+    'path_generator' => App\Support\DynamicPathGenerator::class,
 
     /*
      * The class that contains the strategy for determining how to remove files.

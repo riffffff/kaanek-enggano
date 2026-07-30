@@ -72,6 +72,7 @@ class HomestayResource extends Resource
                             ->label('Foto homestay')
                             ->collection('photos')
                             ->image()
+                            ->maxSize(256 * 1024) // 256MB in KB
                             ->multiple()
                             ->reorderable()
                             ->columnSpanFull(),

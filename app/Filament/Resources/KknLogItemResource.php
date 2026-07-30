@@ -69,6 +69,7 @@ class KknLogItemResource extends Resource
                             ->label('Cover / galeri')
                             ->collection('photos')
                             ->image()
+                            ->maxSize(256 * 1024) // 256MB in KB
                             ->multiple()
                             ->reorderable()
                             ->columnSpanFull(),

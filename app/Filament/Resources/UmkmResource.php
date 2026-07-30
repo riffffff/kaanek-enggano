@@ -64,6 +64,7 @@ class UmkmResource extends Resource
                             ->label('Foto produk')
                             ->collection('product_photos')
                             ->image()
+                            ->maxSize(256 * 1024) // 256MB in KB
                             ->multiple()
                             ->reorderable()
                             ->columnSpanFull(),
