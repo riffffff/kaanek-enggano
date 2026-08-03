@@ -15,28 +15,28 @@ class HomestaySeeder extends Seeder
 
         $homestays = [
             [
-                'name' => 'Pondok Bundo',
-                'owner' => 'Ibu Wati',
-                'whatsapp_number' => '6281234567801',
-                'facilities' => '2 Kamar Tidur, Kamar Mandi Dalam, Termasuk Makan 3x',
+                'name' => 'Samudera Enggano',
+                'owner' => 'Pak Nasir',
+                'whatsapp_number' => '6285268668611',
+                'facilities' => 'Isi disini ya al',
                 'price_per_night' => 200000,
                 'village_id' => $villageIds['Apoho'] ?? null,
             ],
             [
-                'name' => 'Wisma Samudera',
-                'owner' => 'Bapak Hasan',
-                'whatsapp_number' => '6281234567802',
-                'facilities' => '4 Kamar Tidur, Kamar Mandi Luar, Dekat Pesisir',
+                'name' => 'Hotel Berlian',
+                'owner' => 'Pak Bambang',
+                'whatsapp_number' => '6282177796666',
+                'facilities' => 'Isi disini ya al',
                 'price_per_night' => 250000,
-                'village_id' => $villageIds['Malakoni'] ?? null,
+                'village_id' => $villageIds['Kahyapu'] ?? null,
             ],
             [
-                'name' => 'Rumah Singgah Kahyapu',
-                'owner' => 'Ibu Maria',
-                'whatsapp_number' => '6281234567803',
-                'facilities' => '2 Kamar Tidur, Sarapan Lokal, Akses Pelabuhan Mudah',
+                'name' => 'La Reina',
+                'owner' => '-',
+                'whatsapp_number' => '-',
+                'facilities' => 'Isi disini ya al',
                 'price_per_night' => 180000,
-                'village_id' => $villageIds['Kahyapu'] ?? null,
+                'village_id' => $villageIds['Malakoni'] ?? null,
             ],
         ];
 

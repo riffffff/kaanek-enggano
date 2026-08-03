@@ -19,8 +19,9 @@ const DEFAULT_BOUNDS = [
  * @param {Array}  mapMarkers       - titik tambahan dari prop (opsional)
  * @param {number} height           - tinggi container dalam px (default 480)
  * @param {boolean} useMarkerBounds - jika true, viewport mengikuti koordinat prop
+ * @param {Function} onMarkerClick  - callback opsional ketika marker diklik, menerima object marker
  */
-export default function LeafletMap({ mapMarkers = [], height = 480, useMarkerBounds = false }) {
+export default function LeafletMap({ mapMarkers = [], height = 480, useMarkerBounds = false, onMarkerClick = null }) {
   const containerRef = useRef(null)
   const mapRef       = useRef(null)
   const markerLayerRef = useRef(null)
@@ -78,11 +79,20 @@ export default function LeafletMap({ mapMarkers = [], height = 480, useMarkerBou
       const point = L.marker([lat, lng])
 
       if (marker.name) {
-        point.bindPopup(String(marker.name))
+        point.bindTooltip(String(marker.name), {
+          direction: 'top',
+          sticky: true,
+          opacity: 0.95,
+          className: 'umkm-marker-tooltip',
+        })
       }
 
       // Handle click to navigate
       point.on('click', () => {
+        if (onMarkerClick && typeof onMarkerClick === 'function') {
+          onMarkerClick(marker)
+          return
+        }
         if (marker.slug) {
           window.location.href = `/villages/${marker.slug}`
         }
@@ -114,7 +124,7 @@ export default function LeafletMap({ mapMarkers = [], height = 480, useMarkerBou
     } else {
       focusDefaultBounds(mapRef.current)
     }
-  }, [mapMarkers, useMarkerBounds])
+  }, [mapMarkers, useMarkerBounds, onMarkerClick])
 
   return (
     <div

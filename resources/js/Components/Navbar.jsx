@@ -9,7 +9,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
   const { url } = usePage()
   const { tt } = useTranslate('common')
-  const belajarBahasaUrl = '#'
+  const belajarBahasaUrl = 'https://kaayar-enggano.vercel.app'
 
   const navItems = [
     { label: tt('Tentang Enggano', 'nav.aboutEnggano'), href: '/villages' },
@@ -81,9 +81,7 @@ export default function Navbar() {
             href={belajarBahasaUrl}
             target="_blank"
             rel="noreferrer"
-            className={`px-2 py-2 font-body text-sm font-semibold transition-colors duration-300 ${
-              solid ? 'text-primary-700 hover:text-primary-800' : 'text-white hover:text-white'
-            }`}
+            className={`px-2 py-2 font-body text-sm font-semibold transition-colors duration-200 text-accent-500`}
           >
             <span className="nav-pulse">Belajar Bahasa Enggano</span>
           </a>
@@ -93,7 +91,7 @@ export default function Navbar() {
           <LanguageSwitcher solid={solid} />
           <Link
             href="/local-guide"
-            className="hover-lift overlay-glow bg-primary-700 px-4 py-2 text-sm font-semibold text-white hover:bg-primary-800"
+            className="hover-lift overlay-glow bg-accent-500 px-4 py-2 text-sm font-semibold text-white hover:bg-primary-800"
           >
             {tt('Local Guide', 'nav.localGuide')}
           </Link>

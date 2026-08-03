@@ -48,10 +48,14 @@ class UmkmResource extends Resource
                         Forms\Components\TextInput::make('business_type')
                             ->label('Jenis usaha')
                             ->required(),
-                        Forms\Components\TextInput::make('whatsapp_number')
-                            ->label('WhatsApp')
-                            ->tel()
-                            ->required(),
+                        Forms\Components\TextInput::make('lat')
+                            ->label('Koordinat Latitude')
+                            ->helperText('Format Leaflet: -5.389167. Jika tidak tahu, kosongkan saja.')
+                            ->numeric(),
+                        Forms\Components\TextInput::make('lng')
+                            ->label('Koordinat Longitude')
+                            ->helperText('Format Leaflet: 102.411111. Jika tidak tahu, kosongkan saja.')
+                            ->numeric(),
                         Forms\Components\Textarea::make('notes')
                             ->label('Catatan / deskripsi')
                             ->rows(4)
@@ -93,9 +97,14 @@ class UmkmResource extends Resource
                 Tables\Columns\TextColumn::make('business_type')
                     ->label('Jenis')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('whatsapp_number')
-                    ->label('WhatsApp')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('lat')
+                    ->label('Lat')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('lng')
+                    ->label('Lng')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

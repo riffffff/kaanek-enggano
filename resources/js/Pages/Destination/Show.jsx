@@ -1,6 +1,5 @@
 import { Head } from '@inertiajs/react'
 import { Mountain, Navigation, Timer, Play } from 'lucide-react'
-import LeafletMap from '../../Components/LeafletMap'
 import Button from '../../Components/Button'
 import PrevNext from '../../Components/PrevNext'
 
@@ -191,30 +190,6 @@ export default function DestinationShow({ destination, prev = null, next = null 
               )}
             </div>
           ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-6 pb-16 md:px-12 md:pb-24 lg:px-16">
-        <h2 className="reveal-up font-display text-4xl font-semibold text-neutral-900 md:text-5xl">
-          Location
-        </h2>
-
-        <div className="hover-lift reveal-up mt-8 overflow-hidden bg-white p-4 shadow-sm ring-1 ring-neutral-200/70 md:p-5" style={{ '--reveal-delay': '120ms' }}>
-          <LeafletMap
-            mapMarkers={
-              hasCoordinates
-                ? [{ name: destination.name, lat: destination.lat, lng: destination.lng }]
-                : []
-            }
-            useMarkerBounds
-          />
-          <div className="mt-4 flex items-center gap-2 text-sm text-neutral-600">
-            <Navigation size={16} className="text-primary-700" />
-            {hasCoordinates
-              ? <span>{destination.name}, Enggano</span>
-              : <span className="text-neutral-400 italic">Koordinat belum tersedia untuk destinasi ini.</span>
-            }
-          </div>
         </div>
       </section>
 

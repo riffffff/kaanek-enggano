@@ -19,7 +19,17 @@ class Umkm extends Model implements HasMedia
         'business_type',
         'whatsapp_number',
         'notes',
+        'lat',
+        'lng',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'lat' => 'float',
+            'lng' => 'float',
+        ];
+    }
 
     public function village(): BelongsTo
     {

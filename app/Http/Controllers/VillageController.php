@@ -39,7 +39,6 @@ class VillageController extends Controller
                     'business_name' => $umkm->business_name,
                     'owner_name' => $umkm->owner_name,
                     'business_type' => $umkm->business_type,
-                    'whatsapp_number' => $umkm->whatsapp_number,
                     'notes' => $umkm->notes,
                     'product_photos' => $umkm->getFirstMediaUrl('product_photos') ?: null,
                 ])

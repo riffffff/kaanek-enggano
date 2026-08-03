@@ -11,8 +11,7 @@ const fallbackUmkms = [
     business_name: 'Madu Hutan Liar',
     notes:
       'Produk lokal yang dipanen langsung dari lanskap sekitar desa dan dikenal oleh warga sebagai hasil unggulan.',
-    whatsapp_number: '6280000000000',
-    product_photos: umkmImageFallback,
+    product_photos: null,
   },
   {
     id: 'umkm-2',
@@ -21,9 +20,7 @@ const fallbackUmkms = [
     business_name: 'Anyaman Daun Lontar',
     notes:
       'Kerajinan tangan khas desa yang dikerjakan secara kolektif dan menjadi bagian dari ekonomi rumah tangga setempat.',
-    whatsapp_number: '6280000000000',
-    product_photos:
-      'https://images.unsplash.com/photo-1517705008128-361805f42e86?auto=format&fit=crop&w=1200&q=80',
+    product_photos: null,
   },
   {
     id: 'umkm-3',
@@ -32,9 +29,7 @@ const fallbackUmkms = [
     business_name: 'Ikan Segar Tangkapan Hari Ini',
     notes:
       'Tangkapan segar nelayan lokal dengan ketersediaan yang mengikuti musim dan kondisi cuaca.',
-    whatsapp_number: '6280000000000',
-    product_photos:
-      'https://images.unsplash.com/photo-1544943910-4c1dc44aab44?auto=format&fit=crop&w=1200&q=80',
+    product_photos: null,
   },
 ]
 
@@ -290,12 +285,23 @@ export default function VillageShow({ slug, umkms = [], prev = null, next = null
           <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {displayUmkms.map((umkm, idx) => (
               <article key={`${umkm.id}-${idx}`} className="group hover-lift overlay-glow reveal-up overflow-hidden bg-surface-50 shadow-sm ring-1 ring-neutral-200/70" style={{ '--reveal-delay': '160ms' }}>
-                <img
-                  src={umkm.product_photos || umkmImageFallback}
-                  alt={umkm.business_name}
-                  className="media-zoom aspect-4/3 w-full object-cover"
-                  loading="lazy"
-                />
+                {umkm.product_photos ? (
+                  <img
+                    src={umkm.product_photos}
+                    alt={umkm.business_name}
+                    className="media-zoom aspect-4/3 w-full object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="aspect-4/3 w-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center">
+                    <div className="text-center">
+                      <svg className="mx-auto h-16 w-16 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                      </svg>
+                      <p className="mt-2 text-xs text-slate-400 uppercase tracking-wide">Foto belum tersedia</p>
+                    </div>
+                  </div>
+                )}
                 <div className="p-6">
                   <div className="flex items-center justify-between gap-4 text-sm text-neutral-500">
                     <span>{umkm.business_type || 'UMKM Lokal'}</span>
@@ -307,20 +313,6 @@ export default function VillageShow({ slug, umkms = [], prev = null, next = null
                   <p className="mt-4 text-base leading-7 text-neutral-600">
                     {umkm.notes || 'Produk lokal khas desa yang diolah dengan kearifan lokal.'}
                   </p>
-                  {umkm.whatsapp_number ? (
-                    <a
-                      href={`https://wa.me/${umkm.whatsapp_number}?text=${encodeURIComponent(`Halo, saya tertarik dengan ${umkm.business_name}`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover-lift mt-6 inline-flex bg-accent-500 px-5 py-3 text-sm font-semibold text-white hover:bg-accent-600"
-                    >
-                      Pesan via WA
-                    </a>
-                  ) : (
-                    <span className="mt-6 inline-flex bg-neutral-100 px-5 py-3 text-sm font-semibold text-neutral-500">
-                      Kontak belum tersedia
-                    </span>
-                  )}
                 </div>
               </article>
             ))}

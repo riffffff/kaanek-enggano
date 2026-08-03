@@ -10,7 +10,7 @@ export default function HomestayShow({ homestay, prev = null, next = null }) {
     <>
       <Head title={data.name} />
 
-      <section className="relative min-h-[78vh] overflow-hidden bg-primary-950 text-white">
+      <section className="relative overflow-hidden bg-primary-950 text-white">
         {(data.hero || data.cover || data.cover_image || data.image) ? (
           <img
             src={data.hero || data.cover || data.cover_image || data.image}
@@ -30,7 +30,7 @@ export default function HomestayShow({ homestay, prev = null, next = null }) {
           <div className="absolute inset-0 bg-linear-to-br from-primary-950 via-primary-900 to-primary-800" />
         )}
         <div className="absolute inset-0 bg-linear-to-b from-primary-950/20 via-primary-950/40 to-primary-950/85" />
-        <div className="relative mx-auto flex min-h-[78vh] max-w-7xl items-end px-6 pb-20 pt-36 md:px-12 lg:px-16">
+        <div className="relative mx-auto max-w-7xl px-6 pb-32 pt-48 md:px-12 lg:px-16">
           <div>
             <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/75">
               {data.village || 'Enggano'} Village
@@ -55,14 +55,6 @@ export default function HomestayShow({ homestay, prev = null, next = null }) {
 
         <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1.6fr)_360px]">
           <article className="reveal-up max-w-3xl" style={{ '--reveal-delay': '100ms' }}>
-            <h2 className="font-display text-4xl font-semibold leading-tight text-neutral-900 md:text-5xl">
-              Penginapan Autentik di Tengah Alam Enggano
-            </h2>
-
-            <div className="mt-8 space-y-6 text-base leading-8 text-neutral-600 md:text-lg">
-              <p>{data.description || 'Deskripsi homestay belum tersedia.'}</p>
-            </div>
-
             <div className="mt-10">
               <h3 className="font-display text-2xl font-semibold text-neutral-900">
                 Fasilitas yang Tersedia

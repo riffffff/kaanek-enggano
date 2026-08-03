@@ -117,12 +117,9 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
               <h3 className="mt-6 font-display text-3xl font-bold text-neutral-900">
                 Kapal Perintis
               </h3>
-              <p className="mt-1 text-xs uppercase tracking-[0.2em] font-semibold text-accent-600">
-                KM Sabuk Nusantara / Perintis
-              </p>
 
               <p className="mt-4 text-sm text-neutral-600 leading-relaxed border-t border-neutral-100 pt-4">
-                Pelayaran kapal niaga perintis menghubungkan Pelabuhan Pulau Baai (Bengkulu) dengan pelabuhan-pelabuhan utama di Enggano. Cocok untuk perjalanan ekonomis dan pengangkutan barang.
+                Pelayaran kapal niaga perintis menghubungkan Pelabuhan Pulau Baai (Bengkulu) dengan Pelabuhan Malaakoni (Enggano). Cocok untuk perjalanan ekonomis tanpa pengangkutan kendaraan.
               </p>
 
               <div className="mt-6 space-y-3 text-sm text-neutral-700 bg-surface-50 p-4 rounded-xl">
@@ -140,10 +137,10 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
             <div className="mt-8 border-t border-neutral-100 pt-5 flex items-end justify-between gap-4">
               <div>
                 <span className="text-xs uppercase tracking-wider text-neutral-400 block">Estimasi Tarif</span>
-                <span className="text-2xl font-extrabold text-neutral-900">Rp 60.000</span>
+                <span className="text-xl font-extrabold text-neutral-900">± Rp 30.000</span>
               </div>
               <a
-                href="https://pelni.co.id"
+                href="https://www.easybook.com/id-id"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover-lift inline-flex items-center gap-2 bg-primary-950 hover:bg-primary-900 text-white px-5 py-3 rounded-xl text-xs font-bold tracking-wider uppercase"
@@ -169,12 +166,9 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
               <h3 className="mt-6 font-display text-3xl font-bold text-neutral-900">
                 Ferry ASDP
               </h3>
-              <p className="mt-1 text-xs uppercase tracking-[0.2em] font-semibold text-primary-700">
-                KMP Pulo Tello
-              </p>
 
               <p className="mt-4 text-sm text-neutral-600 leading-relaxed border-t border-neutral-100 pt-4">
-                Kapal Ro-Ro Ferry resmi ASDP yang melayani penyeberangan reguler penumpang dan kendaraan dari Pelabuhan Baai (Bengkulu) ke Kahyapu (Enggano).
+                Kapal Ferry resmi ASDP yang melayani penyeberangan reguler penumpang dan kendaraan dari Pelabuhan Baai (Bengkulu) ke Kahyapu (Enggano).
               </p>
 
               <div className="mt-6 space-y-3 text-sm text-neutral-700 bg-surface-50 p-4 rounded-xl">
@@ -192,15 +186,15 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
             <div className="mt-8 border-t border-neutral-100 pt-5 flex items-end justify-between gap-4">
               <div>
                 <span className="text-xs uppercase tracking-wider text-neutral-400 block">Estimasi Tarif</span>
-                <span className="text-2xl font-extrabold text-neutral-900">Rp 75.000</span>
+                <span className="text-xl font-extrabold text-neutral-900">± Rp 75.000</span>
               </div>
               <a
-                href="https://ferizy.com"
+                href=""
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover-lift inline-flex items-center gap-2 bg-accent-500 hover:bg-accent-600 text-white px-5 py-3 rounded-xl text-xs font-bold tracking-wider uppercase"
+                className="hover-lift inline-flex items-center gap-2 bg-accent-500 hover:bg-accent-600 text-white px-5 py-3 rounded-xl text-[9px] font-bold tracking-wider uppercase"
               >
-                <span>Buka Website</span>
+                <span>Call Center 021191</span>
                 <Ship size={14} />
               </a>
             </div>
@@ -221,9 +215,6 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
               <h3 className="mt-6 font-display text-3xl font-bold text-neutral-900">
                 Susi Air
               </h3>
-              <p className="mt-1 text-xs uppercase tracking-[0.2em] font-semibold text-sky-600">
-                Penerbangan Perintis
-              </p>
 
               <p className="mt-4 text-sm text-neutral-600 leading-relaxed border-t border-neutral-100 pt-4">
                 Penerbangan udara dari Bandara Fatmawati Soekarno (Bengkulu) langsung menuju Bandara Enggano. Pilihan tercepat dan nyaman untuk mobilitas tinggi.
@@ -244,7 +235,7 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
             <div className="mt-8 border-t border-neutral-100 pt-5 flex items-end justify-between gap-4">
               <div>
                 <span className="text-xs uppercase tracking-wider text-neutral-400 block">Estimasi Tarif</span>
-                <span className="text-2xl font-extrabold text-neutral-900">Rp 300.000</span>
+                <span className="text-[18px] font-extrabold text-neutral-900">± Rp 450.000</span>
               </div>
               <a
                 href="https://susiair.com"

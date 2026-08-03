@@ -21,7 +21,8 @@ class UmkmController extends Controller
                 'business_type'   => $umkm->business_type,
                 'notes'           => $umkm->notes,
                 'village'         => $umkm->village?->name,
-                'whatsapp_number' => $umkm->whatsapp_number,
+                'lat'             => $umkm->lat,
+                'lng'             => $umkm->lng,
                 'product_photos'  => $umkm->getFirstMediaUrl('product_photos') ?: null,
             ]);
 

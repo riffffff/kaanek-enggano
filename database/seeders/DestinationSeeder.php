@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Destination;
-use App\Models\LocalGuide;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -11,79 +10,109 @@ class DestinationSeeder extends Seeder
 {
     public function run(): void
     {
-        $guides = LocalGuide::query()->get()->keyBy('name');
-
         $destinations = [
             [
-                'name' => 'Pantai Kioyo',
+                'name' => 'Pulau Dua',
                 'description' => implode("\n\n", [
-                    'Pantai Kioyo berada di salah satu tepian paling tenang Enggano, menghadirkan garis pantai yang terasa terpencil namun memikat sejak langkah pertama.',
-                    'Perjalanan menuju lokasi ini menjadi bagian dari pengalaman, dengan lanskap vegetasi tropis, udara asin, dan bukaan pandang ke Samudera Hindia.',
-                    'Air yang relatif jernih, batu karang, dan ritme ombak yang kontras dengan sunyinya area sekitar menjadikan Kioyo cocok untuk kunjungan yang lebih kontemplatif.',
+                    'Deskripsi sementara untuk Pulau Dua.',
+                    'Data ini sengaja dibuat dummy agar seed awal bisa langsung dipakai.',
+                    'Nama lokasi mengikuti label yang terlihat pada peta publik.',
                 ]),
                 'type' => 'bahari',
                 'difficulty_level' => 'sedang',
-                'lat' => -5.3903,
-                'lng' => 102.2336,
-                'local_guide' => 'Guide Bahari Enggano',
-                'image_url' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80',
+                'lat' => -5.3821000,
+                'lng' => 102.3015000,
+                'travel_time' => '±45 menit dari pusat Enggano',
+                'access_note' => 'Akses laut dengan cuaca yang menentukan jadwal berangkat.',
             ],
             [
-                'name' => 'Hutan Endemik Enggano',
+                'name' => 'Pulau Merbau',
                 'description' => implode("\n\n", [
-                    'Kawasan hutan Enggano memperlihatkan wajah pulau yang lebih teduh, liar, dan rapat oleh lapisan vegetasi endemik.',
-                    'Rute masuknya menghadirkan pengalaman observasi alam yang pelan, cocok untuk membaca lanskap, satwa, dan ritme ekologis setempat.',
-                    'Destinasi ini menekankan pengalaman berjalan, mengamati, dan memahami pulau melalui karakter hutan yang masih kuat.',
+                    'Deskripsi sementara untuk Pulau Merbau.',
+                    'Konten utama akan diisi setelah kurasi editorial selesai.',
+                    'Saat ini data difokuskan untuk marker dan kartu destinasi.',
                 ]),
                 'type' => 'wildlife',
                 'difficulty_level' => 'sedang',
-                'lat' => -5.3648,
-                'lng' => 102.2612,
-                'local_guide' => 'Guide Jelajah Hutan',
-                'image_url' => 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=80',
+                'lat' => -5.4183000,
+                'lng' => 102.2874000,
+                'travel_time' => '±50 menit dari pusat Enggano',
+                'access_note' => 'Perlu perahu kecil dan kondisi air yang stabil.',
             ],
             [
-                'name' => 'Jejak Budaya Enggano',
+                'name' => 'Pulau Bangkai',
                 'description' => implode("\n\n", [
-                    'Jejak Budaya Enggano membawa pengunjung membaca pulau melalui cerita warga, ruang kampung, dan warisan enam suku yang masih hadir dalam keseharian.',
-                    'Alih-alih sekadar melihat artefak, pengalaman di destinasi ini lebih dekat dengan narasi, pengetahuan lisan, dan struktur sosial desa.',
-                    'Ia cocok untuk perjalanan yang lebih reflektif, terutama bagi pengunjung yang ingin memahami identitas Enggano di balik pemandangannya.',
+                    'Deskripsi sementara untuk Pulau Bangkai.',
+                    'Informasi lanjutan mengenai daya tarik wisata akan dilengkapi kemudian.',
+                    'Untuk sekarang, data ini dipakai sebagai sumber marker dan kartu destinasi.',
+                ]),
+                'type' => 'wildlife',
+                'difficulty_level' => 'sedang',
+                'lat' => -5.3448000,
+                'lng' => 102.2712000,
+                'travel_time' => '±1 jam dari pusat Enggano',
+                'access_note' => 'Akses laut dan bergantung pada kondisi ombak.',
+            ],
+            [
+                'name' => 'Ekowisata Mangrove Kahyapu',
+                'description' => implode("\n\n", [
+                    'Deskripsi sementara untuk Ekowisata Mangrove Kahyapu.',
+                    'Teks ini sengaja dibuat dummy agar seed awal bisa langsung dipakai.',
+                    'Setelah data final siap, deskripsi dapat diganti tanpa mengubah struktur peta.',
+                ]),
+                'type' => 'bahari',
+                'difficulty_level' => 'mudah',
+                'lat' => -5.3899000,
+                'lng' => 102.2799000,
+                'travel_time' => '±20 menit dari Kahyapu',
+                'access_note' => 'Akses darat singkat lalu jalur papan/tepi mangrove.',
+            ],
+            [
+                'name' => 'Pantai Podipo',
+                'description' => implode("\n\n", [
+                    'Deskripsi sementara untuk Pantai Podipo.',
+                    'Data lokasi disiapkan mengikuti nama yang muncul pada peta publik.',
+                    'Bagian isi akan dilengkapi setelah foto dan narasi final tersedia.',
+                ]),
+                'type' => 'bahari',
+                'difficulty_level' => 'mudah',
+                'lat' => -5.4446000,
+                'lng' => 102.3397000,
+                'travel_time' => '±35 menit dari pusat Enggano',
+                'access_note' => 'Akses darat lalu berjalan pendek ke bibir pantai.',
+            ],
+            [
+                'name' => 'Titik 6',
+                'description' => implode("\n\n", [
+                    'Deskripsi sementara untuk Titik 6.',
+                    'Nama ini mengikuti label yang terlihat di peta publik.',
+                    'Jika nama final tersedia, data dapat diperbarui tanpa mengubah struktur aplikasi.',
                 ]),
                 'type' => 'history',
                 'difficulty_level' => 'mudah',
-                'lat' => -5.4001,
-                'lng' => 102.2822,
-                'local_guide' => 'Guide Jelajah Hutan',
-                'image_url' => 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=1600&q=80',
+                'lat' => -5.3712000,
+                'lng' => 102.3238000,
+                'travel_time' => '±25 menit dari pusat Enggano',
+                'access_note' => 'Akses darat biasa dengan kendaraan lokal.',
             ],
         ];
 
         foreach ($destinations as $destinationData) {
-            $imageUrl = $destinationData['image_url'];
-            unset($destinationData['image_url']);
-
-            $dest = Destination::query()->updateOrCreate(
+            Destination::query()->updateOrCreate(
                 ['name' => $destinationData['name']],
                 [
                     'name' => $destinationData['name'],
                     'description' => $destinationData['description'],
                     'type' => $destinationData['type'],
                     'difficulty_level' => $destinationData['difficulty_level'],
+                    'travel_time' => $destinationData['travel_time'],
+                    'access_note' => $destinationData['access_note'],
                     'slug' => Str::slug($destinationData['name']),
                     'lat' => $destinationData['lat'],
                     'lng' => $destinationData['lng'],
-                    'local_guide_id' => $guides[$destinationData['local_guide']]?->id ?? null,
+                    'local_guide_id' => null,
                 ]
             );
-
-            if ($dest->getMedia('photos')->isEmpty() && $dest->getMedia('background')->isEmpty()) {
-                try {
-                    $dest->addMediaFromUrl($imageUrl)
-                        ->toMediaCollection('photos');
-                } catch (\Throwable $e) {
-                    // Fallback silently if offline or blocked
-                }
-            }
         }
     }
 }

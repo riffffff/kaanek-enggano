@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react'
-import { useState, useMemo, useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 const fallbackDestinations = [
   {
@@ -56,10 +56,6 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
     setActiveIndex((prev) => (prev + 1) % items.length)
   }
 
-  const handlePrev = () => {
-    setActiveIndex((prev) => (prev - 1 + items.length) % items.length)
-  }
-
   // Auto-slide effect
   useEffect(() => {
     if (isHovered) return // Pause if hovering
@@ -68,6 +64,9 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
     }, 5000) // Change slide every 5 seconds
     return () => clearInterval(interval) // Cleanup on unmount or when hovered changes
   }, [items.length, isHovered])
+
+  const qrTargetUrl = 'https://www.google.com/maps/d/viewer?mid=1AO0IZMyY83BGzK2OW7gaCDFDi-Tu7Yo&hl=id'
+  const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=${encodeURIComponent(qrTargetUrl)}`
 
   return (
     <>
@@ -143,6 +142,7 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
                   return (
                     <Link
                       key={item.id || index}
+                      id={`destination-card-${item.id}`}
                       href={`/destinations/${item.slug}`}
                       onClick={(e) => {
                         if (!isActive) {
@@ -207,6 +207,45 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
             </div>
           </div>
 
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-16 md:px-12 lg:px-16">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,360px)] lg:items-center">
+          <div className="reveal-up max-w-3xl">
+            <p className="text-sm uppercase tracking-[0.35em] text-amber-700 font-semibold">
+              Peta Wisata Pulau Enggano
+            </p>
+            <h2 className="mt-4 font-display text-4xl font-semibold tracking-tight text-slate-900 md:text-5xl">
+              Scan untuk Buka Peta Wisata
+            </h2>
+            <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600 md:text-lg">
+              Pindai QR code ini untuk membuka peta wisata Pulau Enggano. Tampilan dibuat bersih, modern, dan tetap fokus pada informasi utama.
+            </p>
+          </div>
+
+          <div className="reveal-up mx-auto w-full max-w-sm" style={{ '--reveal-delay': '120ms' }}>
+            <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_18px_50px_rgba(15,23,42,0.08)]">
+              <div className="rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-100">
+                <div className="mx-auto flex aspect-square w-full max-w-72 items-center justify-center rounded-2xl bg-white p-5 shadow-sm">
+                  <img
+                    src={qrImageUrl}
+                    alt="QR Code Peta Wisata Pulau Enggano"
+                    className="h-full w-full object-contain"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="mt-5 text-center">
+                  <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-900">
+                    Peta Wisata Pulau Enggano
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-500">
+                    Arahkan kamera ke QR untuk membuka peta.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <style>{`
