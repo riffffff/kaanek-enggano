@@ -10,6 +10,56 @@ const DEFAULT_BOUNDS = [
   [-5.255, 102.545],
 ]
 
+// Custom marker menggunakan DivIcon (HTML + CSS) agar stabil di semua environment
+const customMarkerIcon = L.divIcon({
+  className: 'custom-leaflet-marker',
+  html: `
+    <div style="position: relative; width: 30px; height: 42px;">
+      <div style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 30px;
+        height: 36px;
+        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        border: 2.5px solid white;
+        border-radius: 50% 50% 50% 0;
+        transform: rotate(-45deg);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.25);
+      "></div>
+      <div style="
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        width: 14px;
+        height: 14px;
+        background: white;
+        border-radius: 50%;
+        transform: rotate(-45deg);
+      "></div>
+    </div>
+  `,
+  iconSize: [30, 42],
+  iconAnchor: [15, 42],
+  popupAnchor: [0, -38],
+  tooltipAnchor: [0, -42],
+})
+
+// CSS untuk memastikan marker tampil sempurna tanpa border default
+const markerStyle = document.createElement('style')
+markerStyle.innerHTML = `
+  .custom-leaflet-marker {
+    background: none !important;
+    border: none !important;
+  }
+  .custom-leaflet-marker img {
+    display: none !important;
+  }
+`
+if (typeof document !== 'undefined') {
+  document.head.appendChild(markerStyle)
+}
+
 
 
 /**
@@ -76,7 +126,7 @@ export default function LeafletMap({ mapMarkers = [], height = 480, useMarkerBou
     validMarkers.forEach(marker => {
       const lat = Number(marker.lat)
       const lng = Number(marker.lng)
-      const point = L.marker([lat, lng])
+      const point = L.marker([lat, lng], { icon: customMarkerIcon })
 
       if (marker.name) {
         point.bindTooltip(String(marker.name), {

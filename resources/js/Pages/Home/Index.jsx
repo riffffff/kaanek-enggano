@@ -86,7 +86,7 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
         <title>Enggano</title>
         <meta
           name="description"
-          content="Website resmi digital Pulau Enggano untuk informasi perjalanan, destinasi, desa, dan dokumentasi KKN."
+          content="Website resmi digital Pulau Enggano untuk informasi perjalanan, destinasi, desa, dan Aktivitas di Enggano"
         />
       </Head>
 

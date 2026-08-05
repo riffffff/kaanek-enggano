@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react'
+import { Head, Link } from '@inertiajs/react'
 import { Mountain, Navigation, Timer, Play } from 'lucide-react'
 import Button from '../../Components/Button'
 import PrevNext from '../../Components/PrevNext'
@@ -31,7 +31,7 @@ export default function DestinationShow({ destination, prev = null, next = null 
         `Karakter tempat ini terletak pada perpaduan panorama, ritme komunitas lokal, dan sensasi ekspedisi yang membuat kunjungan terasa intim.`,
       ]
 
-  const galleryItems = destination.gallery?.length
+  const rawGallery = destination.gallery?.length
     ? destination.gallery.filter(Boolean)
     : [
         {
@@ -51,6 +51,26 @@ export default function DestinationShow({ destination, prev = null, next = null 
           url: 'https://images.unsplash.com/photo-1473116763249-2faaef81ccda?auto=format&fit=crop&w=1200&q=80',
         },
       ]
+
+  const galleryItems = rawGallery.map((item, idx) => {
+    if (typeof item === 'string') {
+      const isVid = isVideo(item)
+      return {
+        id: `g-${idx}`,
+        type: isVid ? 'video' : 'image',
+        url: item,
+        url_medium: item,
+        url_thumb: null,
+      }
+    }
+    return {
+      id: item.id || `g-${idx}`,
+      type: item.type || (isVideo(item.url) ? 'video' : 'image'),
+      url: item.url || item.src || item.path || item,
+      url_medium: item.url_medium || item.url || item.src || item.path || item,
+      url_thumb: item.url_thumb || item.thumb || null,
+    }
+  })
 
   return (
     <>
