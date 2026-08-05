@@ -101,7 +101,7 @@ export default function VillageIndex() {
               }`}
             >
               <AlertTriangle size={18} />
-              Peta Kerentanan Bencana Tsunami
+              Peta Kerawanan Bencana Tsunami
             </button>
           </div>
         </div>
