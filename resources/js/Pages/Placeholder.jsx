@@ -5,11 +5,11 @@ export default function Placeholder({ title, description }) {
     <>
       <Head title={title} />
 
-      <section className="mx-auto flex min-h-[70vh] max-w-4xl items-center px-6 pb-16 pt-32 md:px-12 lg:px-16">
+      <section className="mx-auto flex min-h-[70vh] w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 items-center pb-16 pt-32">
         <div>
-          <p className="font-body text-sm uppercase tracking-[0.3em] text-primary-700">Dalam Progres</p>
-          <h1 className="mt-4 font-display text-5xl font-semibold text-neutral-800 md:text-6xl">{title}</h1>
-          <p className="mt-6 max-w-2xl text-base leading-7 text-neutral-500 md:text-lg">{description}</p>
+          <h1 className="font-display text-3xl sm:text-5xl md:text-6xl font-semibold text-neutral-900 leading-tight">{title}</h1>
+          <div className="mt-3.5 h-1 w-10 bg-accent-500 rounded-full" />
+          <p className="mt-4 max-w-2xl text-sm sm:text-base leading-relaxed text-neutral-600 md:text-lg">{description}</p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Link href="/" className="bg-accent-500 px-5 py-3 text-sm font-semibold text-white hover:bg-accent-600">
               Kembali ke Home

@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="relative overflow-hidden bg-primary-900 text-white">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/10" />
       <div className="float-soft pointer-events-none absolute -right-16 bottom-0 h-48 w-48 rounded-full bg-accent-500/10 blur-3xl" />
-      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-[1.5fr_1fr_1fr] md:px-12 lg:px-16">
+      <div className="mx-auto grid w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 gap-10 py-14 md:grid-cols-[1.5fr_1fr_1fr]">
         <div className="reveal-up" style={{ '--reveal-delay': '60ms' }}>
           <p className="font-display text-3xl font-semibold">Enggano</p>
           <p className="mt-3 max-w-sm text-sm leading-6 text-white/70">
@@ -37,11 +37,18 @@ export default function Footer() {
             <Link href="/privacy-policy" className="transition-transform duration-300 hover:translate-x-1 hover:text-white">
               Privacy Policy
             </Link>
+            <Link href="/credits" className="transition-transform duration-300 hover:translate-x-1 hover:text-white">
+              Kredit & Tim
+            </Link>
           </div>
         </div>
 
         <div className="reveal-up text-xs text-white/50 md:col-span-3" style={{ '--reveal-delay': '300ms' }}>
-          {new Date().getFullYear()} Enggano. KKN UGM Credit.
+          {new Date().getFullYear()} Enggano.{' '}
+          <Link href="/credits" className="hover:text-white underline underline-offset-2 transition-colors">
+            KKN Kolaborasi UGM & UNIB Credit
+          </Link>
+          .
         </div>
       </div>
     </footer>

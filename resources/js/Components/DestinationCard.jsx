@@ -1,29 +1,41 @@
 import { Link } from '@inertiajs/react'
-import Badge from './Badge'
+import { ChevronRight } from 'lucide-react'
 
-export default function DestinationCard({ destination, isLarge = false }) {
+export default function DestinationCard({ destination, isLarge = false, className = '' }) {
   return (
     <Link
       href={`/destinations/${destination.slug ?? '#'}`}
-      className={`group hover-lift reveal-up relative block overflow-hidden ${isLarge ? 'md:row-span-2' : ''}`}
+      className={`group reveal-up relative block overflow-hidden rounded-2xl ${isLarge ? 'md:row-span-2' : ''} ${className}`}
       style={{ '--reveal-delay': '140ms' }}
     >
-      <div className={`${isLarge ? 'aspect-4/3 md:aspect-auto md:h-full' : 'aspect-4/3'} overflow-hidden`}>
+      {/* Gambar */}
+      <div className={`${isLarge ? 'aspect-4/3 md:aspect-auto md:h-full' : 'aspect-[3/4]'} absolute inset-0 overflow-hidden`}>
         <img
           src={destination.image || 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80'}
           alt={destination.name}
-          className="media-zoom h-full w-full object-cover"
+          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
       </div>
-      <div className="absolute inset-x-0 bottom-0 p-5 md:p-6 text-white">
-        <h3 className={`mt-3 font-display font-semibold text-white ${isLarge ? 'text-3xl md:text-4xl' : 'text-2xl'}`}>{destination.name}</h3>
-        {destination.short_description && (
-          <p className={`mt-2 line-clamp-1 leading-6 text-white/80 ${isLarge ? 'text-base md:text-lg' : 'text-sm'}`}>
-            {destination.short_description}
+
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+
+
+      {/* Konten bawah */}
+      <div className="absolute bottom-0 inset-x-0 p-4 md:p-5 lg:p-6 text-white z-10">
+        <h3 className={`font-display font-bold leading-tight tracking-tight drop-shadow-lg mb-1.5 md:mb-2 ${isLarge ? 'text-3xl md:text-4xl' : 'text-lg md:text-xl lg:text-2xl'}`}>
+          {destination.name}
+        </h3>
+        {(destination.short_description || destination.description) && (
+          <p className="text-[11px] md:text-xs leading-relaxed text-white/85 line-clamp-2 mb-2 md:mb-3 drop-shadow-md">
+            {destination.short_description || destination.description}
           </p>
         )}
+        <div className="inline-flex items-center gap-1.5 md:gap-2 text-white text-[10px] md:text-xs font-bold uppercase tracking-[0.2em]">
+          <span>Jelajahi</span>
+          <ChevronRight size={13} className="md:w-[15px] md:h-[15px] transition-transform group-hover:translate-x-1" />
+        </div>
       </div>
     </Link>
   )

@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
-import { Head, Link, router } from '@inertiajs/react'
-import { ArrowRight, Calendar, Clock, Newspaper, Sparkles } from 'lucide-react'
+import { Head, Link } from '@inertiajs/react'
+import { ArrowRight, Calendar, Clock } from 'lucide-react'
+import PageHeader from '../../Components/PageHeader'
 
 const filters = [
-  { label: 'SEMUA ARTIKEL', value: null },
-  { label: 'EKONOMI', value: 'ekonomi' },
-  { label: 'KESEHATAN', value: 'kesehatan' },
-  { label: 'DIGITALISASI', value: 'digitalisasi' },
-  { label: 'LINGKUNGAN', value: 'lingkungan' },
+  { label: 'Semua Artikel', value: null },
+  { label: 'Ekonomi', value: 'ekonomi' },
+  { label: 'Kesehatan', value: 'kesehatan' },
+  { label: 'Digitalisasi', value: 'digitalisasi' },
+  { label: 'Lingkungan', value: 'lingkungan' },
 ]
 
 const fallbackItems = [
@@ -92,8 +93,9 @@ const imageByCategory = {
     'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80',
 }
 
-export default function KknLogIndex({ items = [], carouselItems = [], selectedCategory = null, highlightedCount = 0 }) {
-  const [visibleCount, setVisibleCount] = useState(5)
+export default function KknLogIndex({ items = [], carouselItems = [], selectedCategory = null }) {
+  const [activeCategory, setActiveCategory] = useState(selectedCategory || null)
+  const [visibleCount, setVisibleCount] = useState(6)
   const [currentSlide, setCurrentSlide] = useState(0)
   const intervalRef = useRef(null)
   const carouselRef = useRef(null)
@@ -116,12 +118,17 @@ export default function KknLogIndex({ items = [], carouselItems = [], selectedCa
     ? items.map((item, index) => normalizeEntry(item, index))
     : fallbackItems
 
-  // ✨ CAROUSEL: Pakai EXPLICIT data from backend (highlighted pilihan admin + fallback non-highlighted)
+  // Carousel headlines
   const carouselArticles = carouselItems && carouselItems.length
     ? carouselItems.map((item, index) => normalizeEntry(item, index))
     : entries.slice(0, 4)
 
-  const listArticles = entries.slice(0, visibleCount + 4)
+  // Filtered entries
+  const filteredEntries = activeCategory
+    ? entries.filter(item => item.category?.toLowerCase() === activeCategory.toLowerCase())
+    : entries
+
+  const listArticles = filteredEntries.slice(0, visibleCount)
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % carouselArticles.length)
@@ -142,7 +149,7 @@ export default function KknLogIndex({ items = [], carouselItems = [], selectedCa
     const startAutoplay = () => {
       intervalRef.current = setInterval(() => {
         nextSlide()
-      }, 3000) // 3 detik per slide
+      }, 4000)
     }
 
     const stopAutoplay = () => {
@@ -170,58 +177,42 @@ export default function KknLogIndex({ items = [], carouselItems = [], selectedCa
 
   return (
     <>
-      <Head title="Berita & Artikel - Kaanek Enggano" />
+      <Head title="Berita & Aktivitas - Kaanek Enggano" />
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden text-white">
-        <img
-          src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1800&q=80"
-          alt="Berita & Artikel Enggano"
-          className="reveal-scale absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/30 to-black/70" />
-        <div className="relative mx-auto max-w-7xl px-6 pb-32 pt-48 md:px-12 lg:px-16">
-          <div className="max-w-4xl">
-            <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/70">
-              Berita & Artikel
-            </p>
-            <h1 className="reveal-up mt-4 font-display text-5xl font-semibold md:text-7xl" style={{ '--reveal-delay': '120ms' }}>
-              Catatan Lapangan Enggano
-            </h1>
-            <p className="reveal-up mt-6 text-base leading-7 text-white/90 md:text-xl" style={{ '--reveal-delay': '200ms' }}>
-              Kumpulan warta terkini, artikel jurnal pemberdayaan, kegiatan kemasyarakatan, serta narasi budaya dari pelosok Pulau Enggano.
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* Hero PageHeader */}
+      <PageHeader
+        pageKey="kknLog"
+        background="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1800&q=80"
+      />
 
       {/* Main Articles Portal Area */}
-      <section className="mx-auto max-w-7xl px-6 py-12 md:px-12 md:py-20 lg:px-16">
+      <section className="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 py-8 sm:py-12 md:py-20">
 
         {/* Featured Top Headline Carousel */}
         {carouselArticles.length > 0 && (
-          <div className="mb-14">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-2">
-                <Sparkles size={16} className="text-accent-500" />
-                <span className="text-xs font-bold uppercase tracking-[0.25em] text-accent-600">Berita Utama / Highlight</span>
-              </div>
+          <div className="mb-8 sm:mb-14">
+            <div className="flex items-center justify-between mb-3 sm:mb-6">
+              <h2 className="text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-accent-600">
+                Berita Utama
+              </h2>
 
               {/* Carousel Controls */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
                 <button
                   onClick={prevSlide}
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-white border border-neutral-200 hover:bg-neutral-50 hover:border-neutral-300 transition-colors"
+                  aria-label="Slide sebelumnya"
+                  className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border border-neutral-200 hover:bg-neutral-50 transition-colors"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neutral-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-neutral-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
                 <button
                   onClick={nextSlide}
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-white border border-neutral-200 hover:bg-neutral-50 hover:border-neutral-300 transition-colors"
+                  aria-label="Slide berikutnya"
+                  className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border border-neutral-200 hover:bg-neutral-50 transition-colors"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neutral-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-neutral-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </button>
@@ -229,54 +220,46 @@ export default function KknLogIndex({ items = [], carouselItems = [], selectedCa
             </div>
 
             {/* Carousel Container */}
-            <div ref={carouselRef} className="relative overflow-hidden rounded-2xl">
+            <div ref={carouselRef} className="relative overflow-hidden rounded-2xl border border-neutral-100 shadow-xs">
               {/* Carousel Slides */}
               <div className="flex transition-transform duration-500 ease-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
                 {carouselArticles.map((article) => (
                   <article key={article.slug} className="min-w-full">
-                    <Link href={`/kkn-log/${article.slug}`} className="grid lg:grid-cols-12">
-                      <div className="relative lg:col-span-7 min-h-80 lg:min-h-110 overflow-hidden">
+                    <Link href={`/kkn-log/${article.slug}`} className="block lg:grid lg:grid-cols-12 bg-white">
+                      {/* Image */}
+                      <div className="relative lg:col-span-7 aspect-[16/10] sm:min-h-72 lg:min-h-110 overflow-hidden bg-neutral-100">
                         <img
                           src={article.image}
                           alt={article.title}
                           className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
                         />
-                        <div className="absolute top-5 left-5 flex flex-wrap items-center gap-2">
-                          <span className="rounded-lg bg-primary-950/90 backdrop-blur-sm px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-white">
-                            {String(article.category ?? 'berita').toUpperCase()}
-                          </span>
-                          {article.is_highlighted && (
-                            <span className="rounded-lg bg-accent-500/95 backdrop-blur-sm px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-accent-500/30 inline-flex items-center gap-1">
-                              <Sparkles size={13} /> Berita Utama
-                            </span>
-                          )}
-                        </div>
                       </div>
 
-                      <div className="flex flex-col justify-between p-8 lg:col-span-5 md:p-10 bg-white">
+                      {/* Content */}
+                      <div className="flex flex-col justify-between p-4 sm:p-6 lg:p-10 lg:col-span-5 bg-white">
                         <div>
-                          <div className="flex items-center gap-4 text-xs font-medium text-neutral-500 flex-wrap">
-                            <span className="flex items-center gap-1.5"><Calendar size={14} className="text-primary-700" /> {article.date}</span>
-                            <span className="flex items-center gap-1.5"><Clock size={14} className="text-primary-700" /> {article.read_time}</span>
-                            {article.is_highlighted && (
-                              <span className="ml-auto inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-accent-100 text-accent-700 font-bold">
-                                <Sparkles size={12} /> Highlight
-                              </span>
-                            )}
+                          <div className="flex items-center gap-2 text-[11px] sm:text-xs font-medium text-neutral-500">
+                            <span className="font-bold uppercase tracking-wider text-primary-900 text-[10px]">
+                              {article.category}
+                            </span>
+                            <span>•</span>
+                            <span className="flex items-center gap-1"><Calendar size={12} className="text-primary-700" /> {article.date}</span>
+                            <span>•</span>
+                            <span className="flex items-center gap-1"><Clock size={12} className="text-primary-700" /> {article.read_time}</span>
                           </div>
 
-                          <h2 className="mt-5 font-display text-3xl font-bold leading-snug text-neutral-900 hover:text-primary-800 transition-colors md:text-4xl">
+                          <h3 className="mt-2.5 font-display text-base sm:text-2xl lg:text-3xl font-bold leading-snug text-neutral-900 hover:text-primary-800 transition-colors line-clamp-2 sm:line-clamp-3">
                             {article.title}
-                          </h2>
+                          </h3>
 
-                          <p className="mt-4 text-base leading-relaxed text-neutral-600 line-clamp-3">
+                          <p className="mt-2 text-xs sm:text-sm leading-relaxed text-neutral-600 line-clamp-2 sm:line-clamp-3">
                             {article.excerpt}
                           </p>
                         </div>
 
-                        <div className="mt-8 pt-6 border-t border-neutral-100 flex items-center gap-2 text-sm font-bold text-accent-600 hover:text-accent-700">
+                        <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-neutral-100 flex items-center gap-2 text-xs font-bold text-accent-600 hover:text-accent-700">
                           <span>Baca Selengkapnya</span>
-                          <ArrowRight size={16} className="transition-transform duration-300 hover:translate-x-1" />
+                          <ArrowRight size={14} />
                         </div>
                       </div>
                     </Link>
@@ -285,13 +268,14 @@ export default function KknLogIndex({ items = [], carouselItems = [], selectedCa
               </div>
 
               {/* Carousel Indicators */}
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3">
+              <div className="absolute bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 sm:gap-2">
                 {carouselArticles.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => goToSlide(index)}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      currentSlide === index ? 'w-10 bg-accent-500' : 'w-2 bg-white/60 hover:bg-white/80'
+                    aria-label={`Slide ${index + 1}`}
+                    className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 ${
+                      currentSlide === index ? 'w-6 sm:w-8 bg-accent-500' : 'w-1.5 sm:w-2 bg-neutral-300/80 hover:bg-neutral-400'
                     }`}
                   />
                 ))}
@@ -300,80 +284,147 @@ export default function KknLogIndex({ items = [], carouselItems = [], selectedCa
           </div>
         )}
 
-        {/* Standard News Grid */}
-        <div className="border-t border-neutral-200/80 pt-10">
-          <h3 className="font-display text-2xl font-bold text-neutral-900 mb-8">
-            Daftar Artikel Terkini
-          </h3>
-
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {listArticles.map((item, index) => (
-              <article
-                key={item.slug}
-                className="group hover-lift overlay-glow reveal-up flex flex-col justify-between overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-neutral-200/80 transition-all duration-300"
-                style={{ '--reveal-delay': `${120 + index * 60}ms` }}
-              >
-                <div>
-                  <Link href={`/kkn-log/${item.slug}`} className="block relative overflow-hidden aspect-16/10">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="media-zoom h-full w-full object-cover"
-                      loading="lazy"
-                    />
-                    <div className="absolute top-4 left-4 flex flex-wrap items-center gap-1.5">
-                      <span className="rounded-md bg-primary-950/90 backdrop-blur-sm px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white">
-                        {String(item.category ?? 'artikel').toUpperCase()}
-                      </span>
-                      {item.is_highlighted && (
-                        <span className="rounded-md bg-accent-500/95 backdrop-blur-sm px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm inline-flex items-center gap-0.5">
-                          <Sparkles size={11} /> Utama
-                        </span>
-                      )}
-                    </div>
-                  </Link>
-
-                  <div className="p-6">
-                    <div className="flex items-center gap-3 text-xs text-neutral-500 font-medium">
-                      <span className="flex items-center gap-1"><Calendar size={13} /> {item.date}</span>
-                      <span>•</span>
-                      <span className="flex items-center gap-1"><Clock size={13} /> {item.read_time}</span>
-                    </div>
-
-                    <h4 className="mt-3 font-display text-xl font-bold leading-snug text-neutral-900 group-hover:text-primary-800 transition-colors line-clamp-2">
-                      <Link href={`/kkn-log/${item.slug}`}>
-                        {item.title}
-                      </Link>
-                    </h4>
-
-                    <p className="mt-3 text-sm text-neutral-600 leading-relaxed line-clamp-3">
-                      {item.excerpt}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="px-6 pb-6 pt-2">
-                  <Link
-                    href={`/kkn-log/${item.slug}`}
-                    className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-accent-600 hover:text-accent-700 transition-colors"
-                  >
-                    <span>Baca Artikel</span>
-                    <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
-                  </Link>
-                </div>
-              </article>
-            ))}
+        {/* Category Filter Pills (Horizontal Scroll on Mobile) */}
+        <div className="mb-6 sm:mb-8">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+            {filters.map(filter => {
+              const isActive = activeCategory === filter.value
+              return (
+                <button
+                  key={filter.value || 'all'}
+                  type="button"
+                  onClick={() => {
+                    setActiveCategory(filter.value)
+                    setVisibleCount(6)
+                  }}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                    isActive
+                      ? 'bg-primary-950 text-white shadow-xs'
+                      : 'bg-white text-neutral-600 border border-neutral-200/80 hover:bg-neutral-50'
+                  }`}
+                >
+                  {filter.label}
+                </button>
+              )
+            })}
           </div>
         </div>
 
-        {entries.length > visibleCount && (
-          <div className="mt-14 flex justify-center">
+        {/* Section Heading */}
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <div>
+            <h3 className="font-display text-2xl sm:text-3xl font-semibold text-neutral-900">
+              Daftar Artikel
+            </h3>
+            <div className="mt-2.5 h-1 w-8 bg-accent-500 rounded-full" />
+          </div>
+          <span className="text-xs text-neutral-400 font-medium">
+            {filteredEntries.length} artikel
+          </span>
+        </div>
+
+        {/* Mobile View: Compact News Row / Media List (< md) */}
+        <div className="flex flex-col gap-2.5 md:hidden">
+          {listArticles.map((item) => (
+            <Link
+              key={item.slug}
+              href={`/kkn-log/${item.slug}`}
+              className="flex items-center justify-between p-3 bg-white rounded-2xl border border-neutral-100 shadow-[0_2px_12px_-2px_rgba(0,0,0,0.05)] active:scale-[0.99] transition-all gap-3"
+            >
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-1.5 text-[10px] text-neutral-400 font-medium">
+                  <span className="text-primary-900 font-bold uppercase tracking-wider">
+                    {item.category || 'Artikel'}
+                  </span>
+                  <span>•</span>
+                  <span>{item.date}</span>
+                </div>
+                <h4 className="mt-1 font-display text-sm font-bold text-neutral-900 leading-snug line-clamp-2">
+                  {item.title}
+                </h4>
+                <p className="mt-1 text-[11px] text-neutral-500 line-clamp-1">
+                  {item.excerpt}
+                </p>
+              </div>
+
+              <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0 bg-neutral-100">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* Desktop View: 3 Columns Grid (≥ md) */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {listArticles.map((item, index) => (
+            <article
+              key={item.slug}
+              className="group hover-lift overlay-glow reveal-up flex flex-col justify-between overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-neutral-200/80 transition-all duration-300"
+              style={{ '--reveal-delay': `${120 + index * 60}ms` }}
+            >
+              <div>
+                <Link href={`/kkn-log/${item.slug}`} className="block relative overflow-hidden aspect-16/10">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="media-zoom h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </Link>
+
+                <div className="p-6">
+                  <div className="flex items-center gap-3 text-xs text-neutral-500 font-medium">
+                    <span className="font-bold uppercase tracking-wider text-primary-900 text-[11px]">{item.category}</span>
+                    <span>•</span>
+                    <span className="flex items-center gap-1"><Calendar size={13} /> {item.date}</span>
+                    <span>•</span>
+                    <span className="flex items-center gap-1"><Clock size={13} /> {item.read_time}</span>
+                  </div>
+
+                  <h4 className="mt-3 font-display text-xl font-bold leading-snug text-neutral-900 group-hover:text-primary-800 transition-colors line-clamp-2">
+                    <Link href={`/kkn-log/${item.slug}`}>
+                      {item.title}
+                    </Link>
+                  </h4>
+
+                  <p className="mt-3 text-sm text-neutral-600 leading-relaxed line-clamp-3">
+                    {item.excerpt}
+                  </p>
+                </div>
+              </div>
+
+              <div className="px-6 pb-6 pt-2">
+                <Link
+                  href={`/kkn-log/${item.slug}`}
+                  className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-accent-600 hover:text-accent-700 transition-colors"
+                >
+                  <span>Baca Artikel</span>
+                  <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {filteredEntries.length === 0 && (
+          <div className="text-center py-12 bg-white rounded-2xl border border-neutral-200/80 p-8">
+            <p className="text-neutral-500 text-sm">Tidak ada artikel dalam kategori ini.</p>
+          </div>
+        )}
+
+        {filteredEntries.length > visibleCount && (
+          <div className="mt-8 sm:mt-14 flex justify-center">
             <button
               type="button"
               onClick={() => setVisibleCount(prev => prev + 6)}
-              className="hover-lift reveal-up bg-primary-950 hover:bg-primary-900 px-8 py-3.5 text-xs font-bold tracking-widest uppercase text-white rounded-xl shadow-md transition-all"
+              className="hover-lift bg-primary-950 hover:bg-primary-900 px-6 sm:px-8 py-3 sm:py-3.5 text-xs font-bold tracking-widest uppercase text-white rounded-xl shadow-md transition-all"
             >
-              Tampilkan Lebih Banyak Artikel
+              Tampilkan Lebih Banyak
             </button>
           </div>
         )}
@@ -381,4 +432,3 @@ export default function KknLogIndex({ items = [], carouselItems = [], selectedCa
     </>
   )
 }
-

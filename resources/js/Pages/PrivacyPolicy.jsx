@@ -46,13 +46,12 @@ export default function PrivacyPolicy() {
 
       {/* Hero */}
       <section className="bg-primary-950 text-white">
-        <div className="mx-auto max-w-7xl px-6 pb-20 pt-36 md:px-12 lg:px-16">
+        <div className="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 pb-20 pt-36">
           <div className="max-w-3xl">
-            <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/60">Legal</p>
-            <h1 className="reveal-up mt-4 font-display text-5xl font-semibold md:text-6xl" style={{ '--reveal-delay': '100ms' }}>
+            <h1 className="reveal-up font-display text-3xl sm:text-4xl md:text-6xl font-semibold" style={{ '--reveal-delay': '100ms' }}>
               Privacy Policy
             </h1>
-            <p className="reveal-up mt-6 text-base leading-7 text-white/75 md:text-lg" style={{ '--reveal-delay': '200ms' }}>
+            <p className="reveal-up mt-4 sm:mt-6 text-sm sm:text-base leading-relaxed text-white/75 md:text-lg" style={{ '--reveal-delay': '200ms' }}>
               Kami menghormati privasi Anda. Dokumen ini menjelaskan bagaimana website Enggano
               mengelola informasi yang terkait dengan kunjungan Anda.
             </p>
@@ -64,23 +63,25 @@ export default function PrivacyPolicy() {
       </section>
 
       {/* Content */}
-      <section className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24 lg:px-16">
+      <section className="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 py-16 md:py-24">
         <div className="mx-auto max-w-3xl">
           <div className="space-y-12">
             {sections.map((section, index) => (
               <div key={section.title} className="reveal-up" style={{ '--reveal-delay': `${index * 80}ms` }}>
-                <h2 className="font-display text-2xl font-semibold text-neutral-900">
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold text-neutral-900">
                   {section.title}
                 </h2>
-                <p className="mt-4 text-base leading-8 text-neutral-600">{section.content}</p>
+                <div className="mt-3 h-1 w-8 bg-accent-500 rounded-full" />
+                <p className="mt-4 text-sm sm:text-base leading-relaxed text-neutral-600">{section.content}</p>
               </div>
             ))}
           </div>
 
           {/* Contact */}
           <div className="reveal-up mt-16 border-t border-neutral-200 pt-10">
-            <h2 className="font-display text-2xl font-semibold text-neutral-900">Hubungi Kami</h2>
-            <p className="mt-4 text-base leading-8 text-neutral-600">
+            <h2 className="font-display text-2xl sm:text-3xl font-semibold text-neutral-900">Hubungi Kami</h2>
+            <div className="mt-3 h-1 w-8 bg-accent-500 rounded-full" />
+            <p className="mt-4 text-sm sm:text-base leading-relaxed text-neutral-600">
               Jika Anda memiliki pertanyaan tentang kebijakan privasi ini, silakan hubungi tim
               pengelola website melalui WhatsApp yang tersedia di halaman utama.
             </p>

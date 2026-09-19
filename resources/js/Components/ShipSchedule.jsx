@@ -3,7 +3,7 @@ import { Plane, Ship } from 'lucide-react'
 export default function ShipSchedule({ schedules = [] }) {
   return (
     <section id="transportation" className="py-16 md:py-24">
-      <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+      <div className="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0">
         <div className="mb-8 max-w-2xl">
           <p className="font-body text-sm font-semibold uppercase text-accent-600">Transportasi</p>
           <h2 className="mt-2 font-display text-4xl font-semibold text-neutral-800 md:text-5xl">Ship Schedule</h2>

@@ -1,46 +1,40 @@
 import { Head } from '@inertiajs/react'
 import { Phone } from 'lucide-react'
+import PageHeader from '../../Components/PageHeader'
 
 export default function LocalGuideIndex({ guides = [] }) {
   return (
     <>
       <Head title="Local Guide" />
 
-      <section className="relative overflow-hidden text-white">
-        <img
-          src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1800&q=80"
-          alt="Local Guide Enggano"
-          className="reveal-scale absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/30 to-black/70" />
-        <div className="relative mx-auto max-w-7xl px-6 pb-32 pt-48 md:px-12 lg:px-16">
-          <div className="max-w-4xl">
-            <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/70">
-              Explore
-            </p>
-            <h1 className="reveal-up mt-4 font-display text-5xl font-semibold md:text-7xl" style={{ '--reveal-delay': '120ms' }}>
-              Local Guide
-            </h1>
-            <p className="reveal-up mt-6 text-base leading-7 text-white/90 md:text-xl" style={{ '--reveal-delay': '200ms' }}>
-              Hubungi guide lokal profesional untuk pengalaman terbaik menjelajahi Pulau Enggano dengan lebih mendalam.
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHeader
+        pageKey="localGuide"
+        background="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1800&q=80"
+      />
 
       <div className="bg-[#f8f7f4] min-h-screen">
-        <section className="mx-auto max-w-7xl px-6 py-20 md:px-12 lg:px-16">
+        <section className="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 py-10 sm:py-16 md:py-20">
+          <div className="reveal-up max-w-3xl mb-8 sm:mb-12">
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 leading-tight">
+              Pemandu Wisata Lokal
+            </h2>
+            <div className="mt-3.5 h-1 w-10 bg-accent-500 rounded-full" />
+            <p className="mt-3.5 text-sm sm:text-base leading-relaxed text-slate-600">
+              Jelajahi keindahan alam dan kebudayaan Pulau Enggano didampingi warga lokal yang ramah dan berpengalaman.
+            </p>
+          </div>
+
           {!guides.length && (
-            <div className="mb-8 bg-white px-6 py-5 text-sm text-slate-600 shadow-sm ring-1 ring-neutral-200/70">
+            <div className="mb-8 bg-white px-6 py-5 text-sm text-slate-600 shadow-sm ring-1 ring-neutral-200/70 rounded-xl">
               Data local guide belum tersedia di admin.
             </div>
           )}
 
-          <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid grid-cols-2 gap-4 md:gap-8 xl:grid-cols-3">
             {guides.map((guide, index) => (
               <div
                 key={guide.id}
-                className="group hover-lift reveal-up bg-white shadow-sm overflow-hidden"
+                className="group hover-lift reveal-up bg-white shadow-sm overflow-hidden rounded-xl flex flex-col justify-between h-full"
                 style={{ '--reveal-delay': `${140 + index * 60}` }}
               >
                 <div className="relative overflow-hidden">
@@ -52,29 +46,31 @@ export default function LocalGuideIndex({ guides = [] }) {
                       loading="lazy"
                     />
                   ) : (
-                    <div className="flex aspect-4/3 items-center justify-center bg-slate-100 text-sm font-medium text-slate-400">
-                      Foto guide belum tersedia
+                    <div className="flex aspect-4/3 items-center justify-center bg-slate-100 text-xs text-slate-400">
+                      Belum ada foto
                     </div>
                   )}
-                  <div className="absolute left-4 top-4 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-700">
+                  <div className="absolute left-2 top-2 bg-white/90 backdrop-blur-xs px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-600 rounded">
                     {guide.expertise || 'Local Guide'}
                   </div>
                 </div>
-                <div className="p-6">
-                  <h3 className="font-display text-xl font-semibold text-slate-800">
-                    {guide.name}
-                  </h3>
-                  {guide.expertise && (
-                    <p className="mt-1 text-sm text-slate-500">{guide.expertise}</p>
-                  )}
+                <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-display text-sm sm:text-base font-semibold text-slate-800 leading-snug">
+                      {guide.name}
+                    </h3>
+                    {guide.expertise && (
+                      <p className="mt-0.5 text-[11px] sm:text-xs text-slate-400">{guide.expertise}</p>
+                    )}
+                  </div>
                   <a
                     href={`https://wa.me/${guide.whatsapp_number}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-6 inline-flex w-full items-center justify-center gap-2 px-4 py-3 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold"
+                    className="mt-3 inline-flex w-full items-center justify-center gap-1.5 px-3 py-2 bg-green-500 hover:bg-green-600 text-white text-xs font-semibold rounded-lg transition-colors"
                   >
-                    <Phone size={18} />
-                    Hubungi via WhatsApp
+                    <Phone size={13} />
+                    WhatsApp
                   </a>
                 </div>
               </div>

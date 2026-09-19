@@ -9,58 +9,17 @@ const DEFAULT_BOUNDS = [
   [-5.545, 102.235],
   [-5.255, 102.545],
 ]
+const DEFAULT_VIEW_BOUNDS = DEFAULT_BOUNDS
 
-// Custom marker menggunakan DivIcon (HTML + CSS) agar stabil di semua environment
-const customMarkerIcon = L.divIcon({
-  className: 'custom-leaflet-marker',
-  html: `
-    <div style="position: relative; width: 30px; height: 42px;">
-      <div style="
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 30px;
-        height: 36px;
-        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-        border: 2.5px solid white;
-        border-radius: 50% 50% 50% 0;
-        transform: rotate(-45deg);
-        box-shadow: 0 4px 6px rgba(0,0,0,0.25);
-      "></div>
-      <div style="
-        position: absolute;
-        top: 8px;
-        left: 8px;
-        width: 14px;
-        height: 14px;
-        background: white;
-        border-radius: 50%;
-        transform: rotate(-45deg);
-      "></div>
-    </div>
-  `,
-  iconSize: [30, 42],
-  iconAnchor: [15, 42],
-  popupAnchor: [0, -38],
-  tooltipAnchor: [0, -42],
-})
-
-// CSS untuk memastikan marker tampil sempurna tanpa border default
-const markerStyle = document.createElement('style')
-markerStyle.innerHTML = `
-  .custom-leaflet-marker {
-    background: none !important;
-    border: none !important;
-  }
-  .custom-leaflet-marker img {
-    display: none !important;
-  }
-`
-if (typeof document !== 'undefined') {
-  document.head.appendChild(markerStyle)
+function escapePopupText(value) {
+  return String(value).replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;',
+  })[character])
 }
-
-
 
 /**
  * EngganoMap — komponen peta interaktif Pulau Enggano menggunakan Leaflet.js.
@@ -71,14 +30,24 @@ if (typeof document !== 'undefined') {
  * @param {boolean} useMarkerBounds - jika true, viewport mengikuti koordinat prop
  * @param {Function} onMarkerClick  - callback opsional ketika marker diklik, menerima object marker
  */
-export default function LeafletMap({ mapMarkers = [], height = 480, useMarkerBounds = false, onMarkerClick = null }) {
+export default function LeafletMap({
+  mapMarkers = [],
+  height = 480,
+  zoom = 13,
+  useMarkerBounds = false,
+  viewBounds = DEFAULT_VIEW_BOUNDS,
+  viewMaxZoom = null,
+  highlightPoint = null,
+  onMarkerClick = null,
+}) {
   const containerRef = useRef(null)
   const mapRef       = useRef(null)
   const markerLayerRef = useRef(null)
 
-  function focusDefaultBounds(map) {
-    map.fitBounds(DEFAULT_BOUNDS, {
+  function focusViewBounds(map) {
+    map.fitBounds(viewBounds, {
       padding: [4, 4],
+      ...(viewMaxZoom ? { maxZoom: viewMaxZoom } : {}),
     })
   }
 
@@ -90,7 +59,7 @@ export default function LeafletMap({ mapMarkers = [], height = 480, useMarkerBou
     // Inisialisasi peta
     const map = L.map(containerRef.current, {
       center: CENTER,
-      zoom:   ZOOM,
+      zoom,
       scrollWheelZoom: false,   // lebih nyaman untuk embed di halaman
       zoomControl: true,
     })
@@ -102,7 +71,7 @@ export default function LeafletMap({ mapMarkers = [], height = 480, useMarkerBou
       maxZoom: 18,
     }).addTo(map)
 
-    focusDefaultBounds(map)
+    focusViewBounds(map)
     markerLayerRef.current = L.layerGroup().addTo(map)
     mapRef.current = map
 
@@ -119,6 +88,18 @@ export default function LeafletMap({ mapMarkers = [], height = 480, useMarkerBou
 
     markerLayerRef.current.clearLayers()
 
+    if (highlightPoint && Number.isFinite(Number(highlightPoint.lat)) && Number.isFinite(Number(highlightPoint.lng))) {
+      const highlight = L.circle([highlightPoint.lat, highlightPoint.lng], {
+        radius: highlightPoint.radius || 30000,
+        color: '#dc2626',
+        weight: 2,
+        fillColor: '#ef4444',
+        fillOpacity: 0.08,
+      })
+
+      highlight.addTo(markerLayerRef.current)
+    }
+
     const validMarkers = mapMarkers.filter(marker =>
       Number.isFinite(Number(marker.lat)) && Number.isFinite(Number(marker.lng))
     )
@@ -126,37 +107,42 @@ export default function LeafletMap({ mapMarkers = [], height = 480, useMarkerBou
     validMarkers.forEach(marker => {
       const lat = Number(marker.lat)
       const lng = Number(marker.lng)
-      const point = L.marker([lat, lng], { icon: customMarkerIcon })
+      const point = L.circleMarker([lat, lng], {
+        radius: 9,
+        color: '#ffffff',
+        weight: 3,
+        fillColor: '#dc2626',
+        fillOpacity: 1,
+      })
 
       if (marker.name) {
-        point.bindTooltip(String(marker.name), {
-          direction: 'top',
-          sticky: true,
-          opacity: 0.95,
-          className: 'umkm-marker-tooltip',
+        point.bindPopup(`
+          <div style="min-width: 160px;">
+            <strong style="display: block; margin-bottom: 8px;">${escapePopupText(marker.name)}</strong>
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="color: #b91c1c; font-weight: 600; text-decoration: none;"
+            >
+              Buka di Google Maps
+            </a>
+          </div>
+        `, {
+          closeButton: true,
+          offset: [0, -8],
         })
       }
 
-      // Handle click to navigate
-      point.on('click', () => {
-        if (onMarkerClick && typeof onMarkerClick === 'function') {
-          onMarkerClick(marker)
-          return
-        }
-        if (marker.slug) {
-          window.location.href = `/villages/${marker.slug}`
-        }
-      })
-
-      // Make cursor pointer when hovering
-      point.on('mouseover', function() {
-        this._icon.style.cursor = 'pointer'
+      point.on('click', function () {
+        this.openPopup()
       })
 
       point.addTo(markerLayerRef.current)
     })
 
     if (useMarkerBounds && validMarkers.length) {
+      mapRef.current.invalidateSize()
       const bounds = []
 
       validMarkers.forEach(marker => {
@@ -167,19 +153,20 @@ export default function LeafletMap({ mapMarkers = [], height = 480, useMarkerBou
       })
 
       if (bounds.length === 1) {
-        mapRef.current.setView(bounds[0], 13)
+        mapRef.current.setView(bounds[0], zoom)
       } else {
-        mapRef.current.fitBounds(bounds, { padding: [32, 32] })
+        mapRef.current.fitBounds(bounds, { padding: [32, 32], maxZoom: zoom })
       }
     } else {
-      focusDefaultBounds(mapRef.current)
+      mapRef.current.invalidateSize()
+      focusViewBounds(mapRef.current)
     }
-  }, [mapMarkers, useMarkerBounds, onMarkerClick])
+  }, [mapMarkers, useMarkerBounds, viewBounds, highlightPoint, onMarkerClick, zoom])
 
   return (
     <div
       ref={containerRef}
-      style={{ height: `${height}px`, width: '100%', zIndex: 0 }}
+      style={{ height: typeof height === 'number' ? `${height}px` : height, width: '100%', zIndex: 0 }}
       className="rounded-sm overflow-hidden"
     />
   )

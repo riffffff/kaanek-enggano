@@ -1,10 +1,20 @@
 import { useState, useMemo, useEffect } from 'react'
 import { Head, Link } from '@inertiajs/react'
-import { ChevronRight, ChevronLeft, Landmark, ArrowRight } from 'lucide-react'
+import {
+  ChevronRight,
+  ChevronLeft,
+  ChevronDown,
+  ArrowRight,
+  Compass,
+  Ship,
+  Home as HomeIcon,
+  ScrollText,
+} from 'lucide-react'
 import { useTranslate } from '../../hooks/useTranslate'
 import KknCard from '../../Components/KknCard'
 import { historyData } from '../../data/history.js'
 import Button from '../../Components/Button'
+import VideoDocumentaryCard from '../../Components/VideoDocumentaryCard'
 
 const fallbackDestinations = [
   {
@@ -83,7 +93,7 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
   return (
     <>
       <Head>
-        <title>Enggano</title>
+        <title>Enggano - Pulau Terluar di Samudra Hindia</title>
         <meta
           name="description"
           content="Website resmi digital Pulau Enggano untuk informasi perjalanan, destinasi, desa, dan Aktivitas di Enggano"
@@ -91,83 +101,188 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
       </Head>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden text-white min-h-screen flex items-center">
+      <section className="relative overflow-hidden text-white min-h-[100dvh] sm:min-h-screen flex items-center">
         <img
           src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80"
           alt="Pulau Enggano"
           className="reveal-scale absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/30 to-black/70" />
-        <div className="relative mx-auto max-w-7xl px-6 py-32 md:px-12 lg:px-16 w-full">
-          <div className="max-w-4xl">
-            <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/70">
+        <div className="absolute inset-0 bg-linear-to-b from-black/50 via-black/35 to-black/75" />
+        
+        <div className="relative mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 py-24 sm:py-32 flex flex-col items-center text-center">
+          <div className="max-w-3xl flex flex-col items-center text-center">
+            <p className="reveal-up text-xs sm:text-sm uppercase tracking-[0.35em] text-white/75 font-semibold">
               YAUWAIKA !
             </p>
-            <h1 className="reveal-up mt-4 font-display text-5xl font-semibold md:text-7xl" style={{ '--reveal-delay': '120ms' }}>
-              {tt('JELAJAH ENGGANO', 'hero.title')}
+            <h1 className="reveal-up mt-3 sm:mt-4 font-display text-4xl sm:text-6xl md:text-7xl font-semibold leading-[1.1]" style={{ '--reveal-delay': '120ms' }}>
+              {tt('Jelajah Enggano', 'hero.title')}
             </h1>
-            <p className="reveal-up mt-6 text-base leading-7 text-white/90 md:text-xl" style={{ '--reveal-delay': '200ms' }}>
-              {tt('JELAJAHI KEINDAHAN ALAMNYA, JAJAKI PULAU TERLUAR INDONESIA YANG BERADA DI SAMUDRA HINDIA', 'hero.subtitle')}
+            <p className="reveal-up mt-4 sm:mt-6 text-sm sm:text-lg md:text-xl text-white/90 leading-relaxed max-w-2xl mx-auto" style={{ '--reveal-delay': '200ms' }}>
+              Jelajahi keindahan alamnya, jajaki pulau terluar Indonesia yang berada di Samudra Hindia.
             </p>
-            <div className="reveal-up mt-10 flex flex-wrap gap-4" style={{ '--reveal-delay': '220ms' }}>
+            <div className="reveal-up mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto" style={{ '--reveal-delay': '220ms' }}>
               <Link
                 href="/destinations"
-                className="hover-lift overlay-glow inline-flex items-center gap-2 bg-accent-500 px-8 py-4 text-sm font-semibold text-white hover:bg-accent-600 uppercase tracking-wider"
+                className="overlay-glow w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-accent-500 px-7 sm:px-8 py-3.5 sm:py-4 text-xs sm:text-sm font-semibold text-white hover:bg-accent-600 uppercase tracking-wider rounded-xl sm:rounded-none shadow-sm transition-colors duration-200"
               >
                 {tt('Jelajahi Destinasi', 'hero.exploreDestinations')}
               </Link>
               <Link
                 href="/accommodations"
-                className="hover-lift inline-flex items-center gap-2 border-2 border-white px-8 py-4 text-sm font-semibold text-white hover:bg-white hover:text-black uppercase tracking-wider"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border-2 border-white/90 px-7 sm:px-8 py-3.5 sm:py-4 text-xs sm:text-sm font-semibold text-white hover:bg-white hover:text-neutral-900 uppercase tracking-wider rounded-xl sm:rounded-none transition-colors duration-200"
               >
                 {tt('Info Perjalanan', 'hero.travelInfo')}
               </Link>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Sejarah Enggano Section */}
-      <section className="bg-[#fcfbf9] py-20 md:py-28 border-y border-neutral-200/50">
-        <div className="mx-auto max-w-4xl px-6 md:px-12 text-center">
-          <article className="reveal-up">
-            <p className="font-body text-xs uppercase tracking-[0.35em] text-primary-700 font-medium">
-              {tt('Warisan Leluhur', 'history.label')}
-            </p>
-            <h2 className="mt-4 font-display text-4xl font-semibold text-neutral-900 md:text-5xl tracking-tight">
-              {historyData.title}
-            </h2>
-            <div className="mx-auto mt-6 h-0.5 w-12 bg-primary-600/40" />
-
-            <div className="mt-10 space-y-6 text-base leading-8 text-neutral-600 md:text-lg md:leading-9 font-body text-center">
-              {historyData.content.split('\n\n').slice(0, 2).map((paragraph, index) => (
-                <p key={index}>
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-
-            <div className="mt-10 flex justify-center">
-              <Button
-                href="/villages/history"
-                showArrow
-                className="reveal-up"
-              >
-                {tt('Baca Selengkapnya', 'history.readMore')}
-              </Button>
-            </div>
-          </article>
+        {/* Subtle Scroll Down Indicator */}
+        <div className="flex absolute bottom-10 left-1/2 -translate-x-1/2 flex-col items-center gap-1 text-white/60 text-[10px] uppercase tracking-widest pointer-events-none">
+          <span>Gulir ke Bawah</span>
+          <ChevronDown size={14} className="animate-bounce" />
         </div>
       </section>
 
-      {/* Destinations Showcase — SAMA DENGAN HALAMAN /destinations */}
+      {/* Quick Access Navigation */}
+      <section className="bg-[#fcfbf9] pt-10 sm:pt-14 pb-4">
+        <div className="mx-auto w-full px-4 sm:px-6 lg:w-[85%] xl:w-[80%]">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <Link
+              href="/destinations"
+              className="group flex items-center text-left gap-3 sm:gap-3.5 p-3.5 sm:p-4 bg-white rounded-2xl shadow-xs ring-1 ring-neutral-200/80 hover:ring-primary-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+            >
+              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-primary-950 text-white flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 group-hover:bg-primary-900 transition-all duration-200">
+                <Compass size={20} className="sm:w-[22px] sm:h-[22px]" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-1">
+                  <p className="font-semibold text-xs sm:text-sm text-neutral-900 group-hover:text-primary-700 transition-colors truncate">
+                    {tt('Destinasi', 'nav.destinations')}
+                  </p>
+                  <ArrowRight size={14} className="text-neutral-400 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 hidden xl:block shrink-0" />
+                </div>
+                <p className="text-[11px] sm:text-xs text-neutral-500 line-clamp-1 mt-0.5">
+                  Spot alam & bahari
+                </p>
+              </div>
+            </Link>
+
+            <Link
+              href="/accommodations#transportation"
+              className="group flex items-center text-left gap-3 sm:gap-3.5 p-3.5 sm:p-4 bg-white rounded-2xl shadow-xs ring-1 ring-neutral-200/80 hover:ring-accent-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+            >
+              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-accent-500 text-white flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 group-hover:bg-accent-600 transition-all duration-200">
+                <Ship size={20} className="sm:w-[22px] sm:h-[22px]" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-1">
+                  <p className="font-semibold text-xs sm:text-sm text-neutral-900 group-hover:text-accent-700 transition-colors truncate">
+                    {tt('Akses & Rute', 'Akses')}
+                  </p>
+                  <ArrowRight size={14} className="text-neutral-400 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 hidden xl:block shrink-0" />
+                </div>
+                <p className="text-[11px] sm:text-xs text-neutral-500 line-clamp-1 mt-0.5">
+                  Kapal feri & tiket
+                </p>
+              </div>
+            </Link>
+
+            <Link
+              href="/accommodations#homestay"
+              className="group flex items-center text-left gap-3 sm:gap-3.5 p-3.5 sm:p-4 bg-white rounded-2xl shadow-xs ring-1 ring-neutral-200/80 hover:ring-emerald-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+            >
+              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 group-hover:bg-emerald-700 transition-all duration-200">
+                <HomeIcon size={20} className="sm:w-[22px] sm:h-[22px]" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-1">
+                  <p className="font-semibold text-xs sm:text-sm text-neutral-900 group-hover:text-emerald-700 transition-colors truncate">
+                    {tt('Homestay', 'Homestay')}
+                  </p>
+                  <ArrowRight size={14} className="text-neutral-400 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 hidden xl:block shrink-0" />
+                </div>
+                <p className="text-[11px] sm:text-xs text-neutral-500 line-clamp-1 mt-0.5">
+                  Penginapan warga lokal
+                </p>
+              </div>
+            </Link>
+
+            <Link
+              href="/villages/history"
+              className="group flex items-center text-left gap-3 sm:gap-3.5 p-3.5 sm:p-4 bg-white rounded-2xl shadow-xs ring-1 ring-neutral-200/80 hover:ring-amber-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+            >
+              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-amber-600 text-white flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 group-hover:bg-amber-700 transition-all duration-200">
+                <ScrollText size={20} className="sm:w-[22px] sm:h-[22px]" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-1">
+                  <p className="font-semibold text-xs sm:text-sm text-neutral-900 group-hover:text-amber-700 transition-colors truncate">
+                    {tt('Sejarah & Suku', 'Sejarah')}
+                  </p>
+                  <ArrowRight size={14} className="text-neutral-400 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 hidden xl:block shrink-0" />
+                </div>
+                <p className="text-[11px] sm:text-xs text-neutral-500 line-clamp-1 mt-0.5">
+                  Adat, tradisi & warisan
+                </p>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Sejarah & Film Dokumenter Enggano Section */}
+      <section className="bg-[#fcfbf9] pt-8 sm:pt-12 md:pt-16 pb-12 sm:pb-16 md:pb-24 border-b border-neutral-200/50">
+        <div className="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+
+            {/* Narasi Sejarah (6 kolom) */}
+            <article className="reveal-up lg:col-span-6 space-y-4 sm:space-y-5 text-center lg:text-left flex flex-col items-center lg:items-start order-2 lg:order-1">
+              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-neutral-900 tracking-tight leading-tight">
+                {historyData.title}
+              </h2>
+              <div className="h-1 w-10 bg-accent-500 rounded-full mx-auto lg:mx-0" />
+
+              <div className="space-y-3.5 text-sm sm:text-base leading-relaxed text-neutral-600 md:text-lg font-body">
+                {historyData.content.split('\n\n').slice(0, 2).map((paragraph, index) => (
+                  <p key={index} className="line-clamp-3 sm:line-clamp-none">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+
+              <div className="pt-2 sm:pt-3 flex justify-center lg:justify-start w-full">
+                <Button
+                  href="/villages/history"
+                  showArrow
+                  className="reveal-up"
+                >
+                  {tt('Baca Selengkapnya', 'history.readMore')}
+                </Button>
+              </div>
+            </article>
+
+            {/* Video Dokumenter (6 kolom) */}
+            <div className="reveal-up lg:col-span-6 w-full order-1 lg:order-2" style={{ '--reveal-delay': '140ms' }}>
+              <VideoDocumentaryCard
+                videoId="nTHJ1kEVIpw"
+                title="SUARA ENGGANO: FILM DOKUMENTER PULAU ENGGANO"
+                subtitle="Dokumentasi audio-visual peradaban, budaya, dan pesona pulau terluar."
+              />
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* Destinations Showcase Slider */}
       {items.length > 0 && (
         <section
-          className="relative min-h-[90vh] lg:min-h-screen w-full bg-primary-950 text-white overflow-hidden flex items-center"
+          className="relative min-h-[85vh] lg:min-h-screen w-full bg-primary-950 text-white overflow-hidden flex items-center"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          {/* Dynamic Background Images — Full background slider */}
+          {/* Dynamic Background Images */}
           {items.map((item, index) => (
             <div
               key={item.id || index}
@@ -186,78 +301,73 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
                   }
                 }}
               />
-              {/* Gradient Overlay — SAMA PERSIS dengan /destinations */}
               <div className="absolute inset-0 bg-linear-to-r from-primary-950/95 via-primary-950/70 to-primary-950/30" />
               <div className="absolute inset-0 bg-linear-to-t from-primary-950/90 via-transparent to-primary-950/40" />
             </div>
           ))}
 
-          {/* Content & Showcase Slider — 12-Column Grid SAMA PERSIS */}
-          <div className="relative z-10 mx-auto max-w-full px-6 py-20 md:px-12 lg:px-16 w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          {/* Content & Showcase Slider */}
+          <div className="relative z-10 mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 py-12 sm:py-20">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
 
               {/* Left — Header & Active Item Info */}
-              <div className="lg:col-span-5 space-y-8">
-                <p className="reveal-up text-xs uppercase tracking-[0.3em] font-medium text-accent-400">
-                  {tt('Eksplorasi Enggano', 'explore.label')}
-                </p>
-
-                <h1
-                  className="reveal-up font-display text-4xl sm:text-5xl md:text-6xl font-semibold uppercase tracking-wider leading-tight text-white"
+              <div className="lg:col-span-5 space-y-4 sm:space-y-6 text-center lg:text-left flex flex-col items-center lg:items-start">
+                <h2
+                  className="reveal-up font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold uppercase tracking-wider leading-tight text-white"
                   style={{ '--reveal-delay': '100ms' }}
                 >
                   {activeDest.name}
-                </h1>
+                </h2>
+                <div className="reveal-up h-1 w-10 bg-accent-500 rounded-full mx-auto lg:mx-0" style={{ '--reveal-delay': '150ms' }} />
 
                 <p
-                  className="reveal-up text-base leading-relaxed text-white/80 max-w-md line-clamp-2"
+                  className="reveal-up text-xs sm:text-base leading-relaxed text-white/80 max-w-md line-clamp-2 mx-auto lg:mx-0"
                   style={{ '--reveal-delay': '200ms' }}
                 >
                   {activeDest.description}
                 </p>
 
-                <div className="reveal-up flex flex-wrap gap-4" style={{ '--reveal-delay': '250ms' }}>
+                <div className="reveal-up flex flex-wrap justify-center lg:justify-start gap-3 sm:gap-4 pt-1" style={{ '--reveal-delay': '250ms' }}>
                   <Link
                     href={`/destinations/${activeDest.slug}`}
-                    className="group inline-flex items-center gap-2.5 bg-accent-500 hover:bg-accent-600 px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-white shadow-lg shadow-accent-500/15 hover:shadow-accent-500/30 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+                    className="group inline-flex items-center gap-2 bg-accent-500 hover:bg-accent-600 px-5 sm:px-7 py-3 sm:py-3.5 text-xs sm:text-sm font-semibold uppercase tracking-wider text-white rounded-xl sm:rounded-none shadow-md transition-all duration-300"
                   >
-                    Jelajahi
-                    <ChevronRight size={17} className="transition-transform group-hover:translate-x-1" />
+                    <span>Jelajahi</span>
+                    <ChevronRight size={16} className="transition-transform group-hover:translate-x-1" />
                   </Link>
                   <Link
                     href="/destinations"
-                    className="group inline-flex items-center gap-2.5 border-2 border-white/80 hover:border-white hover:bg-white hover:text-neutral-900 text-white px-7 py-3.5 text-sm font-semibold uppercase tracking-wider transition-all duration-300"
+                    className="group inline-flex items-center gap-2 border border-white/70 hover:border-white hover:bg-white hover:text-neutral-900 text-white px-5 sm:px-7 py-3 sm:py-3.5 text-xs sm:text-sm font-semibold uppercase tracking-wider rounded-xl sm:rounded-none transition-all duration-300"
                   >
-                    Lihat Selengkapnya
-                    <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" />
+                    <span>Semua Destinasi</span>
+                    <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
                   </Link>
                 </div>
               </div>
 
               {/* Right — Card Slider */}
-              <div className="lg:col-span-7 mt-8 lg:mt-0 relative">
-                {/* Arrow Kiri */}
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 z-30">
+              <div className="lg:col-span-7 mt-4 sm:mt-8 lg:mt-0 relative">
+                {/* Desktop Prev/Next Buttons (Hidden on mobile to keep swipe clean) */}
+                <div className="hidden sm:block absolute left-0 top-1/2 -translate-y-1/2 z-30">
                   <button
                     onClick={handlePrev}
                     className="bg-white/20 backdrop-blur-sm rounded-full p-2 text-white hover:bg-white/30 hover:scale-110 transition-all"
                     aria-label="Prev"
                   >
-                    <ChevronLeft size={24} strokeWidth={2.25} />
+                    <ChevronLeft size={22} strokeWidth={2.25} />
                   </button>
                 </div>
-                {/* Arrow Kanan */}
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 z-30">
+                <div className="hidden sm:block absolute right-0 top-1/2 -translate-y-1/2 z-30">
                   <button
                     onClick={handleNext}
                     className="bg-white/20 backdrop-blur-sm rounded-full p-2 text-white hover:bg-white/30 hover:scale-110 transition-all"
                     aria-label="Next"
                   >
-                    <ChevronRight size={24} strokeWidth={2.25} />
+                    <ChevronRight size={22} strokeWidth={2.25} />
                   </button>
                 </div>
 
-                <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 pt-2 scrollbar-hide snap-x snap-mandatory px-8 sm:px-10">
+                <div className="flex gap-3.5 sm:gap-6 overflow-x-auto pb-4 pt-2 scrollbar-hide snap-x snap-mandatory px-1 sm:px-10">
                   {items.map((item, index) => {
                     const isActive = index === activeDestIndex
                     return (
@@ -270,17 +380,17 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
                             setActiveDestIndex(index)
                           }
                         }}
-                        className={`group hover-lift overlay-glow reveal-up relative shrink-0 cursor-pointer snap-start transition-all duration-500 ease-out rounded-xl overflow-hidden shadow-xl ${
+                        className={`group hover-lift overlay-glow reveal-up relative shrink-0 cursor-pointer snap-start transition-all duration-500 ease-out rounded-2xl overflow-hidden shadow-xl ${
                           isActive
-                            ? 'w-56 sm:w-64 md:w-72 aspect-9/16 ring-2 ring-accent-500 scale-105 z-20'
-                            : 'w-48 sm:w-56 md:w-64 aspect-9/16 opacity-75 hover:opacity-100 hover:scale-102 z-10'
+                            ? 'w-44 sm:w-64 md:w-72 aspect-[3/4] sm:aspect-9/16 ring-2 ring-accent-500 scale-[1.02] sm:scale-105 z-20'
+                            : 'w-40 sm:w-56 md:w-64 aspect-[3/4] sm:aspect-9/16 opacity-75 hover:opacity-100 hover:scale-102 z-10'
                         }`}
                         style={{ '--reveal-delay': `${140 + index * 60}ms` }}
                       >
                         <img
                           src={item.cover || item.image}
                           alt={item.name}
-                          className="media-zoom w-full h-full object-cover rounded-xl"
+                          className="media-zoom w-full h-full object-cover"
                           loading="lazy"
                           onError={(e) => {
                             if (!e.currentTarget.dataset.fb) {
@@ -290,18 +400,18 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
                           }}
                         />
 
-                        {/* Gradient Overlay SAMA dengan /destinations */}
+                        {/* Gradient Overlay */}
                         <div className="absolute inset-0 bg-linear-to-t from-primary-950/95 via-primary-950/30 to-transparent transition-opacity duration-500 group-hover:opacity-95" />
 
                         {/* Card Info */}
-                        <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 space-y-2">
-                          <span className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-accent-400 block">
+                        <div className="absolute inset-x-0 bottom-0 p-4 sm:p-7 space-y-1">
+                          <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-accent-400 block">
                             {item.tag}
                           </span>
-                          <h3 className="font-display font-semibold text-2xl sm:text-3xl text-white leading-tight line-clamp-1">
+                          <h3 className="font-display font-semibold text-lg sm:text-2xl text-white leading-tight line-clamp-1">
                             {item.name}
                           </h3>
-                          <p className="text-sm sm:text-base text-white/70 font-normal line-clamp-2 mt-1">
+                          <p className="text-xs sm:text-sm text-white/70 font-normal line-clamp-2 mt-0.5">
                             {item.description}
                           </p>
                         </div>
@@ -313,17 +423,35 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
 
             </div>
 
-            {/* Bottom Controls — Counter & Progress Bar SAMA dengan /destinations */}
-            <div className="reveal-up mt-12 sm:mt-16 flex items-center justify-end border-t border-white/15 pt-6" style={{ '--reveal-delay': '300ms' }}>
-              <div className="flex items-center gap-6">
+            {/* Bottom Controls */}
+            <div className="reveal-up mt-8 sm:mt-16 flex items-center justify-between sm:justify-end border-t border-white/15 pt-4 sm:pt-6" style={{ '--reveal-delay': '300ms' }}>
+              {/* Mobile Arrows */}
+              <div className="flex sm:hidden items-center gap-2">
+                <button
+                  onClick={handlePrev}
+                  className="bg-white/15 backdrop-blur-sm rounded-lg p-2 text-white"
+                  aria-label="Prev"
+                >
+                  <ChevronLeft size={16} />
+                </button>
+                <button
+                  onClick={handleNext}
+                  className="bg-white/15 backdrop-blur-sm rounded-lg p-2 text-white"
+                  aria-label="Next"
+                >
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+
+              <div className="flex items-center gap-4 sm:gap-6">
                 <div className="hidden sm:block w-32 md:w-48 h-0.5 bg-white/20 relative overflow-hidden rounded-full">
                   <div
                     className="absolute top-0 bottom-0 left-0 bg-accent-500 transition-all duration-500 rounded-full"
                     style={{ width: `${((activeDestIndex + 1) / items.length) * 100}%` }}
                   />
                 </div>
-                <div className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-white">
-                  {String(activeDestIndex + 1).padStart(2, '0')}<span className="text-white/40 text-xl font-light">/{String(items.length).padStart(2, '0')}</span>
+                <div className="font-display text-xl sm:text-3xl font-semibold tracking-tight text-white">
+                  {String(activeDestIndex + 1).padStart(2, '0')}<span className="text-white/40 text-base sm:text-xl font-light">/{String(items.length).padStart(2, '0')}</span>
                 </div>
               </div>
             </div>
@@ -336,21 +464,62 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
         </section>
       )}
 
+      {/* Jurnal Ekspedisi (Aktivitas & Berita) */}
       <section className="bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24 lg:px-16">
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div className="reveal-up">
-              <p className="font-body text-sm uppercase tracking-[0.3em] text-primary-700">{tt('Jurnal Ekspedisi', 'kkn.label')}</p>
-              <h2 className="mt-3 font-display text-4xl font-semibold text-neutral-800 md:text-5xl">
+        <div className="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 py-12 sm:py-16 md:py-24">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 sm:gap-4 mb-6 sm:mb-0">
+            <div className="reveal-up text-center sm:text-left">
+              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-neutral-900 leading-tight">
                 {tt('Catatan lapangan dari ujung samudera.', 'kkn.title')}
               </h2>
+              <div className="mt-3.5 h-1 w-10 bg-accent-500 rounded-full mx-auto sm:mx-0" />
             </div>
-            <Link href="/kkn-log" className="reveal-up text-sm font-semibold text-primary-700 hover:text-primary-600" style={{ '--reveal-delay': '120ms' }}>
-              {tt('Lihat Semua', 'kkn.viewAll')}
+            <Link href="/kkn-log" className="reveal-up self-center sm:self-auto shrink-0 text-xs sm:text-sm font-bold uppercase tracking-wider text-primary-700 hover:text-primary-600 pb-1" style={{ '--reveal-delay': '120ms' }}>
+              {tt('Lihat Semua', 'kkn.viewAll')} &rarr;
             </Link>
           </div>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
+          {/* Mobile View: Compact Media List (< md) */}
+          <div className="mt-6 flex flex-col gap-2.5 md:hidden">
+            {latestKkn.slice(0, 3).map((item) => (
+              <Link
+                key={item.slug}
+                href={`/kkn-log/${item.slug}`}
+                className="flex items-center justify-between p-3 bg-white rounded-2xl border border-neutral-100 shadow-[0_2px_12px_-2px_rgba(0,0,0,0.05)] active:scale-[0.99] transition-all gap-3"
+              >
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1.5 text-[10px] text-neutral-400 font-medium">
+                    <span className="text-primary-900 font-bold uppercase tracking-wider">
+                      {item.category || 'Aktivitas'}
+                    </span>
+                    {item.date && (
+                      <>
+                        <span>•</span>
+                        <span>{item.date}</span>
+                      </>
+                    )}
+                  </div>
+                  <h4 className="mt-1 font-display text-sm font-bold text-neutral-900 leading-snug line-clamp-2">
+                    {item.title}
+                  </h4>
+                </div>
+
+                {item.image && (
+                  <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0 bg-neutral-100">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+              </Link>
+            ))}
+          </div>
+
+          {/* Desktop View: 3 Column Cards (≥ md) */}
+          <div className="mt-10 hidden md:grid md:grid-cols-3 gap-6">
             {latestKkn.map(item => (
               <KknCard key={item.slug} item={item} />
             ))}

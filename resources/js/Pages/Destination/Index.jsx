@@ -1,6 +1,8 @@
-import { Head, Link } from '@inertiajs/react'
-import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, X, Download } from 'lucide-react'
-import { useMemo, useRef, useState, useEffect } from 'react'
+import { Head } from '@inertiajs/react'
+import { ChevronLeft, ChevronRight, X, Download, Map, Eye } from 'lucide-react'
+import { useMemo, useState, useEffect } from 'react'
+import PageHeader from '../../Components/PageHeader'
+
 
 const fallbackDestinations = [
   {
@@ -8,7 +10,7 @@ const fallbackDestinations = [
     slug: 'destinasi-bahari',
     name: 'Destinasi Bahari',
     tag: 'BAHARI',
-    description: 'Garis pantai tak tersentuh, laguna tersembunyi, dan kekayaan terumbu karang yang menanti untuk dijelajahi di perairan Samudera Hindia.',
+    short_description: 'Garis pantai tak tersentuh, laguna tersembunyi, dan kekayaan terumbu karang yang menanti untuk dijelajahi di perairan Samudera Hindia.',
     image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80',
   },
   {
@@ -16,7 +18,7 @@ const fallbackDestinations = [
     slug: 'hutan-endemik',
     name: 'Hutan Endemik',
     tag: 'WILDLIFE',
-    description: 'Paru-paru pulau yang menyimpan flora dan fauna langka serta petualangan alam yang liar dan memukau.',
+    short_description: 'Paru-paru pulau yang menyimpan flora dan fauna langka serta petualangan alam yang liar dan memukau.',
     image: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=80',
   },
   {
@@ -24,7 +26,7 @@ const fallbackDestinations = [
     slug: 'warisan-enam-suku',
     name: 'Warisan Enam Suku',
     tag: 'HISTORY',
-    description: 'Lapisan sejarah, adat tradisi, dan artefak kebudayaan asli pulau yang membentuk identitas Enggano.',
+    short_description: 'Lapisan sejarah, adat tradisi, dan artefak kebudayaan asli pulau yang membentuk identitas Enggano.',
     image: 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=1600&q=80',
   },
 ]
@@ -33,18 +35,14 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
   const items = useMemo(() => {
     if (!destinations || destinations.length === 0) return fallbackDestinations
 
-    return destinations.map((item, idx) => {
-      const tagLabel = item.type ? item.type.toUpperCase() : 'DESTINASI'
-      const imageSrc = item.image || fallbackDestinations[idx % fallbackDestinations.length].image
-      return {
-        id: item.id || idx + 1,
-        slug: item.slug,
-        name: item.name,
-        tag: tagLabel,
-        description: item.short_description || item.description || 'Jelajahi keindahan alam dan kebudayaan Pulau Enggano.',
-        image: imageSrc,
-      }
-    })
+    return destinations.map((item, idx) => ({
+      id: item.id || idx + 1,
+      slug: item.slug,
+      name: item.name,
+      tag: item.type ? item.type.toUpperCase() : 'DESTINASI',
+      short_description: item.short_description || item.description || 'Jelajahi keindahan alam dan kebudayaan Pulau Enggano.',
+      image: item.image || fallbackDestinations[idx % fallbackDestinations.length].image,
+    }))
   }, [destinations])
 
   const qrTargetUrl = 'https://www.google.com/maps/d/viewer?mid=1AO0IZMyY83BGzK2OW7gaCDFDi-Tu7Yo&hl=id'
@@ -80,14 +78,7 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
     },
   ]
 
-  const [itineraryScrollIndex, setItineraryScrollIndex] = useState(0)
-  const itineraryContainerRef = useRef(null)
-  const itinerarySectionRef = useRef(null)
 
-  const [showAllDestinations, setShowAllDestinations] = useState(false)
-  const toggleDestinations = () => setShowAllDestinations(prev => !prev)
-
-  const visibleDestinations = showAllDestinations ? items : items.slice(0, 6)
 
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
@@ -130,269 +121,282 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lightboxOpen, lightboxIndex])
 
-  const getVisibleCount = (ref) => {
-    if (!ref?.current) return 1
-    const card = ref.current.querySelector('.scroll-card-item')
-    if (!card) return 1
-    const cardWidth = card.getBoundingClientRect().width
-    const containerWidth = ref.current.clientWidth
-    const gap = 24
-    const perPage = cardWidth + gap
-    const visible = Math.max(1, Math.floor((containerWidth + gap) / perPage))
-    return visible
-  }
 
-  const getScrollIndex = (ref, itemsArr) => {
-    if (!ref?.current) return 0
-    const card = ref.current.querySelector('.scroll-card-item')
-    if (!card) return 0
-    const cardWidth = card.getBoundingClientRect().width
-    const gap = 24
-    const perPage = cardWidth + gap
-    const scrollLeft = ref.current.scrollLeft
-    const visible = getVisibleCount(ref, itemsArr)
-    const idx = Math.round(scrollLeft / perPage)
-    const maxIndex = Math.max(0, itemsArr.length - visible)
-    return Math.min(Math.max(0, idx), maxIndex)
-  }
-
-  const scrollContainer = (ref, direction, setter, itemsArr) => {
-    if (!ref.current) return
-    const card = ref.current.querySelector('.scroll-card-item')
-    if (!card) return
-    const cardWidth = card.getBoundingClientRect().width
-    const gap = 24
-    const perPage = cardWidth + gap
-    const currentIdx = getScrollIndex(ref, itemsArr)
-    const visible = getVisibleCount(ref)
-    const maxIndex = Math.max(0, itemsArr.length - visible)
-    const newIndex = direction === 'left'
-      ? Math.max(0, currentIdx - 1)
-      : Math.min(maxIndex, currentIdx + 1)
-    setter(newIndex)
-    const newScroll = newIndex * perPage
-    ref.current.scrollTo({
-      left: newScroll,
-      behavior: 'smooth',
-    })
-  }
-
-  const handleItineraryScroll = () => {
-    const idx = getScrollIndex(itineraryContainerRef, itineraryPosters)
-    if (idx !== itineraryScrollIndex) setItineraryScrollIndex(idx)
-  }
+  const maxItineraryIndex = itineraryPosters.length - 1
 
   return (
     <>
       <Head title="Destinations" />
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden text-white">
-        <img
-          src={items[0]?.image || 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1800&q=80'}
-          alt="Destinasi Enggano"
-          className="reveal-scale absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/30 to-black/70" />
-        <div className="relative mx-auto max-w-7xl px-6 pb-32 pt-48 md:px-12 lg:px-16">
-          <div className="max-w-4xl">
-            <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/70">
-              Destinasi
-            </p>
-            <h1 className="reveal-up mt-4 font-display text-5xl font-semibold md:text-7xl" style={{ '--reveal-delay': '120ms' }}>
-              Jelajahi Keindahan Enggano
-            </h1>
-            <p className="reveal-up mt-6 text-base leading-7 text-white/90 md:text-xl" style={{ '--reveal-delay': '200ms' }}>
-              Temukan destinasi terbaik yang menawarkan keindahan alam, budaya, dan pengalaman tak terlupakan di Pulau Enggano.
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* Hero PageHeader */}
+      <PageHeader
+        pageKey="destinations"
+        background={items[0]?.image || 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1800&q=80'}
+      />
 
-      {/* 1. QR Code Section - FULL WIDTH + QR DI TENGAH */}
-      <section className="w-full px-6 py-16 md:px-12 lg:px-20 pb-0">
-        <div className="max-w-none">
-          {/* Title Center */}
-          <div className="reveal-up max-w-3xl mx-auto text-center mb-10 md:mb-14">
-            <p className="text-sm uppercase tracking-[0.35em] text-amber-700 font-semibold">
-              Peta Wisata Pulau Enggano
-            </p>
-            <h2 className="mt-4 font-display text-4xl font-semibold tracking-tight text-slate-900 md:text-5xl">
-              Scan untuk Buka Peta Wisata
-            </h2>
-            <p className="mt-5 text-base leading-8 text-slate-600 md:text-lg">
-              Pindai QR code ini untuk membuka peta wisata Pulau Enggano langsung di ponsel Anda.
-            </p>
-          </div>
+      {/* 1. Integrated Header: Destinasi Unggulan & Quick Map Access */}
+      <section className="w-full pt-10 md:pt-24 pb-6 md:pb-12">
+        <div className="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0">
+          <div className="reveal-up flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-14">
 
-          {/* QR Card DI TENGAH - TIDAK ADA KOLOM KIRI */}
-          <div className="reveal-up mx-auto w-full max-w-md" style={{ '--reveal-delay': '120ms' }}>
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.08)]">
-              <div className="rounded-2xl bg-slate-50 p-6 ring-1 ring-slate-100">
-                <div className="mx-auto flex aspect-square w-full max-w-72 items-center justify-center rounded-2xl bg-white p-5 shadow-sm">
+            {/* Kiri: Heading */}
+            <div className="max-w-xl">
+              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-slate-900 leading-tight">
+                Jelajahi Enggano
+              </h2>
+              <div className="mt-3.5 h-1 w-10 bg-accent-500 rounded-full" />
+              <p className="mt-3.5 text-sm sm:text-base md:text-lg leading-relaxed text-slate-600">
+                Temukan pesona pantai eksotis, kearifan adat suku asli, dan keindahan bahari tak terjamah. Ada{' '}
+                <span className="font-bold text-slate-800">{items.length} destinasi pilihan</span> siap Anda jelajahi.
+              </p>
+              <div className="mt-5 flex items-center gap-3">
+                <a
+                  href={qrTargetUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2.5 rounded-xl border border-amber-200 bg-amber-50/80 px-4 py-2 text-sm font-semibold text-amber-800 shadow-xs hover:bg-amber-100 transition-all duration-300 active:scale-95"
+                >
+                  <Map size={15} />
+                  Buka Peta di Browser
+                </a>
+              </div>
+            </div>
+
+            {/* Kanan: QR Code — hidden di mobile, tampil di lg+ */}
+            <div className="hidden lg:flex shrink-0 justify-end lg:mr-8 xl:mr-16">
+              <div className="w-64 sm:w-72 rounded-3xl bg-white border border-slate-200/80 p-5 shadow-[0_15px_35px_rgba(15,23,42,0.06)] ring-1 ring-slate-900/5 transition-transform duration-300 hover:-translate-y-1">
+                <div className="rounded-2xl bg-slate-50 p-3.5 border border-slate-100/80">
                   <img
                     src={qrImageUrl}
                     alt="QR Code Peta Wisata Pulau Enggano"
-                    className="h-full w-full object-contain"
+                    className="w-full aspect-square object-contain rounded-xl"
                     loading="lazy"
                   />
                 </div>
-                <div className="mt-6 text-center">
-                  <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-900">
-                    Peta Wisata Pulau Enggano
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-slate-500">
-                    Arahkan kamera HP ke QR code di atas.
-                  </p>
+                <div className="mt-3.5 text-center">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800">Peta Wisata Enggano</h3>
+                  <p className="mt-0.5 text-[11px] text-slate-400">Arahkan kamera HP ke QR di atas</p>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </section>
 
-      {/* 2. Destinations List Section - BENTO GRID 4 KOLOM (sesuai mockup) */}
-      <section className="w-full py-16 md:py-24">
-        <div className="w-full px-6 md:px-12 lg:px-20 max-w-none">
-          {/* Bento Grid - Responsive fallback ke 2 kolom di mobile */}
-          <div className="grid gap-5 md:gap-6 lg:gap-7 grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 max-w-none w-full">
-            {/* ==== POSISI 1 (BARIS 1 KOLOM 1): TITLE CARD - TRANSPARAN (NYATU BG UTAMA) */}
-            <div className="reveal-up aspect-[3/4] relative overflow-hidden p-8 md:p-9 lg:p-11 flex flex-col justify-center bg-transparent ring-0 shadow-none border-0">
-              <div className="bg-transparent">
-                <p className="text-xs md:text-sm uppercase tracking-[0.3em] text-primary-700 font-semibold">
-                  Destinasi Unggulan
-                </p>
-                <h2 className="mt-5 md:mt-7 font-display text-3xl md:text-4xl lg:text-[2.75rem] xl:text-[3.1rem] font-semibold tracking-tight text-slate-900 leading-[1.12]">
-                  Jelajahi Destinasi Enggano
-                </h2>
-                <p className="mt-5 md:mt-6 text-sm md:text-base lg:text-lg leading-relaxed text-slate-600">
-                  Temukan setiap sudut keindahan Pulau Enggano dari pantai berpasir putih hingga hutan endemik yang asri. Total{' '}
-                  <span className="font-bold text-primary-700">{items.length}</span>{' '}
-                  destinasi siap dijelajahi.
-                </p>
-              </div>
+      {/* Zigzag editorial panels (dengan ambient background tiap destinasi) */}
+      {items.map((item, index) => {
+        const isEven = index % 2 === 0
+        const panelPhoto = item.image || fallbackDestinations[index % fallbackDestinations.length].image
+
+        return (
+          <section
+            key={item.id || `feat-${index}`}
+            className="group/section relative w-full py-0 overflow-hidden"
+          >
+            {/* Ambient backdrop dari foto destinasi */}
+            <div className="pointer-events-none absolute inset-0 select-none overflow-hidden z-0 bg-[#f8f7f2]">
+              <img
+                src={panelPhoto}
+                alt=""
+                aria-hidden="true"
+                className="h-full w-full object-cover object-center opacity-[0.11] sm:opacity-[0.14] mix-blend-multiply transition-all duration-700 ease-out group-hover/section:scale-105 group-hover/section:opacity-[0.18]"
+              />
+              {/* Gradien pemudar halus di atas dan bawah agar transisi antar section mulus */}
+              <div className="absolute inset-0 bg-gradient-to-b from-[#f8f7f2] via-transparent to-[#f8f7f2]" />
             </div>
 
-            {/* ==== DESTINATION CARDS (6 pertama / SEMUA sesuai state showAll) */}
-            {visibleDestinations.map((item, index) => (
-              <Link
-                key={item.id || `dest-${index}`}
-                href={`/destinations/${item.slug}`}
-                className="group reveal-up aspect-[3/4] relative overflow-hidden rounded-2xl shadow-md ring-1 ring-slate-200/60 hover:shadow-2xl hover:-translate-y-1 transition-all duration-500"
-                style={{ '--reveal-delay': `${120 + index * 70}ms` }}
+            <div className="relative z-10 mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0">
+              <a
+                href={`/destinations/${item.slug ?? '#'}`}
+                className={`reveal-up group relative flex items-center gap-0 py-6 sm:py-12 md:py-16 lg:py-24 ${
+                  isEven ? 'flex-row' : 'flex-row-reverse'
+                }`}
+                style={{ '--reveal-delay': `${index * 80}ms` }}
               >
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-800 ease-out group-hover:scale-110"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-                <div className="absolute top-4 md:top-5 left-4 md:left-5">
-                  <span className="inline-block bg-white/90 backdrop-blur-sm text-slate-900 text-[9px] md:text-[10px] lg:text-xs font-bold uppercase tracking-[0.22em] px-3 md:px-4 py-1 md:py-1.5 rounded-full shadow-sm">
-                    {item.tag}
+                {/* Giant watermark number — desktop only */}
+                <span
+                  className={`pointer-events-none absolute select-none font-display font-black text-[160px] md:text-[240px] leading-none text-slate-900/[0.04] group-hover:text-amber-500/[0.08] transition-colors duration-700 ${
+                    isEven ? 'right-2 bottom-0' : 'left-2 bottom-0'
+                  }`}
+                >
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+
+                {/* Image block with identical 4:3 ratio */}
+                <div className="relative w-[48%] sm:w-[48%] lg:w-[52%] shrink-0 aspect-[4/3] overflow-hidden rounded-xl sm:rounded-2xl lg:rounded-3xl bg-slate-200 shadow-md sm:shadow-xl shadow-slate-900/15">
+                  <img
+                    src={panelPhoto}
+                    alt={item.name}
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+
+                  {/* Number watermark on image */}
+                  <span className="absolute bottom-1.5 right-2 sm:bottom-3 sm:right-4 lg:hidden font-display font-black text-3xl sm:text-5xl leading-none text-white/20 select-none">
+                    {String(index + 1).padStart(2, '0')}
                   </span>
                 </div>
-                <div className="absolute bottom-0 inset-x-0 p-4 md:p-5 lg:p-6 text-white">
-                  <h3 className="font-display text-lg md:text-xl lg:text-2xl font-bold leading-tight tracking-tight drop-shadow-lg mb-1.5 md:mb-2">
+
+                {/* Text block */}
+                <div
+                  className={`relative flex flex-col justify-center flex-1 min-w-0 z-10 lg:pt-0 ${
+                    isEven
+                      ? 'pl-3 sm:pl-6 lg:pl-0 lg:order-2 lg:pl-14 xl:pl-20'
+                      : 'pr-3 sm:pr-6 lg:pr-0 lg:order-1 lg:pr-14 xl:pr-20'
+                  }`}
+                >
+                  <div className="hidden lg:block overflow-hidden mb-8">
+                    <div className="h-[3px] w-10 rounded-full bg-amber-400 transition-all duration-500 ease-out group-hover:w-20" />
+                  </div>
+
+                  <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.3em] sm:tracking-[0.4em] text-amber-500 font-black mb-1 sm:mb-2 lg:hidden">
+                    {String(index + 1).padStart(2, '0')}
+                  </p>
+
+                  <h3 className="font-display text-base sm:text-2xl md:text-4xl xl:text-[2.85rem] font-semibold text-slate-900 tracking-tight leading-[1.15] transition-colors duration-300 group-hover:text-amber-900 line-clamp-2 sm:line-clamp-none">
                     {item.name}
                   </h3>
-                  <p className="text-[11px] md:text-xs leading-relaxed text-white/85 line-clamp-2 mb-2 md:mb-3 drop-shadow-md">
-                    {item.description}
-                  </p>
-                  <div className="inline-flex items-center gap-1.5 md:gap-2 text-white text-[10px] md:text-xs font-bold uppercase tracking-[0.2em]">
-                    <span>Jelajahi</span>
-                    <ChevronRight size={13} className="md:w-[15px] md:h-[15px] transition-transform group-hover:translate-x-1" />
-                  </div>
-                </div>
-              </Link>
-            ))}
 
-            {/* ==== TOGGLE CTA: Selengkapnya / Sembunyikan Sebagian (hanya jika destinasi > 6) ==== */}
-            {items.length > 6 && (
-              <button
-                type="button"
-                onClick={toggleDestinations}
-                aria-label={showAllDestinations ? 'Sembunyikan sebagian destinasi' : 'Tampilkan semua destinasi'}
-                className="reveal-up aspect-[3/4] relative overflow-hidden flex flex-col items-center justify-center text-slate-700 hover:text-primary-700 cursor-pointer p-6 md:p-7 group bg-transparent ring-0 shadow-none border-0"
-              >
-                <div className="flex flex-col items-center justify-center text-center gap-4 md:gap-5">
-                  {showAllDestinations ? (
-                    <ChevronUp size={34} className="md:w-12 md:h-12 transition-transform group-hover:-translate-y-1" strokeWidth={2} />
-                  ) : (
-                    <ChevronDown size={34} className="md:w-12 md:h-12 transition-transform group-hover:translate-y-1" strokeWidth={2} />
-                  )}
-                  <div className="font-semibold tracking-wide text-lg md:text-xl xl:text-2xl font-display">
-                    {showAllDestinations ? 'Sembunyikan Sebagian' : 'Selengkapnya'}
+                  <p className="hidden sm:block mt-3 sm:mt-5 text-sm sm:text-base md:text-lg leading-relaxed text-slate-500 line-clamp-3">
+                    {item.short_description || item.description || 'Jelajahi keindahan alam dan kebudayaan Pulau Enggano yang menakjubkan.'}
+                  </p>
+
+                  <div className="mt-3 sm:mt-8">
+                    <span className="inline-flex items-center gap-1.5 sm:gap-2.5 rounded-lg sm:rounded-xl bg-slate-900 group-hover:bg-amber-600 px-3 sm:px-5 lg:px-7 py-2 sm:py-3 lg:py-3.5 text-[10px] sm:text-xs lg:text-sm font-bold text-white uppercase tracking-[0.1em] sm:tracking-[0.15em] transition-all duration-300 shadow-md sm:shadow-lg">
+                      Jelajahi
+                      <ChevronRight size={11} className="transition-transform duration-300 group-hover:translate-x-1" />
+                    </span>
                   </div>
                 </div>
-              </button>
+              </a>
+            </div>
+
+            {/* Section divider */}
+            {index < items.length - 1 && (
+              <div className="relative z-10 mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0">
+                <div className="h-px bg-gradient-to-r from-transparent via-slate-300/50 to-transparent" />
+              </div>
             )}
+          </section>
+        )
+      })}
+
+      {/* 3. Itinerary Posters Section — Poster Gallery */}
+      <section className="w-full bg-white py-20 md:py-28">
+        <div className="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0">
+
+          {/* Header */}
+          <div className="reveal-up max-w-2xl mb-8 sm:mb-14 md:mb-18">
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-slate-900 leading-tight">
+              Paket Wisata Enggano
+            </h2>
+            <div className="mt-3.5 h-1 w-10 bg-accent-500 rounded-full" />
+            <p className="mt-3.5 text-sm sm:text-base md:text-lg leading-relaxed text-slate-600">
+              Pilih paket terbaik bersama pemandu lokal. Ketuk poster untuk pratinjau dan unduh.
+            </p>
           </div>
+
+          {/* Poster Grid — 2 kolom di mobile (poster ke-3 di tengah), 3 kolom di desktop */}
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-7 md:gap-8">
+            {itineraryPosters.map((poster, idx) => (
+              <div
+                key={poster.id}
+                className={`reveal-up group relative aspect-[3/4] overflow-hidden rounded-2xl sm:rounded-3xl bg-slate-100 shadow-md sm:shadow-xl shadow-slate-200/70 ring-1 ring-slate-200/80 cursor-pointer transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-amber-200/40 hover:ring-2 hover:ring-amber-400/60 ${
+                  idx === 2 ? 'col-span-2 max-w-[calc(50%-0.5rem)] sm:max-w-[calc(50%-0.875rem)] lg:max-w-none mx-auto w-full lg:col-span-1' : ''
+                }`}
+                style={{ '--reveal-delay': `${80 + idx * 130}ms` }}
+                onClick={() => openPosterLightbox(idx)}
+                role="button"
+                tabIndex={0}
+                aria-label={`Buka poster ${poster.title}`}
+                onKeyDown={(e) => e.key === 'Enter' && openPosterLightbox(idx)}
+              >
+                {/* Poster Image */}
+                <img
+                  src={poster.image}
+                  alt={poster.title}
+                  className="absolute inset-0 h-full w-full object-contain bg-white transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                  loading="lazy"
+                  onError={(e) => {
+                    if (!e.currentTarget.dataset.fb) {
+                      e.currentTarget.dataset.fb = '1'
+                      e.currentTarget.onerror = null
+                      e.currentTarget.src = poster.fallback
+                      e.currentTarget.classList.remove('object-contain')
+                      e.currentTarget.classList.add('object-cover')
+                    }
+                  }}
+                />
+
+                {/* Mobile: always-visible bottom bar with actions */}
+                <div className="absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/70 to-transparent pt-8 pb-2 px-2 sm:hidden">
+                  <p className="text-[9px] font-bold text-white/90 uppercase tracking-wider truncate">{poster.title}</p>
+                  <div className="mt-1.5 flex gap-1.5">
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); openPosterLightbox(idx) }}
+                      className="flex-1 flex items-center justify-center gap-1 rounded-lg bg-white/20 backdrop-blur-sm py-1 text-[10px] font-semibold text-white"
+                    >
+                      <Eye size={10} /> Lihat
+                    </button>
+                    <a
+                      href={poster.file}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      download
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex-1 flex items-center justify-center gap-1 rounded-lg bg-amber-500/80 backdrop-blur-sm py-1 text-[10px] font-semibold text-white"
+                    >
+                      <Download size={10} /> Unduh
+                    </a>
+                  </div>
+                </div>
+
+                {/* Desktop: hover glassmorphism overlay */}
+                <div className="hidden sm:block absolute inset-x-0 bottom-0 z-20 translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0">
+                  <div className="m-3 rounded-2xl border border-white/20 bg-white/80 p-5 shadow-lg backdrop-blur-md">
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-600">{poster.tag}</p>
+                    <h3 className="mt-1.5 font-display text-lg font-semibold text-slate-900 leading-snug">{poster.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-600 line-clamp-2">{poster.description}</p>
+                    <div className="mt-4 flex items-center gap-2.5">
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); openPosterLightbox(idx) }}
+                        className="inline-flex items-center gap-1.5 rounded-full bg-slate-900 px-4 py-2 text-xs font-bold text-white transition hover:bg-slate-700"
+                      >
+                        <Eye size={13} /> Pratinjau
+                      </button>
+                      <a
+                        href={poster.file}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        download
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-bold text-slate-700 transition hover:bg-slate-50"
+                      >
+                        <Download size={13} /> Unduh
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+
         </div>
       </section>
 
-      {/* 3. Itinerary Posters Section - FULL WIDTH */}
-      <section ref={itinerarySectionRef} className="w-full bg-[#f8f7f4] py-16 md:py-24 overflow-hidden">
-  <div className="w-full px-6 md:px-12 lg:px-20 max-w-none">
-    <div className="flex flex-col gap-10 lg:gap-12 items-center text-center">
-
-      {/* Bagian Judul & Deskripsi (Rata Tengah) */}
-      <div className="reveal-up w-full max-w-3xl mx-auto">
-        <p className="text-sm uppercase tracking-[0.35em] text-accent-700 font-semibold">
-          Paket & Itinerary
-        </p>
-        <h2 className="mt-4 font-display text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 leading-[1.1]">
-          Paket Wisata Enggano
-        </h2>
-        <p className="mt-5 text-base md:text-lg leading-8 text-slate-600">
-          Pilih paket pengalaman terbaik untuk menjelajahi setiap sudut keindahan Pulau Enggano dengan pemandu lokal.
-          Klik poster untuk melihat detail lebih jelas.
-        </p>
-      </div>
-
-      {/* Bagian Poster/Cards (Rata Tengah) */}
-      <div
-        ref={itineraryContainerRef}
-        onScroll={handleItineraryScroll}
-        className="w-full flex gap-6 overflow-x-auto justify-center md:justify-center snap-x snap-mandatory pb-4 scrollbar-hide px-4"
-      >
-        {itineraryPosters.map((poster, idx) => (
-          <button
-            type="button"
-            key={poster.id}
-            onClick={() => openPosterLightbox(idx)}
-            aria-label={`Buka poster ${poster.title}`}
-            className="scroll-card-item group reveal-up shrink-0 snap-start w-[88%] sm:w-[65%] md:w-[50%] lg:w-[33%] xl:w-[28%] aspect-[3/4] relative overflow-hidden rounded-2xl shadow-lg ring-1 ring-slate-200/60 bg-white cursor-zoom-in hover:ring-primary-300 transition-all duration-500 text-left"
-            style={{ '--reveal-delay': `${100 + idx * 120}ms` }}
-          >
-            <img
-              src={poster.image}
-              alt={poster.title}
-              className="absolute inset-0 w-full h-full object-contain bg-white transition-all duration-700 ease-out group-hover:scale-[1.06] group-hover:brightness-[1.02]"
-              loading="lazy"
-              onError={(e) => {
-                if (!e.currentTarget.dataset.fb) {
-                  e.currentTarget.dataset.fb = '1'
-                  e.currentTarget.onerror = null
-                  e.currentTarget.src = poster.fallback
-                  e.currentTarget.classList.remove('object-contain')
-                  e.currentTarget.classList.add('object-cover')
-                }
-              }}
-            />
-            <div className="absolute inset-0 ring-0 group-hover:ring-2 ring-inset ring-primary-400/50 rounded-2xl transition-all duration-300 pointer-events-none" />
-          </button>
-        ))}
-      </div>
-
-    </div>
-  </div>
-</section>
-
-      {/* Lightbox for Poster Itinerary - KLIK POSTER TIDAK MUNCUL KODE PNG LAGI! */}
+      {/* Lightbox for Poster Itinerary */}
       {lightboxOpen && (
-        <div className="fixed inset-0 z-[100] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8" role="dialog" aria-modal="true">
+        <div
+          className="fixed inset-0 z-[100] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
+          role="dialog"
+          aria-modal="true"
+          onClick={closeLightbox}
+        >
           <button
             type="button"
             onClick={closeLightbox}
@@ -404,7 +408,10 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
 
           <button
             type="button"
-            onClick={lightboxPrev}
+            onClick={(e) => {
+              e.stopPropagation()
+              lightboxPrev()
+            }}
             aria-label="Poster sebelumnya"
             className="hidden md:flex absolute left-4 sm:left-8 z-20 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur items-center justify-center transition-all border border-white/15 hover:border-white/30"
           >
@@ -413,52 +420,56 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
 
           <button
             type="button"
-            onClick={lightboxNext}
+            onClick={(e) => {
+              e.stopPropagation()
+              lightboxNext()
+            }}
             aria-label="Poster berikutnya"
             className="hidden md:flex absolute right-4 sm:right-8 z-20 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur items-center justify-center transition-all border border-white/15 hover:border-white/30"
           >
             <ChevronRight size={24} />
           </button>
 
-          <div className="relative w-full max-w-4xl max-h-[90vh] flex flex-col items-center">
-            <div className="relative w-full h-full flex items-center justify-center rounded-2xl overflow-hidden bg-white shadow-[0_30px_80px_rgba(0,0,0,0.5)]">
+          <div
+            className="relative flex flex-col items-center max-h-[94vh] max-w-[92vw]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative rounded-2xl overflow-hidden shadow-[0_30px_90px_rgba(0,0,0,0.7)] ring-1 ring-white/15 flex items-center justify-center">
               <img
                 src={lightboxSrc}
                 alt={itineraryPosters[lightboxIndex]?.title || 'Poster Itinerary'}
-                className="max-h-[80vh] w-full object-contain bg-white"
+                className="max-h-[72vh] sm:max-h-[76vh] w-auto max-w-[88vw] object-contain block"
                 onError={(e) => {
                   if (!e.currentTarget.dataset.fb) {
                     e.currentTarget.dataset.fb = '1'
                     e.currentTarget.onerror = null
                     e.currentTarget.src = itineraryPosters[lightboxIndex]?.fallback
-                    e.currentTarget.classList.remove('object-contain')
-                    e.currentTarget.classList.add('object-cover')
                   }
                 }}
               />
             </div>
 
-            <div className="mt-6 flex items-center gap-4 flex-wrap justify-center">
-              <div className="text-white/90 text-sm md:text-base text-center md:text-left">
-                <span className="uppercase tracking-[0.2em] text-white/60 text-xs font-semibold">
+            <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left max-w-xl w-full px-2">
+              <div className="text-white/90 text-sm md:text-base">
+                <span className="uppercase tracking-[0.2em] text-accent-400 text-xs font-semibold">
                   {itineraryPosters[lightboxIndex]?.tag}
                 </span>
-                <h3 className="mt-1 font-display text-xl md:text-2xl font-semibold">
+                <h3 className="mt-0.5 font-display text-lg md:text-2xl font-semibold">
                   {itineraryPosters[lightboxIndex]?.title}
                 </h3>
-                <p className="text-sm text-white/70 mt-1">
+                <p className="text-xs sm:text-sm text-white/70 mt-0.5 line-clamp-1">
                   {itineraryPosters[lightboxIndex]?.description}
                 </p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 shrink-0">
                 <a
                   href={itineraryPosters[lightboxIndex]?.file || itineraryPosters[lightboxIndex]?.fallback}
                   target="_blank"
                   rel="noopener noreferrer"
                   download
-                  className="inline-flex items-center gap-2 bg-white text-slate-900 px-5 py-2.5 rounded-full text-sm font-bold tracking-wide shadow-lg hover:bg-primary-50 hover:text-primary-700 transition-colors"
+                  className="inline-flex items-center gap-2 bg-white text-slate-900 px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold tracking-wide shadow-lg hover:bg-accent-50 hover:text-accent-700 transition-colors"
                 >
-                  <Download size={16} />
+                  <Download size={15} />
                   Unduh Poster
                 </a>
               </div>

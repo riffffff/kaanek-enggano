@@ -9,14 +9,14 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
   const { url } = usePage()
   const { tt } = useTranslate('common')
-  const belajarBahasaUrl = 'https://kaayar-enggano.vercel.app'
+  const belajarBahasaUrl = 'https://katekora-eic-enggano.vercel.app'
 
   const navItems = [
     { label: tt('Tentang Enggano', 'nav.aboutEnggano'), href: '/villages' },
     { label: tt('Destinations', 'nav.destinations'), href: '/destinations' },
     { label: tt('Accommodations', 'nav.accommodations'), href: '/accommodations' },
     { label: tt('Aktivitas', 'nav.activities'), href: '/kkn-log' },
-    { label: tt('UMKM', 'nav.umkms'), href: '/umkm' },
+    { label: 'Kredit', href: '/credits' },
   ]
 
   useEffect(() => {
@@ -28,6 +28,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const isHome = url === '/' || url === '' || url.startsWith('/?') || url.startsWith('/#')
   const solid = scrolled || open
 
   // Cek apakah link aktif berdasarkan URL saat ini
@@ -40,10 +41,12 @@ export default function Navbar() {
       className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-500 ${
         solid
           ? 'border-neutral-200/80 bg-surface-50/95 text-primary-700 shadow-sm backdrop-blur'
-          : 'border-white/10 bg-transparent text-white'
+          : isHome
+            ? 'border-white/10 bg-transparent text-white'
+            : 'border-neutral-200/80 bg-surface-50/95 text-primary-700 shadow-sm backdrop-blur md:border-white/10 md:bg-transparent md:text-white'
       }`}
     >
-      <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 md:px-12 lg:px-16">
+      <nav className="mx-auto flex h-20 w-full items-center justify-between px-4 sm:px-6 lg:w-[80%] lg:px-0">
         <Link href="/" className="font-display text-3xl font-semibold transition-transform duration-500 hover:scale-[1.02]">
           Enggano
         </Link>
@@ -128,7 +131,7 @@ export default function Navbar() {
               )
             })}
             <div className="mt-4 flex justify-center">
-              <LanguageSwitcher />
+              <LanguageSwitcher solid={true} />
             </div>
             <a
               href={belajarBahasaUrl}

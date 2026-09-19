@@ -1,6 +1,7 @@
 import { Head, Link } from '@inertiajs/react'
 import { Bath, BedDouble, Clock3, Info, MessageCircle, Plane, Route, Ship, UserRound } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import PageHeader from '../../Components/PageHeader'
 
 export default function AccommodationIndex({ schedules = [], homestays = [] }) {
   const [selectedVillage, setSelectedVillage] = useState('All Villages')
@@ -64,57 +65,197 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
     <>
       <Head title="Accommodations" />
 
-      {/* Hero Section — STATIS (Unsplash fixed) */}
-      <section className="relative overflow-hidden text-white">
-        <img
-          src={heroImageSrc}
-          alt="Info Perjalanan & Akomodasi"
-          className="reveal-scale absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/30 to-black/70" />
-        <div className="relative mx-auto max-w-7xl px-6 pb-32 pt-48 md:px-12 lg:px-16">
-          <div className="max-w-4xl">
-            <p className="reveal-up text-sm uppercase tracking-[0.35em] text-white/70">
-              Info Perjalanan
-            </p>
-            <h1 className="reveal-up mt-4 font-display text-5xl font-semibold md:text-7xl" style={{ '--reveal-delay': '120ms' }}>
-              Akomodasi & Transportasi
-            </h1>
-            <p className="reveal-up mt-6 text-base leading-7 text-white/90 md:text-xl" style={{ '--reveal-delay': '200ms' }}>
-              Panduan lengkap untuk mengakses Pulau Enggano dan penginapan lokal yang nyaman.
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHeader pageKey="accommodations" background={heroImageSrc} />
 
       {/* Transportation Section (Static 3 Cards: Perintis, Ferry ASDP, Susi Air) */}
-      <section id="transportation" className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24 lg:px-16">
+      <section id="transportation" className="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 py-10 sm:py-16 md:py-24">
         <div className="reveal-up max-w-3xl">
-          <p className="text-xs uppercase tracking-[0.3em] font-medium text-accent-600">Survival Guide: Access & Transport</p>
-          <h2 className="mt-2 font-display text-4xl font-semibold text-neutral-900 md:text-5xl">
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-neutral-900 leading-tight">
             Opsi Transportasi Bengkulu &harr; Enggano
           </h2>
-          <p className="mt-4 text-base leading-7 text-neutral-600">
-            Akses menuju Pulau Enggano di Samudera Hindia dapat ditempuh melalui 3 jalur moda transportasi utama. Pilih moda transportasi di bawah ini untuk melihat estimasi tarif, waktu tempuh, serta tautan langsung untuk memesan tiket.
+          <div className="mt-3.5 h-1 w-10 bg-accent-500 rounded-full" />
+          <p className="mt-3.5 text-sm sm:text-base leading-relaxed text-neutral-600">
+            Akses menuju Pulau Enggano di Samudera Hindia dapat ditempuh melalui 3 moda transportasi utama.
           </p>
         </div>
 
-        {/* 3 Distinct Static Cards Grid */}
-        <div className="mt-10 grid gap-8 md:grid-cols-3">
+        {/* Mobile View: Horizontal Swipe / Snap Carousel (< md) — Gaya Travel App Modern */}
+        <div className="mt-6 md:hidden">
+          <div className="flex items-center justify-between text-xs text-neutral-500 mb-2.5 px-1">
+            <span className="font-medium text-neutral-700">Pilihan Moda Transportasi</span>
+            <span className="text-[11px] text-neutral-400">Geser untuk melihat &rarr;</span>
+          </div>
+
+          <div className="flex gap-3.5 overflow-x-auto pb-4 pt-1 snap-x snap-mandatory scrollbar-none">
+            {/* Card 1: Kapal Perintis */}
+            <article className="w-[82vw] max-w-[305px] shrink-0 snap-start bg-white rounded-2xl p-5 border border-neutral-200/80 shadow-xs flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <div className="h-10 w-10 rounded-xl bg-primary-950 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                      <Ship size={18} />
+                    </div>
+                    <div>
+                      <h3 className="font-display text-base font-bold text-neutral-900 leading-tight">
+                        Kapal Perintis
+                      </h3>
+                      <span className="text-[11px] text-neutral-500">Malaakoni & Baai</span>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-semibold uppercase tracking-wider bg-surface-100 text-primary-800 px-2.5 py-1 rounded-full">
+                    Jalur Laut
+                  </span>
+                </div>
+
+                {/* Route Visualizer */}
+                <div className="mt-4 bg-surface-50/80 rounded-xl p-3 border border-neutral-100/80">
+                  <div className="flex items-center justify-between text-xs font-semibold text-neutral-800">
+                    <span>Pel. Baai</span>
+                    <span className="text-neutral-400">&rarr;</span>
+                    <span>Pel. Malaakoni</span>
+                  </div>
+                  <div className="mt-2.5 flex items-center justify-between text-[11px] text-neutral-500 border-t border-neutral-200/50 pt-2">
+                    <span className="flex items-center gap-1.5"><Clock3 size={12} className="text-primary-800" /> &plusmn; 12 - 14 Jam</span>
+                    <span className="font-medium text-neutral-700">2x Seminggu</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-4 pt-3.5 border-t border-neutral-100 flex items-center justify-between gap-3">
+                <div>
+                  <span className="text-[10px] uppercase tracking-wider text-neutral-400 block font-medium">Estimasi Tarif</span>
+                  <span className="text-sm font-extrabold text-neutral-900">&plusmn; Rp 30.000</span>
+                </div>
+                <a
+                  href="https://www.easybook.com/id-id"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center h-8 px-3.5 rounded-lg bg-primary-950 text-white text-xs font-semibold shadow-xs hover:bg-primary-900 active:scale-95 transition-all"
+                >
+                  Pesan Tiket
+                </a>
+              </div>
+            </article>
+
+            {/* Card 2: Ferry ASDP */}
+            <article className="w-[82vw] max-w-[305px] shrink-0 snap-start bg-white rounded-2xl p-5 border border-neutral-200/80 shadow-xs flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <div className="h-10 w-10 rounded-xl bg-accent-500 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                      <Ship size={18} />
+                    </div>
+                    <div>
+                      <h3 className="font-display text-base font-bold text-neutral-900 leading-tight">
+                        Ferry ASDP
+                      </h3>
+                      <span className="text-[11px] text-neutral-500">Kahyapu & Baai</span>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-semibold uppercase tracking-wider bg-accent-50 text-accent-700 px-2.5 py-1 rounded-full">
+                    Penyeberangan
+                  </span>
+                </div>
+
+                {/* Route Visualizer */}
+                <div className="mt-4 bg-surface-50/80 rounded-xl p-3 border border-neutral-100/80">
+                  <div className="flex items-center justify-between text-xs font-semibold text-neutral-800">
+                    <span>Pel. Baai</span>
+                    <span className="text-neutral-400">&rarr;</span>
+                    <span>Pel. Kahyapu</span>
+                  </div>
+                  <div className="mt-2.5 flex items-center justify-between text-[11px] text-neutral-500 border-t border-neutral-200/50 pt-2">
+                    <span className="flex items-center gap-1.5"><Clock3 size={12} className="text-accent-600" /> &plusmn; 12 Jam</span>
+                    <span className="font-medium text-neutral-700">Sel &amp; Jum</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-4 pt-3.5 border-t border-neutral-100 flex items-center justify-between gap-3">
+                <div>
+                  <span className="text-[10px] uppercase tracking-wider text-neutral-400 block font-medium">Estimasi Tarif</span>
+                  <span className="text-sm font-extrabold text-neutral-900">&plusmn; Rp 75.000</span>
+                </div>
+                <a
+                  href="tel:021191"
+                  className="inline-flex items-center justify-center h-8 px-3.5 rounded-lg bg-accent-500 text-white text-xs font-semibold shadow-xs hover:bg-accent-600 active:scale-95 transition-all"
+                >
+                  Info Jadwal
+                </a>
+              </div>
+            </article>
+
+            {/* Card 3: Susi Air */}
+            <article className="w-[82vw] max-w-[305px] shrink-0 snap-start bg-white rounded-2xl p-5 border border-neutral-200/80 shadow-xs flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <div className="h-10 w-10 rounded-xl bg-sky-600 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                      <Plane size={18} />
+                    </div>
+                    <div>
+                      <h3 className="font-display text-base font-bold text-neutral-900 leading-tight">
+                        Susi Air
+                      </h3>
+                      <span className="text-[11px] text-neutral-500">Penerbangan Perintis</span>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-semibold uppercase tracking-wider bg-sky-50 text-sky-700 px-2.5 py-1 rounded-full">
+                    Jalur Udara
+                  </span>
+                </div>
+
+                {/* Route Visualizer */}
+                <div className="mt-4 bg-surface-50/80 rounded-xl p-3 border border-neutral-100/80">
+                  <div className="flex items-center justify-between text-xs font-semibold text-neutral-800">
+                    <span>Fatmawati</span>
+                    <span className="text-neutral-400">&rarr;</span>
+                    <span>Enggano</span>
+                  </div>
+                  <div className="mt-2.5 flex items-center justify-between text-[11px] text-neutral-500 border-t border-neutral-200/50 pt-2">
+                    <span className="flex items-center gap-1.5"><Clock3 size={12} className="text-sky-600" /> &plusmn; 45 Menit</span>
+                    <span className="font-medium text-neutral-700">Sel &amp; Kam</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-4 pt-3.5 border-t border-neutral-100 flex items-center justify-between gap-3">
+                <div>
+                  <span className="text-[10px] uppercase tracking-wider text-neutral-400 block font-medium">Estimasi Tarif</span>
+                  <span className="text-sm font-extrabold text-neutral-900">&plusmn; Rp 450.000</span>
+                </div>
+                <a
+                  href="https://susiair.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center h-8 px-3.5 rounded-lg bg-sky-600 text-white text-xs font-semibold shadow-xs hover:bg-sky-700 active:scale-95 transition-all"
+                >
+                  Pesan Tiket
+                </a>
+              </div>
+            </article>
+
+            {/* Trailing Spacer for scroll padding */}
+            <div className="w-1.5 shrink-0" aria-hidden="true" />
+          </div>
+        </div>
+
+        {/* Desktop View: 3 Distinct Static Cards Grid (≥ md) */}
+        <div className="mt-10 hidden md:grid md:grid-cols-3 gap-8 items-stretch">
 
           {/* Card 1: Kapal Perintis */}
           <article className="group hover-lift overlay-glow reveal-up flex flex-col justify-between bg-white p-7 shadow-sm ring-1 ring-neutral-200/80 rounded-2xl" style={{ '--reveal-delay': '140ms' }}>
             <div>
               <div className="flex items-center justify-between">
-                <div className="inline-flex h-12 w-12 items-center justify-center bg-primary-950 text-white rounded-xl">
+                <div className="inline-flex h-12 w-12 items-center justify-center bg-primary-950 text-white rounded-xl shrink-0">
                   <Ship size={22} />
                 </div>
-                <span className="text-xs font-semibold uppercase tracking-wider bg-surface-100 text-primary-800 px-3 py-1 rounded-full">
+                <span className="text-xs font-semibold uppercase tracking-wider bg-surface-100 text-primary-800 px-3 py-1 rounded-full whitespace-nowrap">
                   Jalur Laut
                 </span>
               </div>
 
-              <h3 className="mt-6 font-display text-3xl font-bold text-neutral-900">
+              <h3 className="mt-6 font-display text-3xl font-bold text-neutral-900 leading-tight">
                 Kapal Perintis
               </h3>
 
@@ -155,15 +296,15 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
           <article className="group hover-lift overlay-glow reveal-up flex flex-col justify-between bg-white p-7 shadow-sm ring-1 ring-neutral-200/80 rounded-2xl" style={{ '--reveal-delay': '200ms' }}>
             <div>
               <div className="flex items-center justify-between">
-                <div className="inline-flex h-12 w-12 items-center justify-center bg-accent-500 text-white rounded-xl">
+                <div className="inline-flex h-12 w-12 items-center justify-center bg-accent-500 text-white rounded-xl shrink-0">
                   <Ship size={22} />
                 </div>
-                <span className="text-xs font-semibold uppercase tracking-wider bg-accent-50 text-accent-700 px-3 py-1 rounded-full">
+                <span className="text-xs font-semibold uppercase tracking-wider bg-accent-50 text-accent-700 px-3 py-1 rounded-full whitespace-nowrap">
                   Ferry Penyeberangan
                 </span>
               </div>
 
-              <h3 className="mt-6 font-display text-3xl font-bold text-neutral-900">
+              <h3 className="mt-6 font-display text-3xl font-bold text-neutral-900 leading-tight">
                 Ferry ASDP
               </h3>
 
@@ -189,10 +330,8 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
                 <span className="text-xl font-extrabold text-neutral-900">± Rp 75.000</span>
               </div>
               <a
-                href=""
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover-lift inline-flex items-center gap-2 bg-accent-500 hover:bg-accent-600 text-white px-5 py-3 rounded-xl text-[9px] font-bold tracking-wider uppercase"
+                href="tel:021191"
+                className="hover-lift inline-flex items-center gap-2 bg-accent-500 hover:bg-accent-600 text-white px-5 py-3 rounded-xl text-xs font-bold tracking-wider uppercase"
               >
                 <span>Call Center 021191</span>
                 <Ship size={14} />
@@ -204,15 +343,15 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
           <article className="group hover-lift overlay-glow reveal-up flex flex-col justify-between bg-white p-7 shadow-sm ring-1 ring-neutral-200/80 rounded-2xl" style={{ '--reveal-delay': '260ms' }}>
             <div>
               <div className="flex items-center justify-between">
-                <div className="inline-flex h-12 w-12 items-center justify-center bg-sky-600 text-white rounded-xl">
+                <div className="inline-flex h-12 w-12 items-center justify-center bg-sky-600 text-white rounded-xl shrink-0">
                   <Plane size={22} />
                 </div>
-                <span className="text-xs font-semibold uppercase tracking-wider bg-sky-50 text-sky-700 px-3 py-1 rounded-full">
+                <span className="text-xs font-semibold uppercase tracking-wider bg-sky-50 text-sky-700 px-3 py-1 rounded-full whitespace-nowrap">
                   Jalur Udara
                 </span>
               </div>
 
-              <h3 className="mt-6 font-display text-3xl font-bold text-neutral-900">
+              <h3 className="mt-6 font-display text-3xl font-bold text-neutral-900 leading-tight">
                 Susi Air
               </h3>
 
@@ -235,7 +374,7 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
             <div className="mt-8 border-t border-neutral-100 pt-5 flex items-end justify-between gap-4">
               <div>
                 <span className="text-xs uppercase tracking-wider text-neutral-400 block">Estimasi Tarif</span>
-                <span className="text-[18px] font-extrabold text-neutral-900">± Rp 450.000</span>
+                <span className="text-xl font-extrabold text-neutral-900">± Rp 450.000</span>
               </div>
               <a
                 href="https://susiair.com"
@@ -252,29 +391,29 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
         </div>
 
         {/* Disclaimer Info */}
-        <div className="reveal-up mt-10 flex items-start gap-3 bg-primary-50 px-5 py-4 text-sm leading-6 text-neutral-700 ring-1 ring-primary-100 rounded-xl" style={{ '--reveal-delay': '320ms' }}>
-          <Info size={18} className="mt-0.5 shrink-0 text-primary-700" />
+        <div className="reveal-up mt-6 sm:mt-10 flex items-start gap-2.5 sm:gap-3 bg-primary-50 px-3.5 py-3 sm:px-5 sm:py-4 text-xs sm:text-sm leading-relaxed text-neutral-700 ring-1 ring-primary-100 rounded-xl" style={{ '--reveal-delay': '320ms' }}>
+          <Info size={16} className="mt-0.5 shrink-0 text-primary-700" />
           <p>
-            *<strong>Informasi Penting:</strong> Jadwal keberangkatan dan tarif tiket sewaktu-waktu dapat berubah tergantung pada kondisi cuaca dan gelombang di Samudera Hindia. Klik tombol <strong>"BUKA WEBSITE"</strong> pada masing-masing moda di atas untuk langsung membuka situs resmi pemesanan atau verifikasi tiket.
+            *<strong>Informasi Penting:</strong> Jadwal keberangkatan dan tarif tiket sewaktu-waktu dapat berubah tergantung pada kondisi cuaca dan gelombang di Samudera Hindia. Klik tombol <strong>"PESAN / INFO"</strong> pada masing-masing moda untuk memeriksa jadwal terkini.
           </p>
         </div>
       </section>
 
       <section id="homestay" className="bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-16 md:px-12 md:py-24 lg:px-16">
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+        <div className="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 py-10 sm:py-16 md:py-24">
+          <div className="flex flex-col gap-4 sm:gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="reveal-up max-w-3xl">
-              <h2 className="font-display text-4xl font-semibold text-neutral-900 md:text-5xl">
+              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-neutral-900 leading-tight">
                 Homestay Directory
               </h2>
-              <p className="mt-4 text-base leading-7 text-neutral-600">
-                Experience authentic island hospitality. Immerse yourself in the daily
-                rhythms of Enggano by staying with local families in thoughtfully
-                maintained accommodations.
+              <div className="mt-3.5 h-1 w-10 bg-accent-500 rounded-full" />
+              <p className="mt-3.5 text-sm sm:text-base leading-relaxed text-neutral-600">
+                Pilihan akomodasi homestay bersama warga lokal untuk pengalaman tinggal yang hangat dan autentik di Pulau Enggano.
               </p>
             </div>
 
-            <div className="reveal-up flex flex-wrap gap-3" style={{ '--reveal-delay': '100ms' }}>
+            {/* Filter buttons — scrollable on mobile without jumping or shifting */}
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide sm:flex-wrap">
               {villages.map(village => {
                 const active = village === selectedVillage
 
@@ -283,10 +422,10 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
                     key={village}
                     type="button"
                     onClick={() => setSelectedVillage(village)}
-                    className={`hover-lift px-4 py-2 text-sm font-semibold ${
+                    className={`px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold whitespace-nowrap rounded-full transition-colors active:scale-95 cursor-pointer ${
                       active
-                        ? 'bg-primary-950 text-white'
-                        : 'bg-surface-50 text-neutral-700 ring-1 ring-neutral-200'
+                        ? 'bg-primary-950 text-white border border-primary-950 shadow-xs'
+                        : 'bg-surface-50 text-neutral-700 border border-neutral-200/80 hover:bg-neutral-100 hover:text-neutral-900'
                     }`}
                   >
                     {village}
@@ -296,9 +435,10 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
             </div>
           </div>
 
-          <div className="mt-10 grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
+          {/* Homestay Grid — 2 Kolom di Mobile ala Traveloka / Airbnb */}
+          <div className="mt-6 sm:mt-10 grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
             {!visibleHomestays.length && selectedVillage === 'All Villages' && (
-              <div className="xl:col-span-3 lg:col-span-2 bg-surface-50 px-5 py-4 text-sm text-neutral-600 ring-1 ring-neutral-200">
+              <div className="col-span-2 xl:col-span-3 bg-surface-50 px-5 py-4 text-sm text-neutral-600 ring-1 ring-neutral-200">
                 Data homestay belum tersedia di admin.
               </div>
             )}
@@ -307,75 +447,78 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
               <Link
                 key={homestay.id}
                 href={`/accommodations/${homestay.id}`}
-                className="group hover-lift overlay-glow reveal-up overflow-hidden bg-surface-50 shadow-sm ring-1 ring-neutral-200/70"
+                className="group hover-lift overlay-glow reveal-up overflow-hidden rounded-xl sm:rounded-none bg-surface-50 shadow-sm ring-1 ring-neutral-200/70 flex flex-col justify-between h-full"
                 style={{ '--reveal-delay': '160ms' }}
               >
-                <div className="relative">
-                  {homestay.image ? (
-                    <img
-                      src={homestay.image}
-                      alt={homestay.name}
-                      className="media-zoom aspect-4/3 w-full object-cover"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="flex aspect-4/3 items-center justify-center bg-neutral-100 text-sm font-medium text-neutral-400">
-                      Foto homestay belum tersedia
+                <div className="flex-1 flex flex-col">
+                  <div className="relative overflow-hidden">
+                    {homestay.image ? (
+                      <img
+                        src={homestay.image}
+                        alt={homestay.name}
+                        className="media-zoom aspect-[4/3] w-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="flex aspect-[4/3] items-center justify-center bg-neutral-100 text-xs sm:text-sm font-medium text-neutral-400">
+                        Foto belum tersedia
+                      </div>
+                    )}
+                    <div className="absolute left-2 top-2 sm:left-4 sm:top-4 bg-primary-950/90 px-2 py-0.5 sm:px-3 sm:py-1 text-[8px] sm:text-xs font-semibold uppercase tracking-[0.15em] sm:tracking-[0.2em] text-white rounded-md sm:rounded-none">
+                      {homestay.village}
                     </div>
-                  )}
-                  <div className="absolute left-4 top-4 bg-primary-950/90 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white">
-                    {homestay.village} Village
+                  </div>
+
+                  <div className="p-2.5 sm:p-4 md:p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-display text-sm sm:text-xl md:text-3xl font-semibold text-neutral-900 line-clamp-1 leading-snug">
+                        {homestay.name}
+                      </h3>
+
+                      <div className="mt-1 sm:mt-3 flex items-center gap-1 sm:gap-2 text-[10px] sm:text-sm text-neutral-500 truncate">
+                        <UserRound size={12} className="shrink-0 sm:hidden" />
+                        <UserRound size={15} className="shrink-0 hidden sm:inline" />
+                        <span className="truncate">{homestay.owner}</span>
+                      </div>
+                    </div>
+
+                    <ul className="hidden md:block mt-5 space-y-3 text-sm text-neutral-600">
+                      {(homestay.features.length ? homestay.features : ['Fasilitas belum diisi host']).map(
+                        feature => {
+                          const Icon = feature.toLowerCase().includes('kamar mandi') ? Bath : BedDouble
+
+                          return (
+                            <li key={`${homestay.id}-${feature}`} className="flex items-center gap-3">
+                              <Icon size={16} className="text-primary-700" />
+                              <span>{feature}</span>
+                            </li>
+                          )
+                        }
+                      )}
+                    </ul>
                   </div>
                 </div>
 
-                <div className="p-6">
-                  <h3 className="font-display text-3xl font-semibold text-neutral-900">
-                    {homestay.name}
-                  </h3>
-
-                  <div className="mt-3 flex items-center gap-2 text-sm text-neutral-500">
-                    <UserRound size={15} />
-                    <span>{homestay.owner}</span>
-                  </div>
-
-                  {homestay.description && (
-                    <p className="mt-3 text-sm leading-relaxed text-neutral-600 line-clamp-2">
-                      {homestay.description}
-                    </p>
-                  )}
-
-                  <ul className="mt-5 space-y-3 text-sm text-neutral-600">
-                    {(homestay.features.length ? homestay.features : ['Fasilitas belum diisi host']).map(
-                      feature => {
-                        const Icon = feature.toLowerCase().includes('kamar mandi') ? Bath : BedDouble
-
-                        return (
-                          <li key={`${homestay.id}-${feature}`} className="flex items-center gap-3">
-                            <Icon size={16} className="text-primary-700" />
-                            <span>{feature}</span>
-                          </li>
-                        )
-                      }
-                    )}
-                  </ul>
-
-                  <div className="mt-6 flex items-end justify-between gap-4 border-t border-neutral-200 pt-5">
-                    <div>
-                      <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">
+                <div className="p-2.5 pt-0 sm:p-4 sm:pt-0 md:p-6 md:pt-0">
+                  <div className="flex items-end justify-between gap-1 sm:gap-4 border-t border-neutral-200/80 pt-2 sm:pt-5">
+                    <div className="min-w-0">
+                      <p className="text-[8px] sm:text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-500">
                         Mulai Dari
                       </p>
-                      <p className="mt-2 text-2xl font-semibold text-neutral-900">{homestay.price}</p>
+                      <p className="mt-0.5 sm:mt-2 text-xs sm:text-lg md:text-2xl font-bold text-neutral-900 truncate">{homestay.price}</p>
                     </div>
                     {homestay.whatsapp_number && (
                       <button
                         onClick={(e) => {
+                          e.preventDefault()
                           e.stopPropagation()
                           window.open(`https://wa.me/${homestay.whatsapp_number}?text=${encodeURIComponent(`Halo, saya tertarik menginap di ${homestay.name}`)}`, '_blank')
                         }}
                         aria-label={`Hubungi ${homestay.name}`}
-                        className="hover-lift inline-flex h-11 w-11 items-center justify-center bg-accent-500 text-white hover:bg-accent-600"
+                        className="hover-lift shrink-0 inline-flex h-7 w-7 sm:h-9 sm:w-9 md:h-11 md:w-11 items-center justify-center rounded-lg sm:rounded-none bg-accent-500 text-white hover:bg-accent-600"
                       >
-                        <MessageCircle size={18} />
+                        <MessageCircle size={13} className="sm:hidden" />
+                        <MessageCircle size={18} className="hidden sm:inline" />
                       </button>
                     )}
                   </div>

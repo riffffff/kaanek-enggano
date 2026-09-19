@@ -125,6 +125,22 @@
     }
 }
 
+@keyframes carousel-slide {
+    from {
+        opacity: 0;
+        transform: translate3d(28px, 0, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.map-slide-enter {
+    animation: carousel-slide 0.45s ease-out both;
+}
+
 @keyframes float-soft {
     0%,
     100% {

@@ -12,7 +12,7 @@
     "src": "node_modules/leaflet/dist/images/marker-icon.png"
   },
   "resources/css/app.css": {
-    "file": "assets/app-Bd6zuy2i.css",
+    "file": "assets/app-iW2-mOEI.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -20,19 +20,34 @@
       "app.css"
     ]
   },
-  "resources/js/app.jsx": {
-    "file": "assets/app-BTu3NGlP.js",
-    "name": "app",
-    "src": "resources/js/app.jsx",
-    "isEntry": true,
+  "resources/js/Components/LeafletMap.jsx": {
+    "file": "assets/LeafletMap-NTkvOK8m.js",
+    "name": "LeafletMap",
+    "src": "resources/js/Components/LeafletMap.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.jsx"
+    ],
     "css": [
-      "assets/app-CLLlcC51.css",
-      "assets/app-Bd6zuy2i.css"
+      "assets/LeafletMap-CLLlcC51.css",
+      "assets/app-iW2-mOEI.css"
     ],
     "assets": [
       "assets/layers-BWBAp2CZ.png",
       "assets/layers-2x-Bpkbi35X.png",
       "assets/marker-icon-hN30_KVU.png"
+    ]
+  },
+  "resources/js/app.jsx": {
+    "file": "assets/app-DmnR2XC8.js",
+    "name": "app",
+    "src": "resources/js/app.jsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "resources/js/Components/LeafletMap.jsx"
+    ],
+    "css": [
+      "assets/app-iW2-mOEI.css"
     ]
   }
 }
