@@ -7,7 +7,9 @@
     "umkms": "UMKM",
     "villages": "Desa",
     "kknLog": "Jurnal KKN",
-    "localGuide": "Local Guide"
+    "localGuide": "Local Guide",
+    "aboutUs": "Tentang Kami",
+    "learnLanguage": "Belajar Bahasa"
   },
   "buttons": {
     "back": "Kembali",

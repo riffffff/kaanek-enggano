@@ -50,6 +50,12 @@ export const pageHeaders = {
     subtitle: 'Dokumentasi kegiatan, pembelajaran, dan kontribusi mahasiswa di Pulau Enggano.',
     background: defaultBackground,
   },
+  credits: {
+    eyebrow: 'Tentang Kami',
+    title: 'Tentang Kami',
+    subtitle: 'Informasi inisiator, pengembang website, serta dokumentasi kegiatan program kolaborasi di Pulau Enggano.',
+    background: defaultBackground,
+  },
 }
 
 export function getPageHeader(pageKey, overrides = {}) {

@@ -152,14 +152,25 @@
     }
 }
 
-@keyframes nav-pulse-scale {
+@keyframes nav-subtle-bounce {
     0%,
     100% {
-        transform: scale(1);
+        transform: translateY(0) rotate(0deg);
     }
-
-    50% {
-        transform: scale(1.12);
+    6% {
+        transform: translateY(-3px) rotate(-1.5deg);
+    }
+    12% {
+        transform: translateY(1px) rotate(1.5deg);
+    }
+    18% {
+        transform: translateY(-2px) rotate(-1deg);
+    }
+    24% {
+        transform: translateY(0.5px) rotate(0.5deg);
+    }
+    30% {
+        transform: translateY(0) rotate(0deg);
     }
 }
 
@@ -229,10 +240,14 @@
         animation: float-soft 8s ease-in-out infinite;
     }
 
-    .nav-pulse {
-        display: inline-block;
-        animation: nav-pulse-scale 1.4s ease-in-out infinite;
+    .nav-bounce {
+        display: inline-flex;
+        animation: nav-subtle-bounce 3.5s ease-in-out infinite;
         transform-origin: center;
         will-change: transform;
+    }
+
+    .nav-bounce:hover {
+        animation-play-state: paused;
     }
 }

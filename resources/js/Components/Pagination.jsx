@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
  * Expects the `links` array from an Inertia-serialized paginator:
  *   [{ url, label, active }, ...]
  */
-export default function Pagination({ links = [] }) {
+export default function Pagination({ links = [], only = null }) {
   if (!links || links.length <= 3) return null
 
   return (
@@ -21,6 +21,8 @@ export default function Pagination({ links = [] }) {
               key={i}
               href={link.url ?? '#'}
               preserveScroll
+              preserveState
+              only={only || undefined}
               className={[
                 'inline-flex h-9 w-9 items-center justify-center rounded-lg text-sm transition',
                 link.url
@@ -40,6 +42,8 @@ export default function Pagination({ links = [] }) {
             key={i}
             href={link.url ?? '#'}
             preserveScroll
+            preserveState
+            only={only || undefined}
             className={[
               'inline-flex h-9 min-w-9 items-center justify-center rounded-lg px-2 text-sm font-medium transition',
               link.active

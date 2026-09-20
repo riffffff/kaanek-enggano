@@ -1,6 +1,5 @@
-import { Head, Link } from '@inertiajs/react'
+import { Head } from '@inertiajs/react'
 import {
-  ArrowLeft,
   ChevronLeft,
   ChevronRight,
   Code2,
@@ -8,12 +7,12 @@ import {
   GraduationCap,
   HeartHandshake,
   Image as ImageIcon,
-  Sparkles,
   Users,
   X,
   ZoomIn,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import PageHeader from '../../Components/PageHeader'
 
 // =============================================================================
 // DAFTAR GAMBAR GALERI KEGIATAN (STATIS)
@@ -90,87 +89,40 @@ export default function CreditsIndex() {
   return (
     <>
       <Head>
-        <title>Kredit & Info Pengembang — Ka'anek Enggano</title>
+        <title>Tentang Kami — Ka'anek Enggano</title>
         <meta
           name="description"
-          content="Kredit pengembang website Ka'anek Enggano dan galeri dokumentasi kegiatan di Pulau Enggano."
+          content="Informasi tentang kami, inisiator, pengembang website Ka'anek Enggano dan galeri dokumentasi kegiatan di Pulau Enggano."
         />
       </Head>
 
-      {/* Spacer di mobile agar tidak tertutup navbar fixed */}
-      <div className="h-20 md:hidden" />
-
-      {/* =================================================================== */}
-      {/* 1. HERO HEADER (HANYA DESKTOP ≥ md, DISEMBUNYIKAN DI MOBILE)        */}
-      {/* =================================================================== */}
-      <section className="relative hidden md:block overflow-hidden bg-primary-950 text-white">
-        <div className="absolute inset-0 bg-radial from-primary-900/40 via-primary-950/80 to-primary-950" />
-        <div className="pointer-events-none absolute -right-20 -top-20 h-96 w-96 rounded-full bg-accent-500/10 blur-3xl" />
-
-        <div className="relative mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 pb-16 pt-28 sm:pb-24 sm:pt-40">
-          <Link
-            href="/"
-            className="reveal-up inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-white/70 hover:text-white transition-colors mb-6"
-          >
-            <ArrowLeft size={15} />
-            <span>Kembali ke Beranda</span>
-          </Link>
-
-          <div className="max-w-4xl">
-            <div
-              className="reveal-up inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-500/15 border border-accent-500/30 text-accent-400 text-xs font-semibold uppercase tracking-wider mb-4"
-              style={{ '--reveal-delay': '80ms' }}
-            >
-              <Sparkles size={13} />
-              <span>Program Kolaborasi KKN-PPM UGM & Universitas Bengkulu</span>
-            </div>
-
-            <h1
-              className="reveal-up font-display text-3xl sm:text-5xl md:text-6xl font-bold leading-tight"
-              style={{ '--reveal-delay': '120ms' }}
-            >
-              Kredit & Info Pengembang
-            </h1>
-
-            <div
-              className="reveal-up mt-4 h-1 w-12 bg-accent-500 rounded-full"
-              style={{ '--reveal-delay': '160ms' }}
-            />
-
-            <p
-              className="reveal-up mt-4 text-sm sm:text-base md:text-lg leading-relaxed text-white/80 max-w-2xl"
-              style={{ '--reveal-delay': '200ms' }}
-            >
-              Informasi inisiator, pengembang website, serta dokumentasi kegiatan program pengabdian kolaborasi UGM & Universitas Bengkulu (UNIB) di Pulau Enggano.
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHeader pageKey="credits" />
 
       {/* =================================================================== */}
       {/* 2. KONTEN UTAMA: KETERANGAN PROGRAM & TIM (STATIS)                   */}
       {/* =================================================================== */}
-      <main className="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 pt-8 pb-12 sm:py-12 md:py-20">
+      <section className="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 pt-8 sm:pt-12 md:pt-16 pb-10 sm:pb-16 md:py-24">
+
 
         {/* BAGIAN TENTANG PEMBUATAN WEBSITE */}
-        <section className="reveal-up mb-16" style={{ '--reveal-delay': '100ms' }}>
+        <div className="reveal-up" style={{ '--reveal-delay': '100ms' }}>
           <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr] items-start">
 
             {/* Narasi Statis */}
             <div>
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-neutral-900 leading-snug">
+              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-neutral-900 leading-tight">
                 Tentang Website Ka'anek Enggano
               </h2>
-              <div className="mt-3 h-0.5 w-10 bg-accent-500 rounded-full" />
+              <div className="mt-3.5 h-1 w-10 bg-accent-500 rounded-full" />
 
-              <div className="mt-6 space-y-4 text-sm sm:text-base leading-relaxed text-neutral-600 text-justify">
-                <p className="indent-6 sm:indent-8">
+              <div className="mt-6 space-y-4 text-sm sm:text-base leading-relaxed text-neutral-600">
+                <p className="indent-6 sm:indent-8 md:indent-10 text-justify">
                   Website <strong>Ka'anek Enggano</strong> ini dibangun dan dikembangkan melalui kolaborasi antara <strong>Tim Mahasiswa KKN-PPM Universitas Gadjah Mada (UGM)</strong> bersama <strong>Universitas Bengkulu (UNIB)</strong> dalam rangka program pengabdian kepada masyarakat di Pulau Enggano, Kabupaten Bengkulu Utara.
                 </p>
-                <p className="indent-6 sm:indent-8">
+                <p className="indent-6 sm:indent-8 md:indent-10 text-justify">
                   Pembuatan website ini bertujuan untuk menyediakan pusat informasi digital terpadu bagi Pulau Enggano. Melalui website ini, pengunjung dapat menemukan informasi lengkap seputar destinasi wisata bahari dan alam, penginapan (homestay) milik warga, jadwal dan transportasi kapal laut/udara, profil enam suku adat, kontak pemandu lokal (local guide), hingga catatan kegiatan dan berita terkini.
                 </p>
-                <p className="indent-6 sm:indent-8">
+                <p className="indent-6 sm:indent-8 md:indent-10 text-justify">
                   Kolaborasi lintas universitas ini diharapkan dapat terus bermanfaat untuk memajukan potensi pariwisata berbasis kearifan lokal serta memudahkan aksesibilitas informasi bagi wisatawan, peneliti, maupun masyarakat luas yang hendak berkunjung ke Pulau Enggano.
                 </p>
               </div>
@@ -217,8 +169,8 @@ export default function CreditsIndex() {
             </div>
           </div>
 
-          {/* DAFTAR TIM / PENGEMBANG (STATIS) */}
-          <div className="mt-14">
+          {/* DAFTAR TIM / PENGEMBANG (STATIS) — disembunyikan di mobile */}
+          <div className="hidden sm:block mt-14">
             <h3 className="font-display text-lg sm:text-xl font-bold text-neutral-900 mb-6">
               Tim Pengembang & Kontributor
             </h3>
@@ -289,22 +241,20 @@ export default function CreditsIndex() {
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ================================================================= */}
-        {/* 3. GALERI KEGIATAN LAPANGAN (MASONRY PINTEREST)                    */}
-        {/* ================================================================= */}
-        <section className="reveal-up border-t border-neutral-200/80 pt-14" style={{ '--reveal-delay': '120ms' }}>
-          <div className="max-w-3xl mb-8">
-            <div className="flex items-center gap-2 text-accent-600 text-xs font-bold uppercase tracking-[0.2em] mb-2">
-              <ImageIcon size={15} />
-              <span>Dokumentasi Visual</span>
-            </div>
-            <h2 className="font-display text-2xl sm:text-4xl font-bold text-neutral-900 leading-tight">
+      {/* ================================================================= */}
+      {/* 3. GALERI KEGIATAN LAPANGAN (MASONRY PINTEREST)                    */}
+      {/* ================================================================= */}
+      <section className="bg-white py-14 sm:py-16 md:py-24 border-t border-neutral-200/70">
+        <div className="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0">
+          <div className="max-w-3xl mb-8 reveal-up" style={{ '--reveal-delay': '120ms' }}>
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-neutral-900 leading-tight">
               Galeri Kegiatan & Dokumentasi
             </h2>
             <div className="mt-3.5 h-1 w-10 bg-accent-500 rounded-full" />
-            <p className="mt-3 text-sm sm:text-base text-neutral-600">
+            <p className="mt-3.5 text-sm sm:text-base leading-relaxed text-neutral-600">
               Dokumentasi foto perjalanan dan pelaksanaan program kegiatan di Pulau Enggano. Klik foto mana saja untuk memperbesar.
             </p>
           </div>
@@ -337,8 +287,8 @@ export default function CreditsIndex() {
               </div>
             ))}
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
 
       {/* =================================================================== */}
       {/* 4. LIGHTBOX MODAL (PREVIEW FOTO BESAR)                               */}

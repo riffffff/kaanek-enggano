@@ -3,8 +3,9 @@ import { useState } from 'react'
 
 export default function VideoDocumentaryCard({
   videoId = 'nTHJ1kEVIpw',
-  title = 'SUARA ENGGANO: FILM DOKUMENTER PULAU ENGGANO',
-  subtitle = 'Karya dokumentasi visual peradaban, budaya, dan suara pulau terluar.',
+  title = 'Video Dokumenter',
+  subtitle = 'Suara Enggano: Dokumentasi audio-visual peradaban, budaya, dan pesona pulau terluar.',
+  badge,
   className = '',
 }) {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -34,7 +35,7 @@ export default function VideoDocumentaryCard({
             }
           }}
           className="relative h-full w-full cursor-pointer select-none focus:outline-none focus:ring-4 focus:ring-accent-500/50"
-          aria-label={`Putar film dokumenter ${title}`}
+          aria-label={`Putar video dokumenter ${title}`}
         >
           {/* Thumbnail */}
           <img
@@ -48,6 +49,16 @@ export default function VideoDocumentaryCard({
 
           {/* Gradients */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/20 transition-opacity duration-300 group-hover:opacity-90" />
+
+          {/* Optional Badge */}
+          {badge && (
+            <div className="absolute top-3.5 left-3.5 z-10 sm:top-4 sm:left-4">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent-300 backdrop-blur-md ring-1 ring-white/15">
+                <Film className="h-3.5 w-3.5 text-accent-400" />
+                {badge}
+              </span>
+            </div>
+          )}
 
           {/* Center Play Button (Official YouTube Style) */}
           <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
@@ -66,9 +77,12 @@ export default function VideoDocumentaryCard({
 
           {/* Bottom Title & Subtitle */}
           <div className="absolute inset-x-0 bottom-0 z-10 p-4 sm:p-6 text-left">
-            <h3 className="font-display text-base font-bold text-white line-clamp-1 drop-shadow-md sm:text-xl md:text-2xl">
-              {title}
-            </h3>
+            <div className="flex items-center gap-2">
+              <Film className="h-4 w-4 sm:h-5 sm:w-5 text-accent-400 shrink-0 drop-shadow" aria-hidden="true" />
+              <h3 className="font-display text-base font-bold text-white line-clamp-1 drop-shadow-md sm:text-xl md:text-2xl">
+                {title}
+              </h3>
+            </div>
             {subtitle && (
               <p className="mt-1 text-xs text-white/80 line-clamp-1 drop-shadow sm:text-sm">
                 {subtitle}

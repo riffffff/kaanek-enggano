@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react'
-import { Menu, X } from 'lucide-react'
+import { ArrowUpRight, Menu, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useTranslate } from '../hooks/useTranslate'
 import LanguageSwitcher from './LanguageSwitcher'
@@ -12,11 +12,11 @@ export default function Navbar() {
   const belajarBahasaUrl = 'https://katekora-eic-enggano.vercel.app'
 
   const navItems = [
-    { label: tt('Tentang Enggano', 'nav.aboutEnggano'), href: '/villages' },
+    { label: tt('Tentang Enggano', 'nav.aboutEnggano'), href: '/about-enggano' },
     { label: tt('Destinations', 'nav.destinations'), href: '/destinations' },
     { label: tt('Accommodations', 'nav.accommodations'), href: '/accommodations' },
-    { label: tt('Aktivitas', 'nav.activities'), href: '/kkn-log' },
-    { label: 'Kredit', href: '/credits' },
+    { label: tt('Aktivitas', 'nav.activities'), href: '/activities' },
+    { label: tt('Tentang Kami', 'nav.aboutUs'), href: '/credits' },
   ]
 
   useEffect(() => {
@@ -84,9 +84,17 @@ export default function Navbar() {
             href={belajarBahasaUrl}
             target="_blank"
             rel="noreferrer"
-            className={`px-2 py-2 font-body text-sm font-semibold transition-colors duration-200 text-accent-500`}
+            className={`nav-bounce group inline-flex items-center gap-1 font-body text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 ${
+              solid
+                ? 'text-accent-600 hover:text-accent-700'
+                : 'text-accent-400 hover:text-accent-300'
+            }`}
           >
-            <span className="nav-pulse">Belajar Bahasa Enggano</span>
+            <span>Bahasa Enggano</span>
+            <ArrowUpRight
+              size={13}
+              className="opacity-70 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100"
+            />
           </a>
         </div>
 
@@ -112,7 +120,7 @@ export default function Navbar() {
 
       {open && (
         <div className="reveal-up border-t border-neutral-200 bg-surface-50 px-6 pb-6 text-primary-700 md:hidden">
-          <div className="flex flex-col gap-4 pt-4">
+          <div className="flex flex-col gap-3 pt-4">
             {navItems.map(item => {
               const active = isActive(item.href)
               return (
@@ -130,25 +138,32 @@ export default function Navbar() {
                 </Link>
               )
             })}
-            <div className="mt-4 flex justify-center">
-              <LanguageSwitcher solid={true} />
-            </div>
+
+            {/* Bahasa Enggano sejajar langsung di bawah Tentang Kami */}
             <a
               href={belajarBahasaUrl}
               target="_blank"
               rel="noreferrer"
               onClick={() => setOpen(false)}
-              className="mt-4 inline-flex justify-center px-4 py-3 font-body text-sm font-semibold text-primary-700 transition-colors duration-300 hover:text-primary-800"
+              className="nav-bounce flex items-center justify-between py-2 font-body text-base font-semibold text-accent-600 hover:text-accent-700 transition-all duration-300 hover:translate-x-1"
             >
-              <span className="nav-pulse">Belajar Bahasa Enggano</span>
+              <span>Bahasa Enggano</span>
+              <ArrowUpRight size={16} className="opacity-70" />
             </a>
-            <Link
-              href="/local-guide"
-              onClick={() => setOpen(false)}
-              className="mt-3 inline-flex justify-center bg-primary-700 px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-primary-800"
-            >
-              {tt('Local Guide', 'nav.localGuide')}
-            </Link>
+
+            {/* Pemisah & Tombol Aksi di Bawah */}
+            <div className="mt-2 pt-4 border-t border-neutral-200/80 flex flex-col gap-3">
+              <div className="flex justify-center">
+                <LanguageSwitcher solid={true} />
+              </div>
+              <Link
+                href="/local-guide"
+                onClick={() => setOpen(false)}
+                className="inline-flex justify-center rounded-xl bg-primary-700 px-4 py-3 text-sm font-semibold text-white shadow-xs transition-all duration-300 hover:bg-primary-800 active:scale-[0.98]"
+              >
+                {tt('Local Guide', 'nav.localGuide')}
+              </Link>
+            </div>
           </div>
         </div>
       )}

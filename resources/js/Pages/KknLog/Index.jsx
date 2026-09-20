@@ -225,7 +225,7 @@ export default function KknLogIndex({ items = [], carouselItems = [], selectedCa
               <div className="flex transition-transform duration-500 ease-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
                 {carouselArticles.map((article) => (
                   <article key={article.slug} className="min-w-full">
-                    <Link href={`/kkn-log/${article.slug}`} className="block lg:grid lg:grid-cols-12 bg-white">
+                    <Link href={`/activities/${article.slug}`} className="block lg:grid lg:grid-cols-12 bg-white">
                       {/* Image */}
                       <div className="relative lg:col-span-7 aspect-[16/10] sm:min-h-72 lg:min-h-110 overflow-hidden bg-neutral-100">
                         <img
@@ -328,7 +328,7 @@ export default function KknLogIndex({ items = [], carouselItems = [], selectedCa
           {listArticles.map((item) => (
             <Link
               key={item.slug}
-              href={`/kkn-log/${item.slug}`}
+              href={`/activities/${item.slug}`}
               className="flex items-center justify-between p-3 bg-white rounded-2xl border border-neutral-100 shadow-[0_2px_12px_-2px_rgba(0,0,0,0.05)] active:scale-[0.99] transition-all gap-3"
             >
               <div className="min-w-0 flex-1">
@@ -368,7 +368,7 @@ export default function KknLogIndex({ items = [], carouselItems = [], selectedCa
               style={{ '--reveal-delay': `${120 + index * 60}ms` }}
             >
               <div>
-                <Link href={`/kkn-log/${item.slug}`} className="block relative overflow-hidden aspect-16/10">
+                <Link href={`/activities/${item.slug}`} className="block relative overflow-hidden aspect-16/10">
                   <img
                     src={item.image}
                     alt={item.title}
@@ -387,7 +387,7 @@ export default function KknLogIndex({ items = [], carouselItems = [], selectedCa
                   </div>
 
                   <h4 className="mt-3 font-display text-xl font-bold leading-snug text-neutral-900 group-hover:text-primary-800 transition-colors line-clamp-2">
-                    <Link href={`/kkn-log/${item.slug}`}>
+                    <Link href={`/activities/${item.slug}`}>
                       {item.title}
                     </Link>
                   </h4>
@@ -400,7 +400,7 @@ export default function KknLogIndex({ items = [], carouselItems = [], selectedCa
 
               <div className="px-6 pb-6 pt-2">
                 <Link
-                  href={`/kkn-log/${item.slug}`}
+                  href={`/activities/${item.slug}`}
                   className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-accent-600 hover:text-accent-700 transition-colors"
                 >
                   <span>Baca Artikel</span>

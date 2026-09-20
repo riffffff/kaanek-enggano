@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react'
-import { Bath, BedDouble, Clock3, Info, MessageCircle, Plane, Route, Ship, UserRound } from 'lucide-react'
+import { Bath, BedDouble, Clock3, Info, MapPin, MessageCircle, Plane, Route, Ship, UserRound } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import PageHeader from '../../Components/PageHeader'
 
@@ -90,21 +90,16 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
             {/* Card 1: Kapal Perintis */}
             <article className="w-[82vw] max-w-[305px] shrink-0 snap-start bg-white rounded-2xl p-5 border border-neutral-200/80 shadow-xs flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <div className="h-10 w-10 rounded-xl bg-primary-950 text-white flex items-center justify-center shrink-0 shadow-2xs">
-                      <Ship size={18} />
-                    </div>
-                    <div>
-                      <h3 className="font-display text-base font-bold text-neutral-900 leading-tight">
-                        Kapal Perintis
-                      </h3>
-                      <span className="text-[11px] text-neutral-500">Malaakoni & Baai</span>
-                    </div>
+                <div className="flex items-center gap-2.5">
+                  <div className="h-10 w-10 rounded-xl bg-primary-950 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                    <Ship size={18} />
                   </div>
-                  <span className="text-[10px] font-semibold uppercase tracking-wider bg-surface-100 text-primary-800 px-2.5 py-1 rounded-full">
-                    Jalur Laut
-                  </span>
+                  <div>
+                    <h3 className="font-display text-base font-bold text-neutral-900 leading-tight">
+                      Kapal Perintis
+                    </h3>
+                    <span className="text-[11px] text-neutral-500">Malaakoni & Baai</span>
+                  </div>
                 </div>
 
                 {/* Route Visualizer */}
@@ -140,21 +135,16 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
             {/* Card 2: Ferry ASDP */}
             <article className="w-[82vw] max-w-[305px] shrink-0 snap-start bg-white rounded-2xl p-5 border border-neutral-200/80 shadow-xs flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <div className="h-10 w-10 rounded-xl bg-accent-500 text-white flex items-center justify-center shrink-0 shadow-2xs">
-                      <Ship size={18} />
-                    </div>
-                    <div>
-                      <h3 className="font-display text-base font-bold text-neutral-900 leading-tight">
-                        Ferry ASDP
-                      </h3>
-                      <span className="text-[11px] text-neutral-500">Kahyapu & Baai</span>
-                    </div>
+                <div className="flex items-center gap-2.5">
+                  <div className="h-10 w-10 rounded-xl bg-accent-500 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                    <Ship size={18} />
                   </div>
-                  <span className="text-[10px] font-semibold uppercase tracking-wider bg-accent-50 text-accent-700 px-2.5 py-1 rounded-full">
-                    Penyeberangan
-                  </span>
+                  <div>
+                    <h3 className="font-display text-base font-bold text-neutral-900 leading-tight">
+                      Ferry ASDP
+                    </h3>
+                    <span className="text-[11px] text-neutral-500">Kahyapu & Baai</span>
+                  </div>
                 </div>
 
                 {/* Route Visualizer */}
@@ -188,21 +178,16 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
             {/* Card 3: Susi Air */}
             <article className="w-[82vw] max-w-[305px] shrink-0 snap-start bg-white rounded-2xl p-5 border border-neutral-200/80 shadow-xs flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <div className="h-10 w-10 rounded-xl bg-sky-600 text-white flex items-center justify-center shrink-0 shadow-2xs">
-                      <Plane size={18} />
-                    </div>
-                    <div>
-                      <h3 className="font-display text-base font-bold text-neutral-900 leading-tight">
-                        Susi Air
-                      </h3>
-                      <span className="text-[11px] text-neutral-500">Penerbangan Perintis</span>
-                    </div>
+                <div className="flex items-center gap-2.5">
+                  <div className="h-10 w-10 rounded-xl bg-sky-600 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                    <Plane size={18} />
                   </div>
-                  <span className="text-[10px] font-semibold uppercase tracking-wider bg-sky-50 text-sky-700 px-2.5 py-1 rounded-full">
-                    Jalur Udara
-                  </span>
+                  <div>
+                    <h3 className="font-display text-base font-bold text-neutral-900 leading-tight">
+                      Susi Air
+                    </h3>
+                    <span className="text-[11px] text-neutral-500">Penerbangan Perintis</span>
+                  </div>
                 </div>
 
                 {/* Route Visualizer */}
@@ -246,18 +231,14 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
           {/* Card 1: Kapal Perintis */}
           <article className="group hover-lift overlay-glow reveal-up flex flex-col justify-between bg-white p-7 shadow-sm ring-1 ring-neutral-200/80 rounded-2xl" style={{ '--reveal-delay': '140ms' }}>
             <div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
                 <div className="inline-flex h-12 w-12 items-center justify-center bg-primary-950 text-white rounded-xl shrink-0">
                   <Ship size={22} />
                 </div>
-                <span className="text-xs font-semibold uppercase tracking-wider bg-surface-100 text-primary-800 px-3 py-1 rounded-full whitespace-nowrap">
-                  Jalur Laut
-                </span>
+                <h3 className="font-display text-2xl lg:text-3xl font-bold text-neutral-900 leading-tight">
+                  Kapal Perintis
+                </h3>
               </div>
-
-              <h3 className="mt-6 font-display text-3xl font-bold text-neutral-900 leading-tight">
-                Kapal Perintis
-              </h3>
 
               <p className="mt-4 text-sm text-neutral-600 leading-relaxed border-t border-neutral-100 pt-4">
                 Pelayaran kapal niaga perintis menghubungkan Pelabuhan Pulau Baai (Bengkulu) dengan Pelabuhan Malaakoni (Enggano). Cocok untuk perjalanan ekonomis tanpa pengangkutan kendaraan.
@@ -295,18 +276,14 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
           {/* Card 2: Ferry ASDP */}
           <article className="group hover-lift overlay-glow reveal-up flex flex-col justify-between bg-white p-7 shadow-sm ring-1 ring-neutral-200/80 rounded-2xl" style={{ '--reveal-delay': '200ms' }}>
             <div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
                 <div className="inline-flex h-12 w-12 items-center justify-center bg-accent-500 text-white rounded-xl shrink-0">
                   <Ship size={22} />
                 </div>
-                <span className="text-xs font-semibold uppercase tracking-wider bg-accent-50 text-accent-700 px-3 py-1 rounded-full whitespace-nowrap">
-                  Ferry Penyeberangan
-                </span>
+                <h3 className="font-display text-2xl lg:text-3xl font-bold text-neutral-900 leading-tight">
+                  Ferry ASDP
+                </h3>
               </div>
-
-              <h3 className="mt-6 font-display text-3xl font-bold text-neutral-900 leading-tight">
-                Ferry ASDP
-              </h3>
 
               <p className="mt-4 text-sm text-neutral-600 leading-relaxed border-t border-neutral-100 pt-4">
                 Kapal Ferry resmi ASDP yang melayani penyeberangan reguler penumpang dan kendaraan dari Pelabuhan Baai (Bengkulu) ke Kahyapu (Enggano).
@@ -342,18 +319,14 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
           {/* Card 3: Susi Air */}
           <article className="group hover-lift overlay-glow reveal-up flex flex-col justify-between bg-white p-7 shadow-sm ring-1 ring-neutral-200/80 rounded-2xl" style={{ '--reveal-delay': '260ms' }}>
             <div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
                 <div className="inline-flex h-12 w-12 items-center justify-center bg-sky-600 text-white rounded-xl shrink-0">
                   <Plane size={22} />
                 </div>
-                <span className="text-xs font-semibold uppercase tracking-wider bg-sky-50 text-sky-700 px-3 py-1 rounded-full whitespace-nowrap">
-                  Jalur Udara
-                </span>
+                <h3 className="font-display text-2xl lg:text-3xl font-bold text-neutral-900 leading-tight">
+                  Susi Air
+                </h3>
               </div>
-
-              <h3 className="mt-6 font-display text-3xl font-bold text-neutral-900 leading-tight">
-                Susi Air
-              </h3>
 
               <p className="mt-4 text-sm text-neutral-600 leading-relaxed border-t border-neutral-100 pt-4">
                 Penerbangan udara dari Bandara Fatmawati Soekarno (Bengkulu) langsung menuju Bandara Enggano. Pilihan tercepat dan nyaman untuk mobilitas tinggi.
@@ -464,9 +437,6 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
                         Foto belum tersedia
                       </div>
                     )}
-                    <div className="absolute left-2 top-2 sm:left-4 sm:top-4 bg-primary-950/90 px-2 py-0.5 sm:px-3 sm:py-1 text-[8px] sm:text-xs font-semibold uppercase tracking-[0.15em] sm:tracking-[0.2em] text-white rounded-md sm:rounded-none">
-                      {homestay.village}
-                    </div>
                   </div>
 
                   <div className="p-2.5 sm:p-4 md:p-6 flex-1 flex flex-col justify-between">
@@ -475,10 +445,20 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
                         {homestay.name}
                       </h3>
 
-                      <div className="mt-1 sm:mt-3 flex items-center gap-1 sm:gap-2 text-[10px] sm:text-sm text-neutral-500 truncate">
-                        <UserRound size={12} className="shrink-0 sm:hidden" />
-                        <UserRound size={15} className="shrink-0 hidden sm:inline" />
-                        <span className="truncate">{homestay.owner}</span>
+                      <div className="mt-1 sm:mt-2.5 flex items-center gap-2 text-[10px] sm:text-sm text-neutral-500 truncate">
+                        <span className="inline-flex items-center gap-1 font-medium text-neutral-700">
+                          <MapPin size={13} className="shrink-0 text-accent-500" />
+                          <span className="truncate">{homestay.village}</span>
+                        </span>
+                        {homestay.owner && (
+                          <>
+                            <span className="text-neutral-300">•</span>
+                            <span className="inline-flex items-center gap-1 truncate text-neutral-500">
+                              <UserRound size={13} className="shrink-0 text-neutral-400" />
+                              <span className="truncate">{homestay.owner}</span>
+                            </span>
+                          </>
+                        )}
                       </div>
                     </div>
 

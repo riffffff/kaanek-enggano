@@ -4,7 +4,7 @@ import { ShoppingBag } from 'lucide-react'
 export default function VillageCard({ village }) {
   const hasSummary = village.summary && village.summary.trim() !== ''
   return (
-    <Link href={`/villages/${village.slug ?? '#'}`} className="group block bg-white shadow-sm">
+    <Link href={`/about-enggano/${village.slug ?? '#'}`} className="group block bg-white shadow-sm">
       {village.image && <img src={village.image} alt={village.name} className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" loading="lazy" />}
       <div className="p-5">
         <h3 className="font-display text-2xl font-semibold text-neutral-800">{village.name}</h3>

@@ -135,10 +135,9 @@ function MobileMapCarousel({ regionalMapHeight }) {
 export default function VillageIndex({ umkms = { data: [], links: [] }, umkmMarkers = [] }) {
 
   // Responsive map heights — Leaflet needs explicit px, not CSS classes
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768)
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768)
-    check()
     window.addEventListener('resize', check)
     return () => window.removeEventListener('resize', check)
   }, [])
@@ -256,7 +255,7 @@ export default function VillageIndex({ umkms = { data: [], links: [] }, umkmMark
 
               <div className="pt-3">
                 <Button
-                  href="/villages/history"
+                  href="/about-enggano/history"
                   showArrow
                   className="reveal-up"
                 >
@@ -269,8 +268,8 @@ export default function VillageIndex({ umkms = { data: [], links: [] }, umkmMark
             <div className="reveal-up lg:col-span-6 w-full" style={{ '--reveal-delay': '140ms' }}>
               <VideoDocumentaryCard
                 videoId="nTHJ1kEVIpw"
-                title="SUARA ENGGANO: FILM DOKUMENTER PULAU ENGGANO"
-                subtitle="Dokumentasi audio-visual peradaban, budaya, dan pesona pulau terluar."
+                title="Video Dokumenter"
+                subtitle="Suara Enggano: Dokumentasi audio-visual peradaban, budaya, dan pesona pulau terluar."
               />
             </div>
 
@@ -354,7 +353,7 @@ export default function VillageIndex({ umkms = { data: [], links: [] }, umkmMark
               </table>
             </div>
 
-            <Pagination links={umkms.links} />
+            <Pagination links={umkms.links} only={['umkms']} />
           </div>
         </section>
       )}

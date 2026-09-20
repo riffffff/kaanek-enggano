@@ -15,6 +15,7 @@ import {
 } from 'lucide-react'
 import Button from '../../Components/Button'
 import PrevNext from '../../Components/PrevNext'
+import Breadcrumb from '../../Components/Breadcrumb'
 
 // Helper icon selector for facilities
 function getFeatureIcon(featureName = '') {
@@ -92,16 +93,22 @@ export default function HomestayShow({ homestay, prev = null, next = null }) {
 
       {/* Main Content */}
       <section className="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 pt-4 pb-16 sm:py-12 md:py-20">
-        {/* Navigation Breadcrumb / Back Button */}
-        <div className="reveal-up flex items-center justify-between gap-4 border-b border-neutral-200/60 pb-4">
+        {/* Navigation Breadcrumb (Desktop) & Back Link (Mobile) */}
+        <div className="reveal-up flex items-center justify-between gap-4 border-b border-neutral-200/60 pb-4 mb-6">
+          <Breadcrumb
+            items={[
+              { label: 'Penginapan', href: '/accommodations' },
+              { label: data.name },
+            ]}
+          />
           <Link
             href="/accommodations"
-            className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-neutral-600 hover:text-primary-800 transition-colors"
+            className="md:hidden inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-600 hover:text-primary-800 transition-colors"
           >
-            <ArrowLeft size={16} />
-            <span>Kembali ke Daftar Penginapan</span>
+            <ArrowLeft size={14} />
+            <span>Kembali ke Penginapan</span>
           </Link>
-          <span className="text-xs text-neutral-400 font-medium">
+          <span className="text-xs text-neutral-400 font-medium shrink-0">
             Desa {data.village || 'Enggano'}
           </span>
         </div>
@@ -133,12 +140,12 @@ export default function HomestayShow({ homestay, prev = null, next = null }) {
           {/* Left Column: Details, Facilities, Gallery */}
           <article className="space-y-8 sm:space-y-10">
             {/* Description Section */}
-            <div className="reveal-up rounded-2xl bg-white p-5 sm:p-7 shadow-xs ring-1 ring-neutral-200/80">
-              <h2 className="font-display text-xl sm:text-2xl font-semibold text-neutral-900">
+            <div className="reveal-up">
+              <h2 className="font-display text-2xl sm:text-3xl font-semibold text-neutral-900 leading-tight">
                 Tentang Penginapan
               </h2>
-              <div className="mt-3 h-1 w-8 bg-accent-500 rounded-full" />
-              <div className="mt-4 space-y-3 text-sm sm:text-base leading-relaxed text-neutral-600">
+              <div className="mt-3.5 h-1 w-10 bg-accent-500 rounded-full" />
+              <div className="mt-5 space-y-3.5 text-sm sm:text-base leading-relaxed text-neutral-600">
                 {descriptionText.split(/\n+/).map((p, idx) => (
                   <p key={idx}>{p}</p>
                 ))}
@@ -146,25 +153,28 @@ export default function HomestayShow({ homestay, prev = null, next = null }) {
             </div>
 
             {/* Facilities Section */}
-            <div className="reveal-up rounded-2xl bg-white p-5 sm:p-7 shadow-xs ring-1 ring-neutral-200/80" style={{ '--reveal-delay': '100ms' }}>
+            <div className="reveal-up pt-8 sm:pt-10 border-t border-neutral-200/80" style={{ '--reveal-delay': '100ms' }}>
               <div className="flex items-center justify-between">
-              <h3 className="font-display text-xl sm:text-2xl font-semibold text-neutral-900">
-                  Fasilitas yang Tersedia
-                </h3>
+                <div>
+                  <h3 className="font-display text-2xl sm:text-3xl font-semibold text-neutral-900 leading-tight">
+                    Fasilitas yang Tersedia
+                  </h3>
+                  <div className="mt-3.5 h-1 w-10 bg-accent-500 rounded-full" />
+                </div>
                 <span className="text-xs font-semibold text-neutral-400">
                   {data.features.length} fasilitas
                 </span>
               </div>
 
-              <div className="mt-4 sm:mt-5 grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+              <div className="mt-5 sm:mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {(data.features.length ? data.features : ['Kamar Tidur Nyaman', 'Kamar Mandi', 'Host Lokal Ramah']).map((feature, index) => {
                   const Icon = getFeatureIcon(feature)
                   return (
                     <div
                       key={index}
-                      className="flex items-center gap-3 bg-surface-50 hover:bg-surface-100 px-3.5 py-3 rounded-xl text-xs sm:text-sm font-semibold text-neutral-700 ring-1 ring-neutral-200/70 transition-colors"
+                      className="flex items-center gap-3 bg-surface-50/60 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-neutral-800 ring-1 ring-neutral-200/50"
                     >
-                      <div className="h-8 w-8 rounded-lg bg-white shadow-2xs flex items-center justify-center shrink-0 text-primary-800">
+                      <div className="h-8 w-8 rounded-lg bg-primary-50 flex items-center justify-center shrink-0 text-primary-800">
                         <Icon size={16} />
                       </div>
                       <span className="truncate">{feature}</span>
@@ -175,16 +185,16 @@ export default function HomestayShow({ homestay, prev = null, next = null }) {
             </div>
 
             {/* Gallery Section */}
-            <div className="reveal-up rounded-2xl bg-white p-5 sm:p-7 shadow-xs ring-1 ring-neutral-200/80" style={{ '--reveal-delay': '150ms' }}>
-              <h3 className="font-display text-xl sm:text-2xl font-semibold text-neutral-900">
+            <div className="reveal-up pt-8 sm:pt-10 border-t border-neutral-200/80" style={{ '--reveal-delay': '150ms' }}>
+              <h3 className="font-display text-2xl sm:text-3xl font-semibold text-neutral-900 leading-tight">
                 Galeri Foto Homestay
               </h3>
-              <div className="mt-2.5 h-1 w-8 bg-accent-500 rounded-full" />
-              <p className="mt-2 text-xs sm:text-sm text-neutral-500">
+              <div className="mt-3.5 h-1 w-10 bg-accent-500 rounded-full" />
+              <p className="mt-3 text-xs sm:text-sm text-neutral-500">
                 Dokumentasi suasana dan kamar di {data.name}
               </p>
 
-              <div className="mt-4 sm:mt-5 grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
+              <div className="mt-5 sm:mt-6 grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {(data.gallery?.length ? data.gallery : [
                   { url: heroImage, name: 'Tampak Utama' }
                 ]).map((image, index, arr) => {
@@ -215,11 +225,7 @@ export default function HomestayShow({ homestay, prev = null, next = null }) {
                           </div>
                         )}
                       </div>
-                      {typeof image !== 'string' && image.name && (
-                        <div className="hidden sm:block bg-surface-50 px-3 py-1.5 text-[10px] font-medium text-neutral-500 truncate border-t border-neutral-100">
-                          {image.name}
-                        </div>
-                      )}
+
                     </div>
                   )
                 })}
@@ -229,7 +235,7 @@ export default function HomestayShow({ homestay, prev = null, next = null }) {
 
           {/* Right Column: Pricing & Host Contact Card */}
           <aside className="sticky top-24 space-y-4">
-            <div className="reveal-up bg-white p-5 sm:p-7 rounded-2xl shadow-xs ring-1 ring-neutral-200/80" style={{ '--reveal-delay': '120ms' }}>
+            <div className="reveal-up bg-neutral-100/80 p-5 sm:p-7 rounded-2xl ring-1 ring-neutral-200 shadow-sm" style={{ '--reveal-delay': '120ms' }}>
               <div>
                 <span className="text-[10px] sm:text-xs uppercase tracking-[0.2em] font-semibold text-neutral-400 block">
                   Tarif Menginap

@@ -3,6 +3,7 @@ import { Head, Link } from '@inertiajs/react'
 import { Calendar, Clock, Newspaper, Share2, Tag, ArrowLeft, X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react'
 import Button from '../../Components/Button'
 import PrevNext from '../../Components/PrevNext'
+import Breadcrumb from '../../Components/Breadcrumb'
 
 const imageByCategory = {
   lingkungan:
@@ -84,7 +85,7 @@ export default function KknLogShow({ item, prev = null, next = null }) {
         <div className="absolute inset-0 bg-linear-to-b from-primary-950/40 via-primary-950/70 to-primary-950" />
         <div className="relative mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 pb-20 pt-36">
           <Button
-            href="/kkn-log"
+            href="/activities"
             variant="ghost"
             showArrow
             arrowPosition="left"
@@ -110,17 +111,23 @@ export default function KknLogShow({ item, prev = null, next = null }) {
       </section>
 
       <section className="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 pt-4 pb-14 sm:py-12 md:py-20">
-        {/* Navigation Breadcrumb / Back Button */}
+        {/* Navigation Breadcrumb (Desktop) & Back Link (Mobile) */}
         <div className="reveal-up flex items-center justify-between gap-4 border-b border-neutral-200/60 pb-4 mb-6">
+          <Breadcrumb
+            items={[
+              { label: 'Aktivitas', href: '/activities' },
+              { label: item.title },
+            ]}
+          />
           <Link
-            href="/kkn-log"
-            className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-neutral-600 hover:text-primary-800 transition-colors"
+            href="/activities"
+            className="md:hidden inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-600 hover:text-primary-800 transition-colors"
           >
-            <ArrowLeft size={15} />
-            <span>Kembali ke Berita & Artikel</span>
+            <ArrowLeft size={14} />
+            <span>Kembali ke Aktivitas</span>
           </Link>
           {item.category && (
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-accent-700 bg-accent-50 px-2.5 py-1 rounded-full">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-accent-700 bg-accent-50 px-2.5 py-1 rounded-full shrink-0">
               {item.category}
             </span>
           )}
@@ -255,9 +262,9 @@ export default function KknLogShow({ item, prev = null, next = null }) {
 
         <div className="mt-16">
           <PrevNext
-            prev={prev ? { href: `/kkn-log/${prev.slug}`, title: prev.title } : null}
-            next={next ? { href: `/kkn-log/${next.slug}`, title: next.title } : null}
-            indexHref="/kkn-log"
+            prev={prev ? { href: `/activities/${prev.slug}`, title: prev.title } : null}
+            next={next ? { href: `/activities/${next.slug}`, title: next.title } : null}
+            indexHref="/activities"
             indexLabel="Semua Artikel"
             prevLabel="Sebelumnya"
             nextLabel="Selanjutnya"

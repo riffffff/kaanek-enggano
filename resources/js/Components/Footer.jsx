@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="reveal-up" style={{ '--reveal-delay': '60ms' }}>
           <p className="font-display text-3xl font-semibold">Enggano</p>
           <p className="mt-3 max-w-sm text-sm leading-6 text-white/70">
-            Mendokumentasikan dan memajukan pesona perbatasan samudera melalui penelitian dan eksplorasi berkelanjutan.
+            Pusat informasi pariwisata, kebudayaan, dan potensi lokal Pulau Enggano. Panduan lengkap destinasi wisata, penginapan warga, UMKM, hingga kearifan enam suku adat.
           </p>
         </div>
 
@@ -22,8 +22,8 @@ export default function Footer() {
             <Link href="/accommodations" className="transition-transform duration-300 hover:translate-x-1 hover:text-white">
               Accommodations
             </Link>
-            <Link href="/kkn-log" className="transition-transform duration-300 hover:translate-x-1 hover:text-white">
-              KKN Log
+            <Link href="/activities" className="transition-transform duration-300 hover:translate-x-1 hover:text-white">
+              Aktivitas
             </Link>
           </div>
         </div>
@@ -31,14 +31,14 @@ export default function Footer() {
         <div className="reveal-up" style={{ '--reveal-delay': '220ms' }}>
           <p className="text-xs font-semibold tracking-[0.25em] text-white/50">INFORMASI</p>
           <div className="mt-4 flex flex-col gap-3 text-sm text-white/70">
-            <Link href="/villages" className="transition-transform duration-300 hover:translate-x-1 hover:text-white">
-              Villages
+            <Link href="/about-enggano" className="transition-transform duration-300 hover:translate-x-1 hover:text-white">
+              Tentang Enggano
             </Link>
             <Link href="/privacy-policy" className="transition-transform duration-300 hover:translate-x-1 hover:text-white">
               Privacy Policy
             </Link>
             <Link href="/credits" className="transition-transform duration-300 hover:translate-x-1 hover:text-white">
-              Kredit & Tim
+              Tentang Kami
             </Link>
           </div>
         </div>

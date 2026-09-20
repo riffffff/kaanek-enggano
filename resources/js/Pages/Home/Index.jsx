@@ -148,83 +148,83 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
       <section className="bg-[#fcfbf9] pt-10 sm:pt-14 pb-4">
         <div className="mx-auto w-full px-4 sm:px-6 lg:w-[85%] xl:w-[80%]">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            {/* Destinasi */}
             <Link
               href="/destinations"
-              className="group flex items-center text-left gap-3 sm:gap-3.5 p-3.5 sm:p-4 bg-white rounded-2xl shadow-xs ring-1 ring-neutral-200/80 hover:ring-primary-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+              className="group relative flex items-center text-left gap-4 px-4 sm:px-6 py-4 sm:py-6 overflow-hidden"
             >
-              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-primary-950 text-white flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 group-hover:bg-primary-900 transition-all duration-200">
-                <Compass size={20} className="sm:w-[22px] sm:h-[22px]" />
+              <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-primary-600 group-hover:w-full transition-all duration-300" />
+              <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-lg bg-primary-50 text-primary-700 flex items-center justify-center shrink-0 group-hover:bg-primary-100 transition-colors duration-200">
+                <Compass size={18} />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-1">
-                  <p className="font-semibold text-xs sm:text-sm text-neutral-900 group-hover:text-primary-700 transition-colors truncate">
+                  <p className="font-semibold text-xs sm:text-base text-neutral-800 group-hover:text-primary-700 transition-colors truncate">
                     {tt('Destinasi', 'nav.destinations')}
                   </p>
-                  <ArrowRight size={14} className="text-neutral-400 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 hidden xl:block shrink-0" />
+                  <ArrowRight size={13} className="text-primary-400 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 shrink-0" />
                 </div>
-                <p className="text-[11px] sm:text-xs text-neutral-500 line-clamp-1 mt-0.5">
-                  Spot alam & bahari
-                </p>
+                <p className="hidden sm:block text-xs text-neutral-400 mt-0.5 truncate">Spot alam & bahari</p>
               </div>
             </Link>
 
+            {/* Akses & Rute */}
             <Link
               href="/accommodations#transportation"
-              className="group flex items-center text-left gap-3 sm:gap-3.5 p-3.5 sm:p-4 bg-white rounded-2xl shadow-xs ring-1 ring-neutral-200/80 hover:ring-accent-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+              className="group relative flex items-center text-left gap-4 px-4 sm:px-6 py-4 sm:py-6 overflow-hidden"
             >
-              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-accent-500 text-white flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 group-hover:bg-accent-600 transition-all duration-200">
-                <Ship size={20} className="sm:w-[22px] sm:h-[22px]" />
+              <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent-500 group-hover:w-full transition-all duration-300" />
+              <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-lg bg-accent-50 text-accent-600 flex items-center justify-center shrink-0 group-hover:bg-accent-100 transition-colors duration-200">
+                <Ship size={18} />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-1">
-                  <p className="font-semibold text-xs sm:text-sm text-neutral-900 group-hover:text-accent-700 transition-colors truncate">
+                  <p className="font-semibold text-xs sm:text-base text-neutral-800 group-hover:text-accent-700 transition-colors truncate">
                     {tt('Akses & Rute', 'Akses')}
                   </p>
-                  <ArrowRight size={14} className="text-neutral-400 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 hidden xl:block shrink-0" />
+                  <ArrowRight size={13} className="text-accent-400 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 shrink-0" />
                 </div>
-                <p className="text-[11px] sm:text-xs text-neutral-500 line-clamp-1 mt-0.5">
-                  Kapal feri & tiket
-                </p>
+                <p className="hidden sm:block text-xs text-neutral-400 mt-0.5 truncate">Kapal feri & tiket</p>
               </div>
             </Link>
 
+            {/* Homestay */}
             <Link
               href="/accommodations#homestay"
-              className="group flex items-center text-left gap-3 sm:gap-3.5 p-3.5 sm:p-4 bg-white rounded-2xl shadow-xs ring-1 ring-neutral-200/80 hover:ring-emerald-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+              className="group relative flex items-center text-left gap-4 px-4 sm:px-6 py-4 sm:py-6 overflow-hidden"
             >
-              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 group-hover:bg-emerald-700 transition-all duration-200">
-                <HomeIcon size={20} className="sm:w-[22px] sm:h-[22px]" />
+              <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-emerald-600 group-hover:w-full transition-all duration-300" />
+              <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 group-hover:bg-emerald-100 transition-colors duration-200">
+                <HomeIcon size={18} />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-1">
-                  <p className="font-semibold text-xs sm:text-sm text-neutral-900 group-hover:text-emerald-700 transition-colors truncate">
+                  <p className="font-semibold text-xs sm:text-base text-neutral-800 group-hover:text-emerald-700 transition-colors truncate">
                     {tt('Homestay', 'Homestay')}
                   </p>
-                  <ArrowRight size={14} className="text-neutral-400 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 hidden xl:block shrink-0" />
+                  <ArrowRight size={13} className="text-emerald-400 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 shrink-0" />
                 </div>
-                <p className="text-[11px] sm:text-xs text-neutral-500 line-clamp-1 mt-0.5">
-                  Penginapan warga lokal
-                </p>
+                <p className="hidden sm:block text-xs text-neutral-400 mt-0.5 truncate">Penginapan warga lokal</p>
               </div>
             </Link>
 
+            {/* Sejarah & Suku */}
             <Link
-              href="/villages/history"
-              className="group flex items-center text-left gap-3 sm:gap-3.5 p-3.5 sm:p-4 bg-white rounded-2xl shadow-xs ring-1 ring-neutral-200/80 hover:ring-amber-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+              href="/about-enggano/history"
+              className="group relative flex items-center text-left gap-4 px-4 sm:px-6 py-4 sm:py-6 overflow-hidden"
             >
-              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-amber-600 text-white flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 group-hover:bg-amber-700 transition-all duration-200">
-                <ScrollText size={20} className="sm:w-[22px] sm:h-[22px]" />
+              <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-amber-500 group-hover:w-full transition-all duration-300" />
+              <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center shrink-0 group-hover:bg-amber-100 transition-colors duration-200">
+                <ScrollText size={18} />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-1">
-                  <p className="font-semibold text-xs sm:text-sm text-neutral-900 group-hover:text-amber-700 transition-colors truncate">
+                  <p className="font-semibold text-xs sm:text-base text-neutral-800 group-hover:text-amber-700 transition-colors truncate">
                     {tt('Sejarah & Suku', 'Sejarah')}
                   </p>
-                  <ArrowRight size={14} className="text-neutral-400 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 hidden xl:block shrink-0" />
+                  <ArrowRight size={13} className="text-amber-400 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 shrink-0" />
                 </div>
-                <p className="text-[11px] sm:text-xs text-neutral-500 line-clamp-1 mt-0.5">
-                  Adat, tradisi & warisan
-                </p>
+                <p className="hidden sm:block text-xs text-neutral-400 mt-0.5 truncate">Adat, tradisi & warisan</p>
               </div>
             </Link>
           </div>
@@ -253,7 +253,7 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
 
               <div className="pt-2 sm:pt-3 flex justify-center lg:justify-start w-full">
                 <Button
-                  href="/villages/history"
+                  href="/about-enggano/history"
                   showArrow
                   className="reveal-up"
                 >
@@ -266,8 +266,8 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
             <div className="reveal-up lg:col-span-6 w-full order-1 lg:order-2" style={{ '--reveal-delay': '140ms' }}>
               <VideoDocumentaryCard
                 videoId="nTHJ1kEVIpw"
-                title="SUARA ENGGANO: FILM DOKUMENTER PULAU ENGGANO"
-                subtitle="Dokumentasi audio-visual peradaban, budaya, dan pesona pulau terluar."
+                title="Video Dokumenter"
+                subtitle="Suara Enggano: Dokumentasi audio-visual peradaban, budaya, dan pesona pulau terluar."
               />
             </div>
 
@@ -474,7 +474,7 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
               </h2>
               <div className="mt-3.5 h-1 w-10 bg-accent-500 rounded-full mx-auto sm:mx-0" />
             </div>
-            <Link href="/kkn-log" className="reveal-up self-center sm:self-auto shrink-0 text-xs sm:text-sm font-bold uppercase tracking-wider text-primary-700 hover:text-primary-600 pb-1" style={{ '--reveal-delay': '120ms' }}>
+            <Link href="/activities" className="reveal-up self-center sm:self-auto shrink-0 text-xs sm:text-sm font-bold uppercase tracking-wider text-primary-700 hover:text-primary-600 pb-1" style={{ '--reveal-delay': '120ms' }}>
               {tt('Lihat Semua', 'kkn.viewAll')} &rarr;
             </Link>
           </div>
@@ -484,7 +484,7 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
             {latestKkn.slice(0, 3).map((item) => (
               <Link
                 key={item.slug}
-                href={`/kkn-log/${item.slug}`}
+                href={`/activities/${item.slug}`}
                 className="flex items-center justify-between p-3 bg-white rounded-2xl border border-neutral-100 shadow-[0_2px_12px_-2px_rgba(0,0,0,0.05)] active:scale-[0.99] transition-all gap-3"
               >
                 <div className="min-w-0 flex-1">

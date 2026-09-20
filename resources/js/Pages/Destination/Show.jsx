@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import Button from '../../Components/Button'
 import PrevNext from '../../Components/PrevNext'
+import Breadcrumb from '../../Components/Breadcrumb'
 
 // Helper to check if file is video
 const isVideo = (url) => {
@@ -173,17 +174,23 @@ export default function DestinationShow({ destination, prev = null, next = null 
 
       {/* Main Content */}
       <section className="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 pt-4 pb-16 sm:py-12 md:py-24">
-        {/* Navigation Breadcrumb / Back Button */}
+        {/* Navigation Breadcrumb (Desktop) & Back Link (Mobile) */}
         <div className="reveal-up flex items-center justify-between gap-4 border-b border-neutral-200/60 pb-4 mb-6">
+          <Breadcrumb
+            items={[
+              { label: 'Destinasi', href: '/destinations' },
+              { label: destination.name },
+            ]}
+          />
           <Link
             href="/destinations"
-            className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-neutral-600 hover:text-primary-800 transition-colors"
+            className="md:hidden inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-600 hover:text-primary-800 transition-colors"
           >
-            <ArrowLeft size={15} />
-            <span>Destinasi</span>
+            <ArrowLeft size={14} />
+            <span>Kembali ke Destinasi</span>
           </Link>
           {destination.village && (
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-accent-700 bg-accent-50 px-2.5 py-1 rounded-full">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-accent-700 bg-accent-50 px-2.5 py-1 rounded-full shrink-0">
               {destination.village}
             </span>
           )}
@@ -232,7 +239,7 @@ export default function DestinationShow({ destination, prev = null, next = null 
 
           {/* Sidebar Detail Destinasi (Simpel & Bersih) */}
           <aside className="rounded-2xl border border-neutral-200/80 bg-white p-5 sm:p-6 shadow-xs">
-            <h3 className="font-display text-base sm:text-lg font-semibold text-neutral-900">
+            <h3 className="font-display text-2xl sm:text-3xl font-semibold text-neutral-900 leading-tight">
               Detail Destinasi
             </h3>
 
@@ -277,7 +284,7 @@ export default function DestinationShow({ destination, prev = null, next = null 
 
       {/* Galeri Foto Section — Sebaris 2 Foto di Mobile (Rasio 4:3), Klik Membuka Lightbox Preview */}
       <section className="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 pb-16 md:pb-24">
-        <h2 className="reveal-up font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-neutral-900 leading-tight">
+        <h2 className="reveal-up font-display text-2xl sm:text-3xl font-semibold text-neutral-900 leading-tight">
           Galeri Foto
         </h2>
         <div className="mt-3.5 h-1 w-10 bg-accent-500 rounded-full" />

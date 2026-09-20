@@ -4,7 +4,7 @@ import Badge from './Badge'
 
 export default function KknCard({ item }) {
   return (
-    <Link href={`/kkn-log/${item.slug ?? '#'}`} className="group hover-lift reveal-up block bg-white shadow-sm" style={{ '--reveal-delay': '180ms' }}>
+    <Link href={`/activities/${item.slug ?? '#'}`} className="group hover-lift reveal-up block bg-white shadow-sm" style={{ '--reveal-delay': '180ms' }}>
       {item.image && <img src={item.image} alt={item.title} className="media-zoom aspect-4/3 w-full object-cover" loading="lazy" />}
       <div className="p-5">
         <div className="flex flex-wrap items-center gap-3">
