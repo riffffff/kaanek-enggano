@@ -1,7 +1,8 @@
-import { Head, Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react'
 import { Bath, BedDouble, Clock3, Info, MapPin, MessageCircle, Plane, Route, Ship, UserRound } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import PageHeader from '../../Components/PageHeader'
+import SeoHead from '../../Components/SeoHead'
 
 export default function AccommodationIndex({ schedules = [], homestays = [] }) {
   const [selectedVillage, setSelectedVillage] = useState('All Villages')
@@ -63,7 +64,10 @@ export default function AccommodationIndex({ schedules = [], homestays = [] }) {
 
   return (
     <>
-      <Head title="Accommodations" />
+      <SeoHead
+        title="Penginapan & Transportasi ke Enggano"
+        description="Cara ke Pulau Enggano: jadwal kapal, pesawat, dan daftar homestay warga lokal beserta kontak WhatsApp."
+      />
 
       <PageHeader pageKey="accommodations" background={heroImageSrc} />
 

@@ -1,4 +1,3 @@
-import { Head } from '@inertiajs/react'
 import {
   ChevronLeft,
   ChevronRight,
@@ -13,6 +12,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import PageHeader from '../../Components/PageHeader'
+import SeoHead from '../../Components/SeoHead'
 
 // =============================================================================
 // DAFTAR GAMBAR GALERI KEGIATAN (STATIS)
@@ -88,13 +88,10 @@ export default function CreditsIndex() {
 
   return (
     <>
-      <Head>
-        <title>Tentang Kami — Ka'anek Enggano</title>
-        <meta
-          name="description"
-          content="Informasi tentang kami, inisiator, pengembang website Ka'anek Enggano dan galeri dokumentasi kegiatan di Pulau Enggano."
-        />
-      </Head>
+      <SeoHead
+        title="Tentang Kami"
+        description="Inisiator, pengembang website Jelajah Enggano, dan dokumentasi kegiatan program kolaborasi di Pulau Enggano."
+      />
 
       <PageHeader pageKey="credits" />
 

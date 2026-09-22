@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { Head, Link } from '@inertiajs/react'
+import { Link, usePage } from '@inertiajs/react'
 import {
   ChevronRight,
   ChevronLeft,
@@ -15,6 +15,7 @@ import KknCard from '../../Components/KknCard'
 import { historyData } from '../../data/history.js'
 import Button from '../../Components/Button'
 import VideoDocumentaryCard from '../../Components/VideoDocumentaryCard'
+import SeoHead from '../../Components/SeoHead'
 
 const fallbackDestinations = [
   {
@@ -51,6 +52,7 @@ const fallbackDestinations = [
 
 export default function HomeIndex({ latestKkn = [], destinations = [] }) {
   const { tt } = useTranslate('home')
+  const { seo } = usePage().props
   const [activeDestIndex, setActiveDestIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
 
@@ -92,13 +94,38 @@ export default function HomeIndex({ latestKkn = [], destinations = [] }) {
 
   return (
     <>
-      <Head>
-        <title>Enggano - Pulau Terluar di Samudra Hindia</title>
-        <meta
-          name="description"
-          content="Website resmi digital Pulau Enggano untuk informasi perjalanan, destinasi, desa, dan Aktivitas di Enggano"
-        />
-      </Head>
+      <SeoHead
+        title="Jelajah Enggano — Pulau Terluar di Samudra Hindia"
+        description="Website resmi digital Pulau Enggano: destinasi wisata, penginapan, jadwal kapal, desa adat, dan catatan kegiatan KKN-PPM UGM."
+        jsonLd={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: seo?.siteName || 'Jelajah Enggano',
+            url: seo?.appUrl,
+            inLanguage: 'id-ID',
+            description:
+              'Informasi perjalanan, destinasi, penginapan, dan kegiatan di Pulau Enggano.',
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'TouristDestination',
+            name: 'Pulau Enggano',
+            url: seo?.appUrl,
+            description:
+              'Pulau terluar di Samudra Hindia, Kabupaten Bengkulu Utara, dengan wisata bahari, hutan, dan budaya enam suku.',
+            geo: {
+              '@type': 'GeoCoordinates',
+              latitude: -5.3833,
+              longitude: 102.2667,
+            },
+            containedInPlace: {
+              '@type': 'AdministrativeArea',
+              name: 'Kabupaten Bengkulu Utara',
+            },
+          },
+        ]}
+      />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden text-white min-h-[100dvh] sm:min-h-screen flex items-center">

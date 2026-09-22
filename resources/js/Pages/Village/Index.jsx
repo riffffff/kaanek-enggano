@@ -1,4 +1,3 @@
-import { Head } from '@inertiajs/react'
 import { MapPin, ExternalLink } from 'lucide-react'
 import { lazy, Suspense, useState, useEffect, useRef } from 'react'
 import { historyData } from '../../data/history.js'
@@ -7,6 +6,7 @@ import Button from '../../Components/Button'
 import PageHeader from '../../Components/PageHeader'
 import Pagination from '../../Components/Pagination'
 import VideoDocumentaryCard from '../../Components/VideoDocumentaryCard'
+import SeoHead from '../../Components/SeoHead'
 
 const LeafletMap = lazy(() => import('../../Components/LeafletMap'))
 
@@ -159,7 +159,10 @@ export default function VillageIndex({ umkms = { data: [], links: [] }, umkmMark
 
   return (
     <>
-      <Head title="Villages" />
+      <SeoHead
+        title="Desa & Budaya Pulau Enggano"
+        description="Kenali enam desa dan budaya adat Pulau Enggano, peta wilayah, UMKM lokal, serta dokumentasi kehidupan masyarakat pulau terluar."
+      />
 
       <PageHeader pageKey="villages" background={headerBackground} />
 

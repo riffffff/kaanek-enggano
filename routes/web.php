@@ -5,9 +5,13 @@ use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KknLogController;
 use App\Http\Controllers\LocalGuideController;
+use App\Http\Controllers\SeoController;
 use App\Http\Controllers\VillageController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
+Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/destinations', [DestinationController::class, 'index'])->name('destinations.index');

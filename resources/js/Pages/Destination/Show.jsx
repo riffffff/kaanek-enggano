@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Head, Link } from '@inertiajs/react'
+import { Link, usePage } from '@inertiajs/react'
 import {
   Play,
   ArrowLeft,
@@ -12,6 +12,7 @@ import {
 import Button from '../../Components/Button'
 import PrevNext from '../../Components/PrevNext'
 import Breadcrumb from '../../Components/Breadcrumb'
+import SeoHead from '../../Components/SeoHead'
 
 // Helper to check if file is video
 const isVideo = (url) => {
@@ -21,6 +22,7 @@ const isVideo = (url) => {
 }
 
 export default function DestinationShow({ destination, prev = null, next = null }) {
+  const { seo } = usePage().props
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
 
@@ -140,7 +142,33 @@ export default function DestinationShow({ destination, prev = null, next = null 
 
   return (
     <>
-      <Head title={destination.name} />
+      <SeoHead
+        title={`${destination.name} — Destinasi Enggano`}
+        description={
+          destination.short_description ||
+          `Jelajahi ${destination.name} di Pulau Enggano, destinasi wisata di garis terdepan Samudra Hindia.`
+        }
+        image={heroPhoto}
+        type="article"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'TouristAttraction',
+          name: destination.name,
+          description:
+            destination.short_description ||
+            `Destinasi wisata ${destination.name} di Pulau Enggano.`,
+          image: heroPhoto,
+          url: seo?.url,
+          geo:
+            Number.isFinite(Number(destination.lat)) && Number.isFinite(Number(destination.lng))
+              ? {
+                  '@type': 'GeoCoordinates',
+                  latitude: Number(destination.lat),
+                  longitude: Number(destination.lng),
+                }
+              : undefined,
+        }}
+      />
 
       {/* Spacer di mobile agar konten tidak tertutup fixed navbar h-20 */}
       <div className="h-20 md:hidden" />

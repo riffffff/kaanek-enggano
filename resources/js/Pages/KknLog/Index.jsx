@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
-import { Head, Link } from '@inertiajs/react'
+import { Link, router } from '@inertiajs/react'
 import { ArrowRight, Calendar, Clock } from 'lucide-react'
 import PageHeader from '../../Components/PageHeader'
+import Pagination from '../../Components/Pagination'
+import SeoHead from '../../Components/SeoHead'
 
 const filters = [
   { label: 'Semua Artikel', value: null },
@@ -93,12 +95,43 @@ const imageByCategory = {
     'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80',
 }
 
-export default function KknLogIndex({ items = [], carouselItems = [], selectedCategory = null }) {
-  const [activeCategory, setActiveCategory] = useState(selectedCategory || null)
-  const [visibleCount, setVisibleCount] = useState(6)
+export default function KknLogIndex({
+  items = { data: [], links: [], total: 0, from: null, to: null },
+  carouselItems = [],
+  selectedCategory = null,
+  perPage = 12,
+  perPageOptions = [9, 12, 18, 24, 48],
+}) {
   const [currentSlide, setCurrentSlide] = useState(0)
   const intervalRef = useRef(null)
   const carouselRef = useRef(null)
+  const activeCategory = selectedCategory || null
+  const pageItems = Array.isArray(items) ? items : (items.data || [])
+  const totalItems = Array.isArray(items) ? items.length : (items.total || 0)
+  const paginationLinks = Array.isArray(items) ? [] : (items.links || [])
+
+  const visitList = (next = {}) => {
+    const category = next.category !== undefined ? next.category : activeCategory
+    const nextPerPage = next.per_page ?? perPage
+
+    router.get(
+      '/activities',
+      {
+        ...(category ? { category } : {}),
+        per_page: nextPerPage,
+        ...(next.page ? { page: next.page } : {}),
+      },
+      {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true,
+        only: ['items', 'carouselItems', 'selectedCategory', 'perPage', 'perPageOptions'],
+        onSuccess: () => {
+          document.getElementById('daftar-artikel')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        },
+      },
+    )
+  }
 
   const normalizeEntry = (item, index) => ({
     ...item,
@@ -114,21 +147,15 @@ export default function KknLogIndex({ items = [], carouselItems = [], selectedCa
       fallbackItems[index % fallbackItems.length].image,
   })
 
-  const entries = items.length
-    ? items.map((item, index) => normalizeEntry(item, index))
-    : fallbackItems
+  const entries = pageItems.length
+    ? pageItems.map((item, index) => normalizeEntry(item, index))
+    : []
 
-  // Carousel headlines
   const carouselArticles = carouselItems && carouselItems.length
     ? carouselItems.map((item, index) => normalizeEntry(item, index))
     : entries.slice(0, 4)
 
-  // Filtered entries
-  const filteredEntries = activeCategory
-    ? entries.filter(item => item.category?.toLowerCase() === activeCategory.toLowerCase())
-    : entries
-
-  const listArticles = filteredEntries.slice(0, visibleCount)
+  const listArticles = entries
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % carouselArticles.length)
@@ -177,7 +204,10 @@ export default function KknLogIndex({ items = [], carouselItems = [], selectedCa
 
   return (
     <>
-      <Head title="Berita & Aktivitas - Kaanek Enggano" />
+      <SeoHead
+        title="Aktivitas & Catatan KKN di Enggano"
+        description="Dokumentasi program kerja KKN-PPM UGM di Pulau Enggano: ekonomi, kesehatan, digitalisasi, dan lingkungan."
+      />
 
       {/* Hero PageHeader */}
       <PageHeader
@@ -293,10 +323,7 @@ export default function KknLogIndex({ items = [], carouselItems = [], selectedCa
                 <button
                   key={filter.value || 'all'}
                   type="button"
-                  onClick={() => {
-                    setActiveCategory(filter.value)
-                    setVisibleCount(6)
-                  }}
+                  onClick={() => visitList({ category: filter.value, page: 1 })}
                   className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                     isActive
                       ? 'bg-primary-950 text-white shadow-xs'
@@ -311,16 +338,36 @@ export default function KknLogIndex({ items = [], carouselItems = [], selectedCa
         </div>
 
         {/* Section Heading */}
-        <div className="flex items-center justify-between mb-4 sm:mb-6">
+        <div id="daftar-artikel" className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between mb-4 sm:mb-6 scroll-mt-24">
           <div>
             <h3 className="font-display text-2xl sm:text-3xl font-semibold text-neutral-900">
               Daftar Artikel
             </h3>
             <div className="mt-2.5 h-1 w-8 bg-accent-500 rounded-full" />
           </div>
-          <span className="text-xs text-neutral-400 font-medium">
-            {filteredEntries.length} artikel
-          </span>
+          <div className="flex flex-wrap items-center gap-3">
+            <label className="flex items-center gap-2 text-xs text-neutral-500 font-medium">
+              <span>Tampil</span>
+              <select
+                value={perPage}
+                onChange={(event) => visitList({ per_page: Number(event.target.value), page: 1 })}
+                className="rounded-lg border border-neutral-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-neutral-700"
+                aria-label="Jumlah artikel per halaman"
+              >
+                {perPageOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+              <span>per halaman</span>
+            </label>
+            <span className="text-xs text-neutral-400 font-medium">
+              {items.from && items.to
+                ? `${items.from}–${items.to} dari ${totalItems} artikel`
+                : `${totalItems} artikel`}
+            </span>
+          </div>
         </div>
 
         {/* Mobile View: Compact News Row / Media List (< md) */}
@@ -411,21 +458,21 @@ export default function KknLogIndex({ items = [], carouselItems = [], selectedCa
           ))}
         </div>
 
-        {filteredEntries.length === 0 && (
+        {listArticles.length === 0 && (
           <div className="text-center py-12 bg-white rounded-2xl border border-neutral-200/80 p-8">
             <p className="text-neutral-500 text-sm">Tidak ada artikel dalam kategori ini.</p>
           </div>
         )}
 
-        {filteredEntries.length > visibleCount && (
-          <div className="mt-8 sm:mt-14 flex justify-center">
-            <button
-              type="button"
-              onClick={() => setVisibleCount(prev => prev + 6)}
-              className="hover-lift bg-primary-950 hover:bg-primary-900 px-6 sm:px-8 py-3 sm:py-3.5 text-xs font-bold tracking-widest uppercase text-white rounded-xl shadow-md transition-all"
-            >
-              Tampilkan Lebih Banyak
-            </button>
+        {paginationLinks.length > 0 && (
+          <div className="mt-8 sm:mt-12">
+            <Pagination
+              links={paginationLinks}
+              only={['items', 'carouselItems', 'selectedCategory', 'perPage', 'perPageOptions']}
+              onNavigate={() => {
+                document.getElementById('daftar-artikel')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              }}
+            />
           </div>
         )}
       </section>

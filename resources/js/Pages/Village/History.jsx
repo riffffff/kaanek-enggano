@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react'
 import {
   BookOpen,
   UsersRound,
@@ -8,6 +8,7 @@ import { historyData, historyImageFallback } from '../../data/history.js'
 import Button from '../../Components/Button'
 import PageHeader from '../../Components/PageHeader'
 import Breadcrumb from '../../Components/Breadcrumb'
+import SeoHead from '../../Components/SeoHead'
 
 export default function VillageHistory({ history = null }) {
   const data = history || historyData
@@ -23,7 +24,12 @@ export default function VillageHistory({ history = null }) {
 
   return (
     <>
-      <Head title={`${data.title}`} />
+      <SeoHead
+        title={`${data.title} — Sejarah Pulau Enggano`}
+        description={data.subtitle || 'Sejarah, sosial budaya, dan enam suku adat Pulau Enggano.'}
+        image={data.heroImage || historyImageFallback}
+        type="article"
+      />
 
       <PageHeader
         pageKey="history"

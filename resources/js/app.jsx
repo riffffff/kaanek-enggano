@@ -7,7 +7,11 @@ import { createRoot } from 'react-dom/client'
 import AppLayout from './Layouts/AppLayout'
 
 createInertiaApp({
-  title: title => (title ? `${title} - Web Enggano` : 'Web Enggano'),
+  title: title => {
+    const site = 'Jelajah Enggano'
+    if (!title) return site
+    return title.includes(site) ? title : `${title} | ${site}`
+  },
   resolve: name => {
     const pages = import.meta.glob('./Pages/**/*.jsx', { eager: true })
     const page = pages[`./Pages/${name}.jsx`]

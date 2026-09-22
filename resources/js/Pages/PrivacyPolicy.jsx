@@ -1,4 +1,5 @@
-import { Head, Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react'
+import SeoHead from '../Components/SeoHead'
 
 const sections = [
   {
@@ -36,13 +37,10 @@ const sections = [
 export default function PrivacyPolicy() {
   return (
     <>
-      <Head>
-        <title>Privacy Policy — Enggano</title>
-        <meta
-          name="description"
-          content="Kebijakan privasi website resmi Pulau Enggano. Informasi tentang penggunaan data, cookie, dan tautan pihak ketiga."
-        />
-      </Head>
+      <SeoHead
+        title="Kebijakan Privasi"
+        description="Kebijakan privasi website Jelajah Enggano: penggunaan data, cookie, dan tautan layanan pihak ketiga."
+      />
 
       {/* Hero */}
       <section className="bg-primary-950 text-white">

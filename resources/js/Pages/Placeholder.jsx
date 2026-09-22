@@ -1,9 +1,10 @@
-import { Head, Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react'
+import SeoHead from '../Components/SeoHead'
 
 export default function Placeholder({ title, description }) {
   return (
     <>
-      <Head title={title} />
+      <SeoHead title={title} description={description} noindex />
 
       <section className="mx-auto flex min-h-[70vh] w-full px-4 sm:px-6 lg:w-[80%] lg:px-0 items-center pb-16 pt-32">
         <div>

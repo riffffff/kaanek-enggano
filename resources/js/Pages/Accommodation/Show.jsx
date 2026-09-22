@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react'
+import { Link, usePage } from '@inertiajs/react'
 import {
   ArrowLeft,
   Bath,
@@ -16,6 +16,7 @@ import {
 import Button from '../../Components/Button'
 import PrevNext from '../../Components/PrevNext'
 import Breadcrumb from '../../Components/Breadcrumb'
+import SeoHead from '../../Components/SeoHead'
 
 // Helper icon selector for facilities
 function getFeatureIcon(featureName = '') {
@@ -42,6 +43,7 @@ function getFeatureIcon(featureName = '') {
 }
 
 export default function HomestayShow({ homestay, prev = null, next = null }) {
+  const { seo } = usePage().props
   const data = homestay
   const heroImage = data.hero || data.cover || data.cover_image || data.image || 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1800&q=80'
 
@@ -52,7 +54,27 @@ export default function HomestayShow({ homestay, prev = null, next = null }) {
 
   return (
     <>
-      <Head title={`${data.name} - Penginapan Enggano`} />
+      <SeoHead
+        title={`${data.name} — Penginapan Enggano`}
+        description={descriptionText}
+        image={heroImage}
+        type="article"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'LodgingBusiness',
+          name: data.name,
+          description: descriptionText,
+          image: heroImage,
+          url: seo?.url,
+          telephone: data.whatsapp_number ? `+${String(data.whatsapp_number).replace(/[^\d]/g, '')}` : undefined,
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: data.village || 'Pulau Enggano',
+            addressRegion: 'Bengkulu Utara',
+            addressCountry: 'ID',
+          },
+        }}
+      />
 
       {/* Spacer di mobile agar konten tidak tertutup fixed navbar h-20 */}
       <div className="h-20 md:hidden" />

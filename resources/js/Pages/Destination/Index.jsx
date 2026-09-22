@@ -1,7 +1,7 @@
-import { Head } from '@inertiajs/react'
 import { ChevronLeft, ChevronRight, X, Download, Map, Eye } from 'lucide-react'
 import { useMemo, useState, useEffect } from 'react'
 import PageHeader from '../../Components/PageHeader'
+import SeoHead from '../../Components/SeoHead'
 
 
 const fallbackDestinations = [
@@ -126,7 +126,10 @@ export default function DestinationIndex({ destinations = [], selectedType = nul
 
   return (
     <>
-      <Head title="Destinations" />
+      <SeoHead
+        title="Destinasi Wisata Pulau Enggano"
+        description="Temukan destinasi bahari, hutan, dan budaya di Pulau Enggano. Peta wisata, itinerary, dan rekomendasi tempat yang bisa dikunjungi."
+      />
 
       {/* Hero PageHeader */}
       <PageHeader

@@ -1,11 +1,14 @@
-import { Head } from '@inertiajs/react'
 import { Phone } from 'lucide-react'
 import PageHeader from '../../Components/PageHeader'
+import SeoHead from '../../Components/SeoHead'
 
 export default function LocalGuideIndex({ guides = [] }) {
   return (
     <>
-      <Head title="Local Guide" />
+      <SeoHead
+        title="Pemandu Lokal Pulau Enggano"
+        description="Temukan pemandu wisata lokal Pulau Enggano. Perjalanan bersama warga yang mengenal pulau, budaya, dan rute alam lebih dekat."
+      />
 
       <PageHeader
         pageKey="localGuide"

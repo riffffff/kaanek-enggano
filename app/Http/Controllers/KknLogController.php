@@ -13,6 +13,11 @@ class KknLogController extends Controller
     {
         $category = $request->string('category')->toString();
         $allowedCategories = ['ekonomi', 'kesehatan', 'digitalisasi', 'lingkungan'];
+        $perPageOptions = [9, 12, 18, 24, 48];
+        $perPage = (int) $request->integer('per_page', 12);
+        if (! in_array($perPage, $perPageOptions, true)) {
+            $perPage = 12;
+        }
 
         $query = KknLogItem::query()
             ->with('media')
@@ -24,8 +29,6 @@ class KknLogController extends Controller
             ->where('is_highlighted', true)
             ->limit(4)
             ->get();
-
-        $allItems = $query->get();
 
         $mapper = function (KknLogItem $item): array {
             $coverMedia = $item->getFirstMedia('cover');
@@ -64,9 +67,10 @@ class KknLogController extends Controller
         if ($carouselCount < 4) {
             $needed = 4 - $carouselCount;
             $highlightedIds = $highlighted->pluck('id')->all();
-            $fillUpsMapped = $allItems
-                ->whereNotIn('id', $highlightedIds)
-                ->take($needed)
+            $fillUpsMapped = (clone $query)
+                ->when($highlightedIds !== [], fn ($q) => $q->whereNotIn('id', $highlightedIds))
+                ->limit($needed)
+                ->get()
                 ->map($mapper)
                 ->all();
             $carouselItems = collect(array_merge($mappedHighlighted, $fillUpsMapped));
@@ -74,13 +78,18 @@ class KknLogController extends Controller
             $carouselItems = collect($mappedHighlighted);
         }
 
-        $items = $allItems->map($mapper)->values();
+        $items = $query
+            ->paginate($perPage)
+            ->withQueryString()
+            ->through($mapper);
 
         return Inertia::render('KknLog/Index', [
             'items' => $items,
             'carouselItems' => $carouselItems,
             'highlightedCount' => $highlighted->count(),
             'selectedCategory' => in_array($category, $allowedCategories, true) ? $category : null,
+            'perPage' => $perPage,
+            'perPageOptions' => $perPageOptions,
         ]);
     }
 
@@ -126,6 +135,7 @@ class KknLogController extends Controller
                 'slug' => $item->slug,
                 'category' => $item->category,
                 'date' => $item->date?->format('d M Y'),
+                'date_iso' => $item->date?->toDateString(),
                 'content' => $item->content,
                 'read_time' => max(3, (int) ceil(str_word_count((string) $item->content) / 120)).' min read',
                 'cover' => $coverFull,

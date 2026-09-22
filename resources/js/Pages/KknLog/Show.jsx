@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import { Head, Link } from '@inertiajs/react'
+import { Link, usePage } from '@inertiajs/react'
 import { Calendar, Clock, Newspaper, Share2, Tag, ArrowLeft, X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react'
 import Button from '../../Components/Button'
 import PrevNext from '../../Components/PrevNext'
 import Breadcrumb from '../../Components/Breadcrumb'
+import SeoHead from '../../Components/SeoHead'
 
 const imageByCategory = {
   lingkungan:
@@ -17,6 +18,7 @@ const imageByCategory = {
 }
 
 export default function KknLogShow({ item, prev = null, next = null }) {
+  const { seo } = usePage().props
   const contentParagraphs = item.content
     ? item.content
         .split(/\n+/)
@@ -74,7 +76,26 @@ export default function KknLogShow({ item, prev = null, next = null }) {
 
   return (
     <>
-      <Head title={`${item.title} - Berita & Artikel Kaanek Enggano`} />
+      <SeoHead
+        title={item.title}
+        description={contentParagraphs[0] || `Catatan kegiatan KKN di Pulau Enggano: ${item.title}`}
+        image={heroImage}
+        type="article"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: item.title,
+          datePublished: item.date_iso || undefined,
+          image: heroImage,
+          url: seo?.url,
+          articleSection: item.category,
+          inLanguage: 'id-ID',
+          publisher: {
+            '@type': 'Organization',
+            name: seo?.siteName || 'Jelajah Enggano',
+          },
+        }}
+      />
 
       {/* Spacer di mobile agar konten tidak tertutup fixed navbar h-20 */}
       <div className="h-20 md:hidden" />

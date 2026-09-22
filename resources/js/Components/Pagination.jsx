@@ -6,11 +6,18 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
  * Expects the `links` array from an Inertia-serialized paginator:
  *   [{ url, label, active }, ...]
  */
-export default function Pagination({ links = [], only = null }) {
+export default function Pagination({ links = [], only = null, onNavigate = null }) {
   if (!links || links.length <= 3) return null
 
+  const linkProps = {
+    preserveScroll: !onNavigate,
+    preserveState: true,
+    only: only || undefined,
+    onSuccess: onNavigate || undefined,
+  }
+
   return (
-    <nav aria-label="Pagination" className="flex items-center justify-center gap-1 pt-6">
+    <nav aria-label="Pagination" className="flex flex-wrap items-center justify-center gap-1 pt-6">
       {links.map((link, i) => {
         const isPrev = i === 0
         const isNext = i === links.length - 1
@@ -20,9 +27,7 @@ export default function Pagination({ links = [], only = null }) {
             <Link
               key={i}
               href={link.url ?? '#'}
-              preserveScroll
-              preserveState
-              only={only || undefined}
+              {...linkProps}
               className={[
                 'inline-flex h-9 w-9 items-center justify-center rounded-lg text-sm transition',
                 link.url
@@ -41,9 +46,7 @@ export default function Pagination({ links = [], only = null }) {
           <Link
             key={i}
             href={link.url ?? '#'}
-            preserveScroll
-            preserveState
-            only={only || undefined}
+            {...linkProps}
             className={[
               'inline-flex h-9 min-w-9 items-center justify-center rounded-lg px-2 text-sm font-medium transition',
               link.active
